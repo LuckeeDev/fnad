@@ -1,18 +1,13 @@
-#include <SFML/Graphics>
+#include <SFML/Graphics.hpp>
 #include <vector>
+
+#include "../common/position.hpp"
 
 #ifndef ENEMY_HPP
 #define ENEMY_HPP
 
 namespace fnad {
 enum class Status { susceptible, infectious, removed };
-
-enum class Floor { underground, ground, first, second, roof };
-
-struct Position {
-  sf::Vector2f coordinates;
-  Floor floor;
-};
 
 class Enemy {
  private:
