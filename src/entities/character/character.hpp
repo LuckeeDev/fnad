@@ -1,10 +1,10 @@
+#ifndef CHARACTER_HPP
+#define CHARACTER_HPP
+
 #include <SFML/Graphics.hpp>
 
 #include "../../common/position.hpp"
 #include "../enemy/enemy.hpp"
-
-#ifndef CHARACTER_HPP
-#define CHARACTER_HPP
 
 namespace fnad {
 enum class Direction { up, down, right, left };
@@ -15,9 +15,7 @@ class Character final {
   int life_points_;
 
  public:
-  Character()
-      : life_points_{3},
-        position_{sf::Vector2f{0.f, 0.f}, Floor::underground} {};
+  Character();
 
   bool checkContact(const Enemy&);
   void move(const Direction&);

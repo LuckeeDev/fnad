@@ -1,9 +1,9 @@
-#include "../../common/position.hpp"
-#include "../character/character.hpp"
-#include "../src/entity/entity.hpp"
-
 #ifndef ENEMY_HPP
 #define ENEMY_HPP
+
+#include "../../common/position.hpp"
+#include "../character/character.hpp"
+#include "../entity/entity.hpp"
 
 namespace fnad {
 enum class Status { susceptible, infectious, removed };

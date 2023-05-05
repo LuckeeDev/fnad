@@ -1,16 +1,11 @@
-#include <SFML/Graphics.hpp>
-
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
 
+#include <SFML/Graphics.hpp>
+
+#include "../../common/position.hpp"
+
 namespace fnad {
-enum class Floor { underground, ground, first, second, roof };
-
-struct Position {
-  sf::Vector2f coordinates;
-  Floor floor;
-};
-
 class Entity {
  protected:
   Position position_;
