@@ -24,4 +24,4 @@ class Character final {
 };
 }  // namespace fnad
 
-#endif  // character_HPP
+#endif
