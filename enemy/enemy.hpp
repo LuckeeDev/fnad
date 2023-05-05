@@ -1,6 +1,8 @@
 #include "../character/character.hpp"
 #include "../src/entity/entity.hpp"
 
+#include "../common/position.hpp"
+
 #ifndef ENEMY_HPP
 #define ENEMY_HPP
 
