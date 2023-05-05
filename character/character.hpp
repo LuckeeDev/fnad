@@ -18,7 +18,6 @@ class Character final {
       : life_points_{3},
         position_{sf::Vector2f{0.f, 0.f}, Floor::underground} {};
 
-  // TODO: add reference
   bool checkContact(const Enemy&);
   void move(const Direction&);
 };

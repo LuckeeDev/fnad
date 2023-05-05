@@ -17,7 +17,7 @@ class Enemy {
  public:
   Enemy(Status status, Position position)
       : status_{status}, position_{position} {}
-  Enemy(Status status) : Enemy(status, sf::Vector2f{0.f, 0.f}) {}
+  Enemy(Status status) : Enemy(status, Position{sf::Vector2f{0.f, 0.f}, Floor::underground}) {}
   Enemy() : Enemy(Status::susceptible) {}
   void evolve();
 };
