@@ -4,7 +4,10 @@
 #define GAME_HPP
 
 namespace fnad {
-class Game final : public Map {
+class Game final {
+ private:
+  Map map_;
+
  public:
   void run() const;
 };

@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-#include "../../character/character.hpp"
+#include "../entities/character/character.hpp"
 #include "../epidemic/epidemic.hpp"
 #include "../room/room.hpp"
 
@@ -14,6 +14,8 @@ class Map : public sf::Drawable {
   std::vector<Room> rooms;
   Character character;
   Epidemic epidemic;
+
+  void draw(sf::RenderTarget&, sf::RenderStates) const override;
 };
 }  // namespace fnad
 

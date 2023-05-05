@@ -1,6 +1,6 @@
 #include <vector>
 
-#include "../../enemy/enemy.hpp"
+#include "../entities/enemy/enemy.hpp"
 
 #ifndef EPIDEMIC_HPP
 #define EPIDEMIC_HPP
