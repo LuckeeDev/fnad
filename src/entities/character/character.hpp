@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 
-#include "../common/position.hpp"
+#include "../../common/position.hpp"
 #include "../enemy/enemy.hpp"
 
 #ifndef CHARACTER_HPP
@@ -8,6 +8,7 @@
 
 namespace fnad {
 enum class Direction { up, down, right, left };
+
 class Character final {
  private:
   Position position_;
