@@ -11,8 +11,9 @@ TEST_CASE("Testing the Enemy class") {
     auto position_before = enemy.position();
 
     sf::Time time{sf::seconds(1.f)};
+    fnad::Character character;
 
-    enemy.evolve(time);
+    enemy.evolve(time, character);
 
     auto position_after = enemy.position();
 
@@ -28,12 +29,16 @@ TEST_CASE("Testing the Enemy class") {
   }
 
   SUBCASE("Calling infect changes the status") {
-    auto status_before = enemy.status();
-
     enemy.infect();
 
     auto status_after = enemy.status();
 
     CHECK_EQ(status_after, fnad::Status::infectious);
+  }
+
+  SUBCASE("Calling infect on an infected enemy throws") {
+    enemy.infect();
+
+    CHECK_THROWS(enemy.infect());
   }
 }
