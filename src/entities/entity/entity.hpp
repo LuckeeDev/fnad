@@ -3,20 +3,19 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "../../common/position.hpp"
+#include "../../common/floor.hpp"
 
 namespace fnad {
 class Entity : public sf::RectangleShape {
  protected:
-  Position position_;
+  Floor floor_;
   // Defined in pixels/second
   float speed_;
 
-  Entity(Position position, float speed);
+  Entity(Floor, sf::Vector2f, float);
 
  public:
-  Position position() const;
-  float speed() const;
+  float getSpeed() const;
 };
 }  // namespace fnad
 

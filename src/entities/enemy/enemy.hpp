@@ -1,7 +1,7 @@
 #ifndef ENEMY_HPP
 #define ENEMY_HPP
 
-#include "../../common/position.hpp"
+#include "../../common/floor.hpp"
 #include "../character/character.hpp"
 #include "../entity/entity.hpp"
 
@@ -13,12 +13,12 @@ class Enemy final : public Entity {
   Status status_;
 
  public:
-  Enemy(Status status, Position position, float speed);
-  Enemy(Status status, Position position);
-  Enemy(Status status);
+  Enemy(Status, Floor, sf::Vector2f, float);
+  Enemy(Status, Floor, sf::Vector2f);
+  Enemy(Status);
   Enemy();
 
-  Status status() const;
+  Status getStatus() const;
 
   /**
    * @param dt delta time object indicating how much time has passed since the
