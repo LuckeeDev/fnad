@@ -1,11 +1,12 @@
 #ifndef ENEMY_HPP
 #define ENEMY_HPP
 
-#include "../../common/floor.hpp"
-#include "../character/character.hpp"
 #include "../entity/entity.hpp"
 
 namespace fnad {
+enum class Floor;
+class Character;
+
 enum class Status { susceptible, infectious, removed };
 
 class Enemy final : public Entity {

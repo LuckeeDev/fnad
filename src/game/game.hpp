@@ -1,7 +1,7 @@
-#include "../map/map.hpp"
-
 #ifndef GAME_HPP
 #define GAME_HPP
+
+#include "../map/map.hpp"
 
 namespace fnad {
 class Game final {

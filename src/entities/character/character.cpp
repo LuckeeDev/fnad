@@ -1,10 +1,12 @@
 #include "character.hpp"
 
+#include "../enemy/enemy.hpp"
+
 namespace fnad {
 // Constructors
 Character::Character()
-    : life_points_{3},
-      Entity(Floor::underground, sf::Vector2f{0.f, 0.f}, 1.f) {}
+    : Entity(Floor::underground, sf::Vector2f{0.f, 0.f}, 1.f),
+      life_points_{3} {}
 
 void Character::move(const Direction& dir, const sf::Time& dt) {
   auto seconds = dt.asSeconds();
@@ -27,8 +29,7 @@ void Character::move(const Direction& dir, const sf::Time& dt) {
 }
 
 bool Character::checkContact(const Enemy& enemy) {
-  if (enemy.status() == Status::susceptible ||
-      enemy.status() == Status::removed) {
+  if (enemy.getFloor() != floor_ || enemy.getStatus() != Status::infectious) {
     return false;
   }
 

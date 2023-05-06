@@ -15,6 +15,7 @@ class Entity : public sf::RectangleShape {
   Entity(Floor, sf::Vector2f, float);
 
  public:
+  Floor getFloor() const;
   float getSpeed() const;
 };
 }  // namespace fnad

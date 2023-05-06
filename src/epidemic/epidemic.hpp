@@ -1,14 +1,14 @@
 #include <vector>
 
-#include "../entities/enemy/enemy.hpp"
-
 #ifndef EPIDEMIC_HPP
 #define EPIDEMIC_HPP
 
 namespace fnad {
+class Enemy;
+
 class Epidemic {
  private:
-  std::vector<fnad::Enemy> enemies_;
+  std::vector<Enemy> enemies_;
 
  public:
   void evolve();

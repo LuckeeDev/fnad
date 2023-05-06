@@ -3,35 +3,36 @@
 #include <cmath>
 
 #include "../../../test/doctest.h"
+#include "../character/character.hpp"
 
 TEST_CASE("Testing the Enemy class") {
   fnad::Enemy enemy;
 
   SUBCASE("Calling evolve moves the enemy") {
-    auto position_before = enemy.position();
+    auto position_before = enemy.getPosition();
+    auto floor_before = enemy.getFloor();
 
     sf::Time time{sf::seconds(1.f)};
     fnad::Character character;
 
     enemy.evolve(time, character);
 
-    auto position_after = enemy.position();
+    auto position_after = enemy.getPosition();
+    auto floor_after = enemy.getFloor();
 
-    CHECK_EQ(position_before.floor, position_after.floor);
+    CHECK_EQ(floor_before, floor_after);
 
-    auto distance = std::sqrt(
-        std::pow((position_after.coordinates.x - position_before.coordinates.x),
-                 2) +
-        std::pow((position_after.coordinates.y - position_before.coordinates.y),
-                 2));
+    auto distance =
+        std::sqrt(std::pow((position_after.x - position_before.x), 2) +
+                  std::pow((position_after.y - position_before.y), 2));
 
-    CHECK_EQ(distance, doctest::Approx(time.asSeconds() * enemy.speed()));
+    CHECK_EQ(distance, doctest::Approx(time.asSeconds() * enemy.getSpeed()));
   }
 
   SUBCASE("Calling infect changes the status") {
     enemy.infect();
 
-    auto status_after = enemy.status();
+    auto status_after = enemy.getStatus();
 
     CHECK_EQ(status_after, fnad::Status::infectious);
   }

@@ -3,11 +3,12 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "../../common/floor.hpp"
-#include "../enemy/enemy.hpp"
 #include "../entity/entity.hpp"
 
 namespace fnad {
+enum class Floor;
+class Enemy;
+
 enum class Direction { up, down, right, left };
 
 class Character final : public Entity {
