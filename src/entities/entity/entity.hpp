@@ -6,7 +6,7 @@
 #include "../../common/position.hpp"
 
 namespace fnad {
-class Entity {
+class Entity : public sf::RectangleShape {
  protected:
   Position position_;
   // Defined in pixels/second

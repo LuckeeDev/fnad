@@ -18,7 +18,7 @@ class Character final : public Entity {
   Character();
 
   bool checkContact(const Enemy&);
-  void move(const Direction&);
+  void move(const Direction&, const sf::Time&);
 };
 }  // namespace fnad
 
