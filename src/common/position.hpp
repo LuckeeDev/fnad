@@ -1,6 +1,7 @@
-#include <SFML/Graphics.hpp>
 #ifndef POSITION_HPP
 #define POSITION_HPP
+
+#include <SFML/Graphics.hpp>
 
 namespace fnad {
 enum class Floor { underground, ground, first, second, roof };

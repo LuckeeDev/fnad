@@ -5,13 +5,13 @@
 
 #include "../../common/position.hpp"
 #include "../enemy/enemy.hpp"
+#include "../entity/entity.hpp"
 
 namespace fnad {
 enum class Direction { up, down, right, left };
 
-class Character final {
+class Character final : public Entity {
  private:
-  Position position_;
   int life_points_;
 
  public:
