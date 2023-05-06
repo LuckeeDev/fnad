@@ -1,7 +1,7 @@
 #include "character.hpp"
 
+#include "../../../test/doctest.h"
 #include "../enemy/enemy.hpp"
-#include "../test/doctest.h"
 
 TEST_CASE("Testing the Character class") {
   fnad::Character character;

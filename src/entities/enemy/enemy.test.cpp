@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-#include "../test/doctest.h"
+#include "../../../test/doctest.h"
 
 TEST_CASE("Testing the Enemy class") {
   fnad::Enemy enemy;
