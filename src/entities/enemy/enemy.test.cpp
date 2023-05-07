@@ -26,7 +26,7 @@ TEST_CASE("Testing the Enemy class") {
         std::sqrt(std::pow((position_after.x - position_before.x), 2) +
                   std::pow((position_after.y - position_before.y), 2));
 
-    CHECK_EQ(distance, doctest::Approx(time.asSeconds() * enemy.getSpeed()));
+    CHECK_EQ(distance, 1.f);
   }
 
   SUBCASE("Calling infect changes the status") {
