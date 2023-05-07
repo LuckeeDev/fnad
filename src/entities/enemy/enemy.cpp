@@ -22,7 +22,7 @@ Enemy::Enemy() : Enemy(Status::susceptible){};
 Status Enemy::getStatus() const { return status_; }
 
 void Enemy::evolve(const sf::Time& dt, const Character& character) {
-    if (floor_ == character.getFloor()) {
+    if (floor_ == character.getFloor() && character.getPosition() != getPosition()) {
         sf::Vector2f direction{character.getPosition() - getPosition()};
         float norm2{direction.x * direction.x + direction.y * direction.y};
         direction /= std::sqrt(norm2);

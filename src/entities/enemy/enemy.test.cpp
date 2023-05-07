@@ -68,6 +68,31 @@ TEST_CASE("Testing the Enemy class") {
                   std::pow((position_after.y - position_before.y), 2)));
 
     CHECK_EQ(distance, 10.f);
+
+    enemy.setSpeed(1.f);
+    enemy.setPosition(0.f, 0.f);
+    character.setPosition(4.f, 3.f);
+
+    enemy.evolve(time, character);
+
+    CHECK_EQ(enemy.getPosition(), character.getPosition());
+
+    character.setFloor(fnad::Floor::roof);
+    
+    position_before = enemy.getPosition();
+    enemy.evolve(time, character);
+    position_after = enemy.getPosition();
+
+    CHECK_EQ(position_before, position_after);
+
+    character.setFloor(enemy.getFloor());
+    character.setPosition(enemy.getPosition());
+
+    position_before = enemy.getPosition();
+    enemy.evolve(time, character);
+    position_after = enemy.getPosition();
+
+    CHECK_EQ(position_before, position_after);
   }
 
   SUBCASE("Calling infect changes the status") {
