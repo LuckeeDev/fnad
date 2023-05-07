@@ -15,6 +15,9 @@ class Entity : public sf::RectangleShape {
   Entity(Floor, sf::Vector2f, float);
 
  public:
+  void setFloor(const Floor&);
+  void setSpeed(const float&);
+
   Floor getFloor() const;
   float getSpeed() const;
 };
