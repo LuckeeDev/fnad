@@ -19,6 +19,8 @@ class Enemy final : public Entity {
   Enemy(Status);
   Enemy();
 
+  void setStatus(const Status&);
+
   Status getStatus() const;
 
   /**

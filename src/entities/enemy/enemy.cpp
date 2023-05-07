@@ -1,9 +1,9 @@
 #include "enemy.hpp"
-#include "../character/character.hpp"
 
-#include <cassert>
 #include <cmath>
 #include <stdexcept>
+
+#include "../character/character.hpp"
 
 namespace fnad {
 // Constructors
@@ -19,16 +19,19 @@ Enemy::Enemy(Status status)
 Enemy::Enemy() : Enemy(Status::susceptible){};
 
 // Functions
+void Enemy::setStatus(const Status& status) { status_ = status; }
 Status Enemy::getStatus() const { return status_; }
 
 void Enemy::evolve(const sf::Time& dt, const Character& character) {
-    if (floor_ == character.getFloor() && character.getPosition() != getPosition()) {
-        sf::Vector2f direction{character.getPosition() - getPosition()};
-        float norm2{direction.x * direction.x + direction.y * direction.y};
-        direction /= std::sqrt(norm2);
+  if (floor_ == character.getFloor() &&
+      character.getPosition() != getPosition() &&
+      status_ == Status::infectious) {
+    sf::Vector2f direction{character.getPosition() - getPosition()};
+    float norm2{direction.x * direction.x + direction.y * direction.y};
+    direction /= std::sqrt(norm2);
 
-        move(direction * speed_ * dt.asSeconds());
-    }
+    move(direction * speed_ * dt.asSeconds());
+  }
 }
 
 void Enemy::infect() {
