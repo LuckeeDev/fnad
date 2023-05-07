@@ -19,7 +19,6 @@ Enemy::Enemy(Status status)
 Enemy::Enemy() : Enemy(Status::susceptible){};
 
 // Functions
-void Enemy::setStatus(const Status& status) { status_ = status; }
 Status Enemy::getStatus() const { return status_; }
 
 void Enemy::evolve(const sf::Time& dt, const Character& character) {
