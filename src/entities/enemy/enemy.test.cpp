@@ -13,7 +13,9 @@ TEST_CASE("Testing the Enemy class") {
     auto floor_before = enemy.getFloor();
 
     sf::Time time{sf::seconds(1.f)};
+
     fnad::Character character;
+    character.setPosition(15.79865f, 20.153f);
 
     enemy.evolve(time, character);
 
@@ -22,9 +24,17 @@ TEST_CASE("Testing the Enemy class") {
 
     CHECK_EQ(floor_before, floor_after);
 
-    auto distance =
+    float distance = static_cast<float>(
         std::sqrt(std::pow((position_after.x - position_before.x), 2) +
-                  std::pow((position_after.y - position_before.y), 2));
+                  std::pow((position_after.y - position_before.y), 2)));
+
+    CHECK_EQ(distance, 1.f);
+
+    character.setPosition(23.156f, 48.2674f);
+
+    distance = static_cast<float>(
+        std::sqrt(std::pow((position_after.x - position_before.x), 2) +
+                  std::pow((position_after.y - position_before.y), 2)));
 
     CHECK_EQ(distance, 1.f);
   }
