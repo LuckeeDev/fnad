@@ -30,6 +30,7 @@ class Enemy final : public Entity {
   void evolve(const sf::Time& dt, const Character& character);
 
   void infect();
+  void remove();
 };
 }  // namespace fnad
 
