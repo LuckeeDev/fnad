@@ -22,6 +22,8 @@ class Epidemic {
   double days_per_second_;
 
  public:
+  Epidemic(int, sf::Vector2f);
+
   void evolve(const sf::Time&);
 };
 }  // namespace fnad
