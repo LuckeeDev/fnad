@@ -7,7 +7,7 @@
 #include "../entities/enemy/enemy.hpp"
 
 namespace fnad {
-Epidemic::Epidemic(int n, sf::Vector2f map) {
+Epidemic::Epidemic(int n, sf::Vector2f map) : s_{n - 1.} {
   std::random_device r;
   std::default_random_engine gen(r());
   std::uniform_int_distribution floor_dist(0, 3);
@@ -18,7 +18,7 @@ Epidemic::Epidemic(int n, sf::Vector2f map) {
 
   enemies.reserve(n);
 
-  for (int i; i < n; i++) {
+  for (int i{}; i < s_; i++) {
     auto floor = static_cast<Floor>(floor_dist(gen));
     auto x = x_dist(gen);
     auto y = y_dist(gen);
@@ -27,8 +27,29 @@ Epidemic::Epidemic(int n, sf::Vector2f map) {
     enemies.push_back(enemy);
   }
 
+  for (int i{}; i < i_; i++) {
+    auto floor = static_cast<Floor>(floor_dist(gen));
+    auto x = x_dist(gen);
+    auto y = y_dist(gen);
+    Enemy enemy(Status::infectious, floor, sf::Vector2f{x, y});
+
+    enemies.push_back(enemy);
+  }
+
   enemies_ = enemies;
 };
+
+std::vector<Enemy> const& Epidemic::getEnemies() const { return enemies_; }
+
+int Epidemic::count(Status const& status) const {
+  int c{};
+  for (auto it{enemies_.begin()}; it != enemies_.end(); it++) {
+    if (it->getStatus() == status) {
+      c++;
+    }
+  }
+  return c;
+}
 
 void Epidemic::evolve(const sf::Time& dt) {
   double seconds = static_cast<double>(dt.asSeconds());
