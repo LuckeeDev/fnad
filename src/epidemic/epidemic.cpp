@@ -9,7 +9,7 @@
 
 namespace fnad {
 Epidemic::Epidemic(const unsigned int n, const sf::Vector2f map)
-    : s_{n - 1.}, i_{1.}, r_{} {
+    : SIR{n - 1., 1., 0.} {
   std::random_device r;
   std::default_random_engine gen(r());
   std::uniform_int_distribution floor_dist(0, 3);
@@ -41,9 +41,11 @@ Epidemic::Epidemic(const unsigned int n, const sf::Vector2f map)
   }
 
   enemies_ = enemies;
-};
+}
 
 std::vector<Enemy> const& Epidemic::getEnemies() const { return enemies_; }
+
+SIR Epidemic::getSIRState() const { return {s_, i_, r_}; }
 
 int Epidemic::count(Status const& status) const {
   auto const count = std::count_if(
@@ -66,23 +68,37 @@ void Epidemic::evolve(const sf::Time& dt) {
   auto const e_begin = enemies_.begin();
   auto const e_end = enemies_.end();
 
-  if (std::round(new_i) != std::round(i_)) {
-    auto const to_infect = std::find_if(e_begin, e_end, [](Enemy e) {
-      return e.getStatus() == Status::susceptible;
-    });
+  int const new_i_integer = static_cast<int>(std::round(new_i));
+  int const i_count = count(Status::infectious);
 
-    if (to_infect != e_end) {
-      to_infect->infect();
+  if (new_i_integer > i_count) {
+    auto n_to_infect = new_i_integer - i_count;
+
+    for (int i{}; i < n_to_infect; i++) {
+      auto const to_infect = std::find_if(e_begin, e_end, [](Enemy e) {
+        return e.getStatus() == Status::susceptible;
+      });
+
+      if (to_infect != e_end) {
+        to_infect->infect();
+      }
     }
   }
 
-  if (std::round(new_r) != std::round(r_)) {
-    auto const to_remove = std::find_if(e_begin, e_end, [](Enemy e) {
-      return e.getStatus() == Status::infectious;
-    });
+  int const new_r_integer = static_cast<int>(std::round(new_r));
+  int const r_count = count(Status::removed);
 
-    if (to_remove != e_end) {
-      to_remove->remove();
+  if (new_r_integer > r_count) {
+    auto n_to_remove = new_i_integer - r_count;
+
+    for (int i{}; i < n_to_remove; i++) {
+      auto const to_remove = std::find_if(e_begin, e_end, [](Enemy e) {
+        return e.getStatus() == Status::infectious;
+      });
+
+      if (to_remove != e_end) {
+        to_remove->remove();
+      }
     }
   }
 

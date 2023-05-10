@@ -9,13 +9,15 @@
 namespace fnad {
 // class Enemy;
 
-class Epidemic {
- private:
-  std::vector<Enemy> enemies_;
-
+struct SIR {
   double s_;
   double i_;
   double r_;
+};
+
+class Epidemic : private SIR {
+ private:
+  std::vector<Enemy> enemies_;
 
   double const beta_{0.7};
   double const gamma_{0.4};
@@ -27,6 +29,7 @@ class Epidemic {
   Epidemic(const unsigned int, const sf::Vector2f);
 
   std::vector<Enemy> const& getEnemies() const;
+  SIR getSIRState() const;
   int count(Status const&) const;
 
   void evolve(const sf::Time&);
