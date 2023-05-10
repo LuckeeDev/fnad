@@ -26,7 +26,7 @@ class Epidemic : private SIR {
   double const days_per_second_{1.};
 
  public:
-  Epidemic(const unsigned int, const sf::Vector2f);
+  Epidemic(const int, const int, const sf::Vector2f);
 
   std::vector<Enemy> const& getEnemies() const;
   SIR getSIRState() const;

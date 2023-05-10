@@ -8,8 +8,8 @@
 #include "../entities/enemy/enemy.hpp"
 
 namespace fnad {
-Epidemic::Epidemic(const unsigned int n, const sf::Vector2f map)
-    : SIR{n - 1., 1., 0.} {
+Epidemic::Epidemic(const int s, const int i, const sf::Vector2f map)
+    : SIR{static_cast<double>(s), static_cast<double>(i), 0.} {
   std::random_device r;
   std::default_random_engine gen(r());
   std::uniform_int_distribution floor_dist(0, 3);
@@ -18,10 +18,10 @@ Epidemic::Epidemic(const unsigned int n, const sf::Vector2f map)
 
   std::vector<Enemy> enemies;
 
-  enemies.reserve(n);
+  enemies.reserve(static_cast<unsigned int>(s + i));
 
   // Create susceptible enemies
-  for (int i{}; i < s_; i++) {
+  for (int j{}; j < s_; j++) {
     auto floor = static_cast<Floor>(floor_dist(gen));
     auto x = x_dist(gen);
     auto y = y_dist(gen);
@@ -31,7 +31,7 @@ Epidemic::Epidemic(const unsigned int n, const sf::Vector2f map)
   }
 
   // Create first infectious enemy
-  for (int i{}; i < i_; i++) {
+  for (int j{}; j < i_; j++) {
     auto floor = static_cast<Floor>(floor_dist(gen));
     auto x = x_dist(gen);
     auto y = y_dist(gen);
