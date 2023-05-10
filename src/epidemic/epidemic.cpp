@@ -89,7 +89,7 @@ void Epidemic::evolve(const sf::Time& dt) {
   int const r_count = count(Status::removed);
 
   if (new_r_integer > r_count) {
-    auto n_to_remove = new_i_integer - r_count;
+    auto n_to_remove = new_r_integer - r_count;
 
     for (int i{}; i < n_to_remove; i++) {
       auto const to_remove = std::find_if(e_begin, e_end, [](Enemy e) {
