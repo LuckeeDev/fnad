@@ -46,13 +46,11 @@ Epidemic::Epidemic(const unsigned int n, const sf::Vector2f map)
 std::vector<Enemy> const& Epidemic::getEnemies() const { return enemies_; }
 
 int Epidemic::count(Status const& status) const {
-  int c{};
-  for (auto it{enemies_.begin()}; it != enemies_.end(); it++) {
-    if (it->getStatus() == status) {
-      c++;
-    }
-  }
-  return c;
+  auto count = std::count_if(
+      enemies_.begin(), enemies_.end(),
+      [&status](Enemy const& e) { return e.getStatus() == status; });
+
+  return static_cast<int>(count);
 }
 
 void Epidemic::evolve(const sf::Time& dt) {
