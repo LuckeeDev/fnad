@@ -1,13 +1,15 @@
 #include "epidemic.hpp"
 
 #include <algorithm>
+#include <cassert>
 #include <cmath>
 #include <random>
 
 #include "../entities/enemy/enemy.hpp"
 
 namespace fnad {
-Epidemic::Epidemic(int n, sf::Vector2f map) : s_{n - 1.} {
+Epidemic::Epidemic(const unsigned int n, const sf::Vector2f map)
+    : s_{n - 1.}, i_{1.}, r_{} {
   std::random_device r;
   std::default_random_engine gen(r());
   std::uniform_int_distribution floor_dist(0, 3);
@@ -18,6 +20,7 @@ Epidemic::Epidemic(int n, sf::Vector2f map) : s_{n - 1.} {
 
   enemies.reserve(n);
 
+  // Create susceptible enemies
   for (int i{}; i < s_; i++) {
     auto floor = static_cast<Floor>(floor_dist(gen));
     auto x = x_dist(gen);
@@ -27,6 +30,7 @@ Epidemic::Epidemic(int n, sf::Vector2f map) : s_{n - 1.} {
     enemies.push_back(enemy);
   }
 
+  // Create first infectious enemy
   for (int i{}; i < i_; i++) {
     auto floor = static_cast<Floor>(floor_dist(gen));
     auto x = x_dist(gen);
