@@ -1,10 +1,10 @@
+#ifndef EPIDEMIC_HPP
+#define EPIDEMIC_HPP
+
 #include <SFML/Graphics.hpp>
 #include <vector>
 
 #include "../entities/enemy/enemy.hpp"
-
-#ifndef EPIDEMIC_HPP
-#define EPIDEMIC_HPP
 
 namespace fnad {
 // class Enemy;
@@ -21,7 +21,7 @@ class Epidemic {
   double const gamma_{0.4};
 
   // Rate of how many days pass each second
-  double const days_per_second_{1};
+  double const days_per_second_{1.};
 
  public:
   Epidemic(const unsigned int, const sf::Vector2f);

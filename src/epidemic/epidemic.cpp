@@ -46,7 +46,7 @@ Epidemic::Epidemic(const unsigned int n, const sf::Vector2f map)
 std::vector<Enemy> const& Epidemic::getEnemies() const { return enemies_; }
 
 int Epidemic::count(Status const& status) const {
-  auto count = std::count_if(
+  auto const count = std::count_if(
       enemies_.begin(), enemies_.end(),
       [&status](Enemy const& e) { return e.getStatus() == status; });
 
@@ -54,32 +54,36 @@ int Epidemic::count(Status const& status) const {
 }
 
 void Epidemic::evolve(const sf::Time& dt) {
-  double seconds = static_cast<double>(dt.asSeconds());
-  double days = seconds * days_per_second_;
+  double const seconds = static_cast<double>(dt.asSeconds());
+  double const days = seconds * days_per_second_;
 
-  double N = static_cast<double>(enemies_.size());
+  double const N = static_cast<double>(enemies_.size());
 
-  double new_s = s_ * (1. - days * beta_ * i_ / N);
-  double new_i = i_ * (1. + days * (beta_ * s_ / N - gamma_));
-  double new_r = r_ + days * gamma_ * i_;
+  double const new_s = s_ * (1. - days * beta_ * i_ / N);
+  double const new_i = i_ * (1. + days * (beta_ * s_ / N - gamma_));
+  double const new_r = r_ + days * gamma_ * i_;
 
-  auto e_begin = enemies_.begin();
-  auto e_end = enemies_.end();
+  auto const e_begin = enemies_.begin();
+  auto const e_end = enemies_.end();
 
   if (std::round(new_i) != std::round(i_)) {
-    auto to_infect = std::find_if(e_begin, e_end, [](Enemy e) {
+    auto const to_infect = std::find_if(e_begin, e_end, [](Enemy e) {
       return e.getStatus() == Status::susceptible;
     });
 
-    to_infect->infect();
+    if (to_infect != e_end) {
+      to_infect->infect();
+    }
   }
 
   if (std::round(new_r) != std::round(r_)) {
-    auto to_remove = std::find_if(e_begin, e_end, [](Enemy e) {
+    auto const to_remove = std::find_if(e_begin, e_end, [](Enemy e) {
       return e.getStatus() == Status::infectious;
     });
 
-    to_remove->remove();
+    if (to_remove != e_end) {
+      to_remove->remove();
+    }
   }
 
   s_ = new_s;

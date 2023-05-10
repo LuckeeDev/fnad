@@ -1,16 +1,22 @@
 #include "epidemic.hpp"
 
+#include <iostream>
+
 #include "../../test/doctest.h"
 
 TEST_CASE("Testing Epidemic") {
   SUBCASE("Testing evolve") {
     fnad::Epidemic epidemic(100, sf::Vector2f{960.f, 540.f});
 
+    sf::Time time{sf::seconds(1.f)};
+
     int s_0{epidemic.count(fnad::Status::susceptible)},
         i_0{epidemic.count(fnad::Status::infectious)},
         r_0{epidemic.count(fnad::Status::removed)};
 
-    epidemic.evolve(sf::seconds(500.f));
+    for (int i{}; i < 1000; i++) {
+      epidemic.evolve(time);
+    }
 
     int s_1{epidemic.count(fnad::Status::susceptible)},
         i_1{epidemic.count(fnad::Status::infectious)},
