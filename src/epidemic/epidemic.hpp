@@ -15,7 +15,7 @@ struct SIR {
   double r_;
 };
 
-class Epidemic : private SIR {
+class Epidemic : private SIR, public sf::Drawable {
  private:
   std::vector<Enemy> enemies_;
 
@@ -24,6 +24,8 @@ class Epidemic : private SIR {
 
   // Rate of how many days pass each second
   double const days_per_second_{1.};
+
+  virtual void draw(sf::RenderTarget&, sf::RenderStates) const;
 
  public:
   Epidemic(const int, const int, const sf::Vector2f);

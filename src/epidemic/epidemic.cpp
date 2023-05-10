@@ -8,6 +8,12 @@
 #include "../entities/enemy/enemy.hpp"
 
 namespace fnad {
+void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+  for (auto it{enemies_.begin()}; it != enemies_.end(); it++) {
+    target.draw(*it);
+  }
+}
+
 Epidemic::Epidemic(const int s, const int i, const sf::Vector2f map)
     : SIR{static_cast<double>(s), static_cast<double>(i), 0.} {
   std::random_device r;
