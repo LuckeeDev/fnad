@@ -8,9 +8,9 @@
 #include "../entities/enemy/enemy.hpp"
 
 namespace fnad {
-void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-  for (auto it{enemies_.begin()}; it != enemies_.end(); it++) {
-    target.draw(*it);
+void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
+  for (auto e : enemies_) {
+    target.draw(e);
   }
 }
 
