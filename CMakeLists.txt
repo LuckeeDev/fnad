@@ -35,8 +35,8 @@ if (BUILD_TESTING)
     # aggiungi l'eseguibile all.test
     add_executable(all.test test/all.test.cpp)
     target_link_libraries(all.test PRIVATE sfml-graphics)
-    target_sources(all.test PRIVATE src/entities/enemy/enemy.test.cpp src/entities/character/character.test.cpp)
-    target_sources(all.test PRIVATE src/entities/character/character.cpp src/entities/enemy/enemy.cpp src/entities/entity/entity.cpp)
+    target_sources(all.test PRIVATE src/entities/enemy/enemy.test.cpp src/entities/character/character.test.cpp src/epidemic/epidemic.test.cpp)
+    target_sources(all.test PRIVATE src/entities/character/character.cpp src/entities/enemy/enemy.cpp src/entities/entity/entity.cpp src/epidemic/epidemic.cpp)
     # aggiungi l'eseguibile all.test alla lista dei test
     add_test(NAME all.test COMMAND all.test)
 endif ()

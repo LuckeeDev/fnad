@@ -41,4 +41,6 @@ void Enemy::infect() {
 
   status_ = Status::infectious;
 }
+
+void Enemy::remove() { status_ = Status::removed; }
 }  // namespace fnad
