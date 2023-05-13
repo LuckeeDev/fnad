@@ -18,6 +18,9 @@ int main() {
   background.clear();
   sf::Sprite sprite;
 
+  sf::View view(sf::Vector2f(100.f, 100.f), sf::Vector2f(300.f, 200.f));
+  window.setView(view);
+
   tmx::Map map;
   if (map.load("assets/map/test.tmx")) {
     auto const& layers = map.getLayers();
@@ -87,9 +90,27 @@ int main() {
       sf::Event event;
       while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) window.close();
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+          view.move(-10.f, 0.f);
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+          view.move(10.f, 0.f);
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+          view.move(0.f, -10.f);
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+          view.move(0.f, 10.f);
+        }
       }
 
       window.clear(sf::Color::Black);
+
+      window.setView(view);
 
       window.draw(sprite);
 
