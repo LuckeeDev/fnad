@@ -5,6 +5,7 @@ project(fnad VERSION 0.0.1)
 include(CTest)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_MODULE_PATH ./modules)
 
 # richiedi l'uso di C++17, senza estensioni non-standard offerte dal compilatore usato
 set(CMAKE_CXX_STANDARD 17)
@@ -25,9 +26,11 @@ string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-o
 # richiedi il componente graphics della libreria SFML, versione 2.5
 # le dipendenze vengono identificate automaticamente
 find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
+find_package(tmxlite)
 
 add_executable(fnad main.cpp)
 target_link_libraries(fnad PRIVATE sfml-graphics)
+target_link_libraries(fnad PRIVATE tmxlite)
 
 # se il testing e' abilitato...
 # per disabilitare il testing, passare -DBUILD_TESTING=OFF a cmake durante la fase di configurazione
