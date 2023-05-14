@@ -37,47 +37,58 @@ int main() {
 
     auto const& layer = layers[0]->getLayerAs<tmx::TileLayer>();
     auto const& layer_tiles = layer.getTiles();
-    auto const& tiles_count = static_cast<int>(layer_tiles.size());
+    auto const& tiles_count = layer_tiles.size();
 
     auto const& layer_size = layer.getSize();
-    auto const& tile_area = layer_size.x * layer_size.y / tiles_count;
+    auto const& layer_width = static_cast<int>(layer_size.x);
+    auto const& layer_height = static_cast<int>(layer_size.y);
+    auto const& tile_area =
+        layer_width * layer_height / static_cast<int>(tiles_count);
     auto const& tile_dimension = static_cast<int>(std::sqrt(tile_area));
-    auto const& layer_columns = layer_size.x / tile_dimension;
+    auto const& layer_columns = layer_width / tile_dimension;
 
-    for (int i{}; i < tiles_count; i++) {
+    for (std::vector<tmx::TileLayer::Tile>::size_type i{}; i < tiles_count;
+         i++) {
       auto const& tile = layer_tiles[i];
+      auto const& index = static_cast<int>(i);
+      auto const& tile_ID = static_cast<int>(tile.ID);
 
-      if (tiles.find(tile.ID) == tiles.end()) {
+      if (tiles.find(tile_ID) == tiles.end()) {
         auto const& tileset = std::find_if(
-            tilesets.begin(), tilesets.end(), [&tile](tmx::Tileset tileset) {
-              return tileset.getFirstGID() <= tile.ID &&
-                     tileset.getLastGID() >= tile.ID;
+            tilesets.begin(), tilesets.end(), [&tile](tmx::Tileset const& t) {
+              return t.getFirstGID() <= tile.ID && t.getLastGID() >= tile.ID;
             });
+        auto const& first_tile_ID = static_cast<int>(tileset->getFirstGID());
+
+        auto const& column_count = static_cast<int>(tileset->getColumnCount());
+
+        auto const& tile_size = tileset->getTileSize();
+        auto const& tile_width = static_cast<int>(tile_size.x);
+        auto const& tile_height = static_cast<int>(tile_size.y);
+
+        int const& x = (tile_ID - first_tile_ID) % column_count;
+        int const& y = (tile_ID - first_tile_ID - x) / column_count;
 
         auto const& image = images[tileset->getName()];
-
         sf::Texture texture;
-        auto const& column_count = tileset->getColumnCount();
-        auto const& tile_size = tileset->getTileSize();
-        int const& x = (tile.ID - tileset->getFirstGID()) % column_count;
-        int const& y = (tile.ID - tileset->getFirstGID() - x) / column_count;
 
         texture.loadFromImage(
-            image, sf::IntRect(x * tile_size.x, y * tile_size.y, tile_size.x,
-                               tile_size.y));
+            image, sf::IntRect(x * tile_width, y * tile_height, tile_width,
+                               tile_height));
 
-        tiles[tile.ID] = texture;
+        tiles[tile_ID] = texture;
       }
 
-      auto tile_texture = tiles[tile.ID];
+      auto tile_texture = tiles[tile_ID];
 
       sf::Sprite tile_sprite;
       tile_sprite.setTexture(tile_texture);
 
-      auto const& column = i % layer_columns;
-      auto const& row = (i - column) / layer_columns;
+      auto const& column = index % layer_columns;
+      auto const& row = (index - column) / layer_columns;
 
-      tile_sprite.setPosition(sf::Vector2f{column * 32, row * 32});
+      tile_sprite.setPosition(static_cast<float>(column * 32),
+                              static_cast<float>(row * 32));
 
       background.draw(tile_sprite);
     }
