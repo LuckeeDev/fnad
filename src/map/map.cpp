@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 #include <stdexcept>
 #include <tmxlite/Map.hpp>
 #include <tmxlite/TileLayer.hpp>
@@ -12,14 +13,6 @@ namespace fnad {
 void Map::drawLayerToBackground(tmx::TileLayer const& layer) {
   auto const& layer_tiles = layer.getTiles();
   auto const& tiles_count = layer_tiles.size();
-
-  auto const& layer_size = layer.getSize();
-  auto const& layer_width = static_cast<int>(layer_size.x);
-  auto const& layer_height = static_cast<int>(layer_size.y);
-  auto const& tile_area =
-      layer_width * layer_height / static_cast<int>(tiles_count);
-  auto const& tile_dimension = static_cast<int>(std::sqrt(tile_area));
-  auto const& layer_columns = layer_width / tile_dimension;
 
   for (std::vector<tmx::TileLayer::Tile>::size_type i{}; i < tiles_count; i++) {
     auto const& tile = layer_tiles[i];
@@ -44,7 +37,7 @@ void Map::drawLayerToBackground(tmx::TileLayer const& layer) {
       auto const& tile_height = static_cast<int>(tile_size.y);
 
       auto const& x = (tile_ID - first_tile_ID) % column_count;
-      auto const& y = (tile_ID - first_tile_ID - x) / column_count;
+      auto const& y = (tile_ID - first_tile_ID) / column_count;
 
       auto const& image = images_[tileset->getName()];
       sf::Texture texture;
@@ -60,11 +53,14 @@ void Map::drawLayerToBackground(tmx::TileLayer const& layer) {
     sf::Sprite tile_sprite;
     tile_sprite.setTexture(tile_texture);
 
+    auto const& layer_size = layer.getSize();
+    auto const& layer_columns = static_cast<int>(layer_size.x);
     auto const& column = index % layer_columns;
-    auto const& row = (index - column) / layer_columns;
+    auto const& row = index / layer_columns;
 
-    tile_sprite.setPosition(static_cast<float>(column * 32),
-                            static_cast<float>(row * 32));
+    tile_sprite.setPosition(
+        static_cast<float>(column * static_cast<int>(tile_size_)),
+        static_cast<float>(row * static_cast<int>(tile_size_)));
 
     background_.draw(tile_sprite);
   }
@@ -92,7 +88,14 @@ Map::Map(std::string const& file_name) {
   auto const& object_layer = layers[0]->getLayerAs<tmx::ObjectGroup>();
   loadRooms(object_layer);
 
-  background_.create(960, 640);
+  // Assume tiles of the loaded map are always squares
+  tile_size_ = map.getTileSize().x;
+
+  auto const& map_tiles = map.getTileCount();
+  auto const& map_width = map_tiles.x * tile_size_;
+  auto const& map_height = map_tiles.y * tile_size_;
+
+  background_.create(map_width, map_height);
   background_.clear();
 
   for (auto it{layers.begin() + 1}; it < layers.end(); it++) {

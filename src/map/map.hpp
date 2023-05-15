@@ -17,6 +17,7 @@ class Map : public sf::Drawable {
   std::vector<Room> rooms_;
   void loadRooms(tmx::ObjectGroup const &);
 
+  unsigned int tile_size_ = 32;
   std::vector<tmx::Tileset> tilesets_;
   std::unordered_map<std::string, sf::Image> images_;
   std::unordered_map<int, sf::Texture> tiles_;
