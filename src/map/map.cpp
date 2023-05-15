@@ -108,7 +108,19 @@ Map::Map(std::string const& file_name) {
   background_sprite_.setTexture(background_.getTexture());
 }
 
-void Map::loadRooms(tmx::ObjectGroup const&){};
+void Map::loadRooms(tmx::ObjectGroup const& object_layer) {
+  auto const& objects = object_layer.getObjects();
+  std::vector<Room> rooms{};
+
+  for (auto it{objects.begin()}; it != objects.end(); it++) {
+    auto const& AABB = it->getAABB();
+
+    Room room{sf::Vector2f{AABB.left, AABB.top},
+              sf::Vector2f{AABB.width, AABB.height}, floor_};
+
+    rooms.push_back(room);
+  }
+};
 
 void Map::draw(sf::RenderTarget& target, sf::RenderStates) const {
   target.draw(background_sprite_);
