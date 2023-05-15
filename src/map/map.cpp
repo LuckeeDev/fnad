@@ -2,8 +2,11 @@
 
 #include <algorithm>
 #include <cmath>
+#include <stdexcept>
+#include <tmxlite/Map.hpp>
 #include <tmxlite/TileLayer.hpp>
 #include <tmxlite/Tileset.hpp>
+#include <vector>
 
 namespace fnad {
 void Map::drawLayerToBackground(tmx::TileLayer const& layer) {
@@ -40,8 +43,8 @@ void Map::drawLayerToBackground(tmx::TileLayer const& layer) {
       auto const& tile_width = static_cast<int>(tile_size.x);
       auto const& tile_height = static_cast<int>(tile_size.y);
 
-      int const& x = (tile_ID - first_tile_ID) % column_count;
-      int const& y = (tile_ID - first_tile_ID - x) / column_count;
+      auto const& x = (tile_ID - first_tile_ID) % column_count;
+      auto const& y = (tile_ID - first_tile_ID - x) / column_count;
 
       auto const& image = images_[tileset->getName()];
       sf::Texture texture;
@@ -52,7 +55,7 @@ void Map::drawLayerToBackground(tmx::TileLayer const& layer) {
       tiles_[tile_ID] = texture;
     }
 
-    auto tile_texture = tiles_[tile_ID];
+    auto const& tile_texture = tiles_[tile_ID];
 
     sf::Sprite tile_sprite;
     tile_sprite.setTexture(tile_texture);
@@ -66,4 +69,45 @@ void Map::drawLayerToBackground(tmx::TileLayer const& layer) {
     background_.draw(tile_sprite);
   }
 }
+
+Map::Map(std::string const& file_name) {
+  tmx::Map map;
+
+  if (!map.load(file_name)) {
+    throw std::invalid_argument("The file could not be read.");
+  }
+
+  tilesets_ = map.getTilesets();
+
+  for (auto const& t : tilesets_) {
+    sf::Image i;
+
+    if (i.loadFromFile(t.getImagePath())) {
+      images_[t.getName()] = i;
+    }
+  }
+
+  auto const& layers = map.getLayers();
+
+  auto const& object_layer = layers[0]->getLayerAs<tmx::ObjectGroup>();
+  loadRooms(object_layer);
+
+  background_.create(960, 640);
+  background_.clear();
+
+  for (auto it{layers.begin() + 1}; it < layers.end(); it++) {
+    auto const& layer = (*it)->getLayerAs<tmx::TileLayer>();
+    drawLayerToBackground(layer);
+  }
+
+  background_.display();
+
+  background_sprite_.setTexture(background_.getTexture());
+}
+
+void Map::loadRooms(tmx::ObjectGroup const&){};
+
+void Map::draw(sf::RenderTarget& target, sf::RenderStates) const {
+  target.draw(background_sprite_);
+};
 }  // namespace fnad

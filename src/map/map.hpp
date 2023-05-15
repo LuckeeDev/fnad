@@ -2,30 +2,26 @@
 #define MAP_HPP
 
 #include <SFML/Graphics.hpp>
+#include <tmxlite/ObjectGroup.hpp>
+#include <tmxlite/TileLayer.hpp>
+#include <tmxlite/Tileset.hpp>
 #include <vector>
 
 #include "../entities/character/character.hpp"
 #include "../epidemic/epidemic.hpp"
-
-// Forward declarations of tmxlite's classes
-namespace tmx {
-class ObjectGroup;
-class TileLayer;
-class Tileset;
-}  // namespace tmx
+#include "../room/room.hpp"
 
 namespace fnad {
-class Room;
-
 class Map : public sf::Drawable {
  private:
   std::vector<Room> rooms_;
   void loadRooms(tmx::ObjectGroup const &);
 
-  const std::vector<tmx::Tileset> &tilesets_;
+  std::vector<tmx::Tileset> tilesets_;
   std::unordered_map<std::string, sf::Image> images_;
   std::unordered_map<int, sf::Texture> tiles_;
   sf::RenderTexture background_;
+  sf::Sprite background_sprite_;
   void drawLayerToBackground(tmx::TileLayer const &);
 
   void draw(sf::RenderTarget &, sf::RenderStates) const override;
