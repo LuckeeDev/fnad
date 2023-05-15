@@ -5,12 +5,6 @@
 
 #include "../map/map.hpp"
 
-// Forward declarations of tmxlite's classes
-namespace tmx {
-class ObjectGroup;
-class TileLayer;
-}  // namespace tmx
-
 namespace fnad {
 class Game final {
  private:
