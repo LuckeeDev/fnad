@@ -15,13 +15,13 @@ class Map : public sf::Drawable {
   std::vector<Room> rooms_;
   void loadRooms(tmx::ObjectGroup const&);
 
-  sf::RenderTexture background;
+  sf::RenderTexture background_;
   void loadBackground(tmx::TileLayer const&);
 
   void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
  public:
-  bool loadMap(std::string const&);
+  Map(std::string const&);
 };
 }  // namespace fnad
 

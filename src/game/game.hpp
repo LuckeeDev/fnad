@@ -21,9 +21,9 @@ class Game final {
   Epidemic epidemic_;
   Map map_;
 
-  void gameLoop();
-
  public:
+  Game();
+
   void run() const;
 };
 }  // namespace fnad
