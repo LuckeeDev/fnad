@@ -9,18 +9,27 @@
 
 namespace fnad {
 void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
-  for (auto e : enemies_) {
-    target.draw(e);
+  auto const& view_size = view_.getSize();
+  auto const& view_center = view_.getCenter();
+  auto const& top_left = view_center - view_size / 2.f;
+
+  sf::FloatRect view_rect(top_left, view_size);
+
+  for (auto const& e : enemies_) {
+    if (view_rect.intersects(e.getGlobalBounds())) {
+      target.draw(e);
+    }
   }
 }
 
-Epidemic::Epidemic(const int s, const int i, const sf::Vector2f map)
-    : SIR{static_cast<double>(s), static_cast<double>(i), 0.} {
+Epidemic::Epidemic(const int s, const int i, const sf::Vector2f map_bounds,
+                   sf::View& view)
+    : SIR{static_cast<double>(s), static_cast<double>(i), 0.}, view_{view} {
   std::random_device r;
   std::default_random_engine gen(r());
   std::uniform_int_distribution floor_dist(0, 3);
-  std::uniform_real_distribution<float> x_dist(0.f, map.x);
-  std::uniform_real_distribution<float> y_dist(0.f, map.y);
+  std::uniform_real_distribution<float> x_dist(0.f, map_bounds.x);
+  std::uniform_real_distribution<float> y_dist(0.f, map_bounds.y);
 
   std::vector<Enemy> enemies;
 

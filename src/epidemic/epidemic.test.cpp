@@ -7,7 +7,8 @@
 
 TEST_CASE("Testing Epidemic") {
   SUBCASE("Testing evolve") {
-    fnad::Epidemic epidemic(99, 1, sf::Vector2f{960.f, 540.f});
+    sf::View test_view;
+    fnad::Epidemic epidemic(99, 1, sf::Vector2f{960.f, 540.f}, test_view);
 
     sf::Time time{sf::seconds(1.f)};
 
