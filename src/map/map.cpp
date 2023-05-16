@@ -125,4 +125,6 @@ void Map::loadRooms(tmx::ObjectGroup const& object_layer) {
 void Map::draw(sf::RenderTarget& target, sf::RenderStates) const {
   target.draw(background_sprite_);
 };
+
+sf::Vector2u Map::getBounds() const { return background_.getSize(); }
 }  // namespace fnad

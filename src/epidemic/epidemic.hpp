@@ -25,12 +25,12 @@ class Epidemic : private SIR, public sf::Drawable {
   // Rate of how many days pass each second
   double const days_per_second_{1.};
 
-  sf::View& view_;
+  sf::View* view_;
 
   virtual void draw(sf::RenderTarget&, sf::RenderStates) const;
 
  public:
-  Epidemic(const int, const int, const sf::Vector2f, sf::View&);
+  Epidemic(const int, const int, const sf::Vector2f, sf::View*);
 
   std::vector<Enemy> const& getEnemies() const;
   SIR getSIRState() const;

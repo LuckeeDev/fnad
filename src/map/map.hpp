@@ -30,6 +30,8 @@ class Map : public sf::Drawable {
 
  public:
   Map(std::string const &);
+
+  sf::Vector2u getBounds() const;
 };
 }  // namespace fnad
 
