@@ -3,11 +3,12 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "../../common/floor.hpp"
-#include "../../map/map.hpp"
 #include "../../room/room.hpp"
 
 namespace fnad {
+class Map;
+enum class Floor;
+
 class Entity : public sf::RectangleShape {
  protected:
   Map* map_ptr_;
