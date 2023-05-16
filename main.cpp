@@ -2,7 +2,19 @@
 #include "src/map/map.hpp"
 
 int main() {
-  fnad::Game const& game = fnad::Game::create();
+  sf::RenderWindow window(sf::VideoMode(960, 640), "Map test");
+  window.setFramerateLimit(60);
+
+  sf::View view(sf::Vector2f(100.f, 100.f), sf::Vector2f(300.f, 200.f));
+
+  fnad::Map map("assets/map/test.tmx");
+  auto const map_bounds = static_cast<sf::Vector2f>(map.getBounds());
+
+  fnad::Epidemic epidemic(99, 1, map_bounds, &view);
+
+  fnad::Character character;
+
+  fnad::Game game(window, view, character, epidemic, map);
 
   game.run();
 }

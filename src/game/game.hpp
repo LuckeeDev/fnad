@@ -8,21 +8,17 @@
 namespace fnad {
 class Game final {
  private:
-  sf::RenderWindow* window_;
-  sf::View* view_;
+  sf::RenderWindow& window_;
+  sf::View& view_;
 
-  Character* character_;
-  Epidemic* epidemic_;
-  Map* map_;
-
-  Game(sf::RenderWindow*, sf::View*, Character*, Epidemic*, Map*);
+  Character& character_;
+  Epidemic& epidemic_;
+  Map& map_;
 
  public:
-  ~Game();
+  Game(sf::RenderWindow&, sf::View&, Character&, Epidemic&, Map&);
 
   void run() const;
-
-  static Game create();
 };
 }  // namespace fnad
 
