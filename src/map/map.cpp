@@ -119,9 +119,13 @@ void Map::loadRooms(tmx::ObjectGroup const& object_layer) {
 
     rooms_.push_back(room);
   }
-};
+}
 
 void Map::draw(sf::RenderTarget& target, sf::RenderStates) const {
   target.draw(background_sprite_);
-};
+}
+
+Floor const& Map::getFloor() const { return floor_; }
+
+std::vector<Room> const& Map::getRooms() const { return rooms_; }
 }  // namespace fnad
