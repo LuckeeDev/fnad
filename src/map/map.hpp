@@ -32,6 +32,8 @@ class Map : public sf::Drawable {
   Map(std::string const &);
 
   sf::Vector2u getBounds() const;
+  Floor const& getFloor() const;
+  std::vector<Room> const& getRooms() const;
 };
 }  // namespace fnad
 
