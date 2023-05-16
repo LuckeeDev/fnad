@@ -18,22 +18,19 @@ int main() {
     sf::Event event;
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed) window.close();
+    }
 
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        view.move(-10.f, 0.f);
-      }
-
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        view.move(10.f, 0.f);
-      }
-
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-        view.move(0.f, -10.f);
-      }
-
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-        view.move(0.f, 10.f);
-      }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+      view.move(-5.f, 0.f);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+      view.move(5.f, 0.f);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+      view.move(0.f, -5.f);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+      view.move(0.f, 5.f);
     }
 
     window.clear(sf::Color::Black);
