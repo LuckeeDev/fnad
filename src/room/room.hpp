@@ -7,8 +7,6 @@
 namespace fnad {
 class Room : public sf::FloatRect {
  private:
-  sf::Vector2f position_;
-  sf::Vector2f size_;
   Floor floor_;
 
  public:
