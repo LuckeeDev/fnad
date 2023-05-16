@@ -1,4 +1,5 @@
 #include "epidemic.hpp"
+#include "../map/map.hpp"
 
 #include <cmath>
 #include <iostream>
@@ -6,9 +7,11 @@
 #include "../../test/doctest.h"
 
 TEST_CASE("Testing Epidemic") {
+  fnad::Map map{"../../assets/map/map0.tmx"};
+
   SUBCASE("Testing evolve") {
     sf::View test_view;
-    fnad::Epidemic epidemic(99, 1, sf::Vector2f{960.f, 540.f}, test_view);
+    fnad::Epidemic epidemic(99, 1, map, test_view);
 
     sf::Time time{sf::seconds(1.f)};
 

@@ -5,6 +5,8 @@
 #include <iostream>
 #include <stdexcept>
 #include <tmxlite/Map.hpp>
+#include <tmxlite/Object.hpp>
+#include <tmxlite/ObjectGroup.hpp>
 #include <tmxlite/TileLayer.hpp>
 #include <tmxlite/Tileset.hpp>
 #include <vector>
@@ -125,7 +127,7 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates) const {
   target.draw(background_sprite_);
 }
 
-Floor const& Map::getFloor() const { return floor_; }
+Floor Map::getFloor() const { return floor_; }
 
 std::vector<Room> const& Map::getRooms() const { return rooms_; }
 }  // namespace fnad

@@ -14,10 +14,8 @@ class Enemy final : public Entity {
   Status status_;
 
  public:
-  Enemy(Status, Floor, sf::Vector2f, float);
-  Enemy(Status, Floor, sf::Vector2f);
-  Enemy(Status);
-  Enemy();
+  Enemy(Map&, sf::Vector2f, Status, float);
+  Enemy(Map&, sf::Vector2f, Status);
 
   Status getStatus() const;
 

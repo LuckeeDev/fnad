@@ -6,6 +6,7 @@
 #include <random>
 
 #include "../entities/enemy/enemy.hpp"
+#include "../map/map.hpp"
 
 namespace fnad {
 void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
@@ -22,9 +23,14 @@ void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
   }
 }
 
-Epidemic::Epidemic(const int s, const int i, const sf::Vector2f map_bounds,
+Epidemic::Epidemic(const int s, const int i,
+                   Map& map,  // TODO ridefinire il costruttore per
+                               // inserire i nemici solo dentro alle stanze
                    sf::View& view)
-    : SIR{static_cast<double>(s), static_cast<double>(i), 0.}, view_{view} {
+    : SIR{static_cast<double>(s), static_cast<double>(i), 0.},
+      view_{view} {   // per ora considero un solo piano
+  sf::Vector2f map_bounds{
+      960.f, 540.f};  // provvisorio (chiaramente così non ha senso)
   std::random_device r;
   std::default_random_engine gen(r());
   std::uniform_int_distribution floor_dist(0, 3);
@@ -40,7 +46,7 @@ Epidemic::Epidemic(const int s, const int i, const sf::Vector2f map_bounds,
     auto floor = static_cast<Floor>(floor_dist(gen));
     auto x = x_dist(gen);
     auto y = y_dist(gen);
-    Enemy enemy(Status::susceptible, floor, sf::Vector2f{x, y});
+    Enemy enemy(map, sf::Vector2f{x, y}, Status::susceptible);
 
     enemies.push_back(enemy);
   }
@@ -50,7 +56,7 @@ Epidemic::Epidemic(const int s, const int i, const sf::Vector2f map_bounds,
     auto floor = static_cast<Floor>(floor_dist(gen));
     auto x = x_dist(gen);
     auto y = y_dist(gen);
-    Enemy enemy(Status::infectious, floor, sf::Vector2f{x, y});
+    Enemy enemy(map, sf::Vector2f{x, y}, Status::infectious);
 
     enemies.push_back(enemy);
   }

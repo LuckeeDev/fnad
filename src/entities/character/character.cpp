@@ -1,11 +1,12 @@
 #include "character.hpp"
 
 #include "../enemy/enemy.hpp"
+#include "../../map/map.hpp"
 
 namespace fnad {
 // Constructors
-Character::Character()
-    : Entity(Floor::underground, sf::Vector2f{0.f, 0.f}, 1.f),
+Character::Character(Map& map, sf::Vector2f position)
+    : Entity(map, position, 1.f),
       life_points_{3} {}
 
 void Character::move(const Direction& dir, const sf::Time& dt) {

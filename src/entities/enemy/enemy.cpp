@@ -7,16 +7,11 @@
 
 namespace fnad {
 // Constructors
-Enemy::Enemy(Status status, Floor floor, sf::Vector2f position, float speed)
-    : Entity(floor, position, speed), status_{status} {};
+Enemy::Enemy(Map& map, sf::Vector2f position, Status status, float speed)
+    : Entity(map, position, speed), status_{status} {}
 
-Enemy::Enemy(Status status, Floor floor, sf::Vector2f position)
-    : Enemy(status, floor, position, 1.f){};
-
-Enemy::Enemy(Status status)
-    : Enemy(status, Floor::underground, sf::Vector2f{0.f, 0.f}){};
-
-Enemy::Enemy() : Enemy(Status::susceptible){};
+Enemy::Enemy(Map& map, sf::Vector2f position, Status status)
+    : Enemy(map, position, status, 1.f) {}
 
 // Functions
 Status Enemy::getStatus() const { return status_; }
