@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="4">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="8">
  <tileset firstgid="1" source="interiors_32x32.tsx"/>
  <tileset firstgid="1425" source="interiors_room.tsx"/>
  <objectgroup id="2" name="Object Layer 1">
   <object id="2" x="160" y="96" width="192" height="160"/>
   <object id="3" x="352" y="160" width="96" height="96"/>
+ </objectgroup>
+ <objectgroup id="5" name="Object Layer 2">
+  <object id="5" x="960" y="0" width="64" height="704"/>
+  <object id="6" x="0" y="640" width="960" height="64"/>
+  <object id="7" x="1041.33" y="521.333"/>
  </objectgroup>
  <layer id="1" name="Tile Layer 1" width="40" height="30">
   <data encoding="csv">

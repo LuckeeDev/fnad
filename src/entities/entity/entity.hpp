@@ -11,7 +11,6 @@ class Map;
 class Entity : public sf::RectangleShape {
  protected:
   const Map* map_ptr_;
-  Room* room_ptr_;
   // Defined in pixels/second
   float speed_;
 
@@ -20,7 +19,6 @@ class Entity : public sf::RectangleShape {
  public:
   void setSpeed(float);
 
-  Room const& getRoom() const;
   float getSpeed() const;
 };
 }  // namespace fnad

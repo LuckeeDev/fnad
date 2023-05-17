@@ -7,19 +7,20 @@
 #include <vector>
 
 namespace fnad {
-using Room = sf::FloatRect;
+using Spawner = sf::FloatRect;  // TODO definire la classe Spawner
 using Wall = sf::FloatRect;
 
 class Map {
  private:
-  const std::vector<Room> rooms_;
+  const std::vector<Wall> walls_;
+  const std::vector<Spawner> spawners_;
 
-  Map(std::vector<Room>);
+  Map(std::vector<Wall>, std::vector<Spawner>);
 
  public:
-  std::vector<Room> const &getRooms() const;
+  std::vector<Wall> const& getWalls() const;
 
-  static Map create(tmx::Map const &);
+  static Map create(tmx::Map const&);
 };
 }  // namespace fnad
 
