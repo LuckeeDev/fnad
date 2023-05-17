@@ -2,7 +2,7 @@
 
 namespace fnad {
 Game::Game(sf::RenderWindow& window, sf::View& view, Character& character,
-           Epidemic& epidemic, Map& map, Background& background)
+           Epidemic& epidemic, Map const& map, Background const& background)
     : window_{window},
       view_{view},
       character_{character},

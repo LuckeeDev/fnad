@@ -23,14 +23,11 @@ void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
   }
 }
 
-Epidemic::Epidemic(const int s, const int i,
-                   Map& map,  // TODO ridefinire il costruttore per
-                              // inserire i nemici solo dentro alle stanze
-                   sf::View& view)
-    : SIR{static_cast<double>(s), static_cast<double>(i), 0.},
-      view_{view} {   // per ora considero un solo piano
-  sf::Vector2f map_bounds{
-      960.f, 540.f};  // provvisorio (chiaramente così non ha senso)
+// TODO ridefinire il costruttore per inserire i nemici solo dentro alle stanze
+Epidemic::Epidemic(const int s, const int i, Map const& map, sf::View& view)
+    : SIR{static_cast<double>(s), static_cast<double>(i), 0.}, view_{view} {
+  // provvisorio (chiaramente così non ha senso)
+  sf::Vector2f map_bounds{960.f, 540.f};
   std::random_device r;
   std::default_random_engine gen(r());
   std::uniform_real_distribution<float> x_dist(0.f, map_bounds.x);

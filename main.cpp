@@ -10,9 +10,9 @@ int main() {
   tmx::Map tiled_map;
 
   if (tiled_map.load("assets/map/test.tmx")) {
-    fnad::Map map = fnad::Map::create(tiled_map);
+    const fnad::Map map = fnad::Map::create(tiled_map);
 
-    fnad::Background background(tiled_map);
+    const fnad::Background background(tiled_map);
 
     fnad::Epidemic epidemic(99, 1, map, view);
 

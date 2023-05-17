@@ -17,10 +17,11 @@ class Game final {
   Character& character_;
   Epidemic& epidemic_;
   Map const& map_;
-  Background& background_;
+  Background const& background_;
 
  public:
-  Game(sf::RenderWindow&, sf::View&, Character&, Epidemic&, Map&, Background&);
+  Game(sf::RenderWindow&, sf::View&, Character&, Epidemic&, Map const&,
+       Background const&);
 
   void run() const;
 };
