@@ -7,10 +7,10 @@
 
 namespace fnad {
 // Constructors
-Enemy::Enemy(Map& map, sf::Vector2f position, Status status, float speed)
+Enemy::Enemy(Map const& map, sf::Vector2f position, Status status, float speed)
     : Entity(map, position, speed), status_{status} {}
 
-Enemy::Enemy(Map& map, sf::Vector2f position, Status status)
+Enemy::Enemy(Map const& map, sf::Vector2f position, Status status)
     : Enemy(map, position, status, 1.f) {}
 
 // Functions

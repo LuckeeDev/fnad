@@ -5,7 +5,12 @@
 #include "../enemy/enemy.hpp"
 
 TEST_CASE("Testing the Character class") {
-  fnad::Map map("assets/map/test.tmx");
+  tmx::Map tiled_map;
+
+  tiled_map.load("assets/map/test.tmx");
+
+  fnad::Map map = fnad::Map::create(tiled_map);
+
   fnad::Character character{map, sf::Vector2f{170.f, 100.f}};
 
   SUBCASE("Move character") {

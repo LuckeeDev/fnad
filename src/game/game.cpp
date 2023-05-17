@@ -2,12 +2,13 @@
 
 namespace fnad {
 Game::Game(sf::RenderWindow& window, sf::View& view, Character& character,
-           Epidemic& epidemic, Map& map)
+           Epidemic& epidemic, Map& map, Background& background)
     : window_{window},
       view_{view},
       character_{character},
       epidemic_{epidemic},
-      map_{map} {}
+      map_{map},
+      background_{background} {}
 
 void Game::run() const {
   while (window_.isOpen()) {
@@ -33,7 +34,7 @@ void Game::run() const {
 
     window_.setView(view_);
 
-    window_.draw(map_);
+    window_.draw(background_);
 
     window_.display();
   }

@@ -5,7 +5,7 @@
 
 namespace fnad {
 // Constructors
-Character::Character(Map& map, sf::Vector2f position)
+Character::Character(Map const& map, sf::Vector2f position)
     : Entity(map, position, 1.f), life_points_{3} {}
 
 void Character::move(const Direction& dir, const sf::Time& dt) {

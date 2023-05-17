@@ -10,18 +10,16 @@ class Map;
 
 class Entity : public sf::RectangleShape {
  protected:
-  Map* map_ptr_;
+  const Map* map_ptr_;
   Room* room_ptr_;
   // Defined in pixels/second
   float speed_;
 
-  Entity(Map&, sf::Vector2f, float);
+  Entity(Map const&, sf::Vector2f, float);
 
  public:
-  void setMap(Map&, sf::Vector2f);
-  void setSpeed(const float&);
+  void setSpeed(float);
 
-  Map const& getMap() const;
   Room const& getRoom() const;
   float getSpeed() const;
 };

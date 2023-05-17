@@ -7,13 +7,19 @@ int main() {
 
   sf::View view(sf::Vector2f(100.f, 100.f), sf::Vector2f(300.f, 200.f));
 
-  fnad::Map map("assets/map/test.tmx");
+  tmx::Map tiled_map;
 
-  fnad::Epidemic epidemic(99, 1, map, view);
+  if (tiled_map.load("assets/map/test.tmx")) {
+    fnad::Map map = fnad::Map::create(tiled_map);
 
-  fnad::Character character(map, sf::Vector2f{0.f, 0.f});
+    fnad::Background background(tiled_map);
 
-  fnad::Game game(window, view, character, epidemic, map);
+    fnad::Epidemic epidemic(99, 1, map, view);
 
-  game.run();
+    fnad::Character character(map, sf::Vector2f{0.f, 0.f});
+
+    fnad::Game game(window, view, character, epidemic, map, background);
+
+    game.run();
+  }
 }

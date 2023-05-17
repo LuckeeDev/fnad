@@ -3,6 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "../background/background.hpp"
+#include "../entities/character/character.hpp"
+#include "../epidemic/epidemic.hpp"
 #include "../map/map.hpp"
 
 namespace fnad {
@@ -13,10 +16,11 @@ class Game final {
 
   Character& character_;
   Epidemic& epidemic_;
-  Map& map_;
+  Map const& map_;
+  Background& background_;
 
  public:
-  Game(sf::RenderWindow&, sf::View&, Character&, Epidemic&, Map&);
+  Game(sf::RenderWindow&, sf::View&, Character&, Epidemic&, Map&, Background&);
 
   void run() const;
 };

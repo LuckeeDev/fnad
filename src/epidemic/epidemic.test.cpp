@@ -7,7 +7,11 @@
 #include "../map/map.hpp"
 
 TEST_CASE("Testing Epidemic") {
-  fnad::Map map("assets/map/map0.tmx");
+  tmx::Map tiled_map;
+
+  tiled_map.load("assets/map/map0.tmx");
+
+  fnad::Map map = fnad::Map::create(tiled_map);
 
   SUBCASE("Testing evolve") {
     sf::View test_view;

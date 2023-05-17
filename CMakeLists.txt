@@ -28,7 +28,7 @@ string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-o
 find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
 find_package(tmxlite)
 
-add_executable(fnad main.cpp src/map/map.cpp src/room/room.cpp src/game/game.cpp src/epidemic/epidemic.cpp src/entities/character/character.cpp src/entities/enemy/enemy.cpp src/entities/entity/entity.cpp)
+add_executable(fnad main.cpp src/map/map.cpp src/background/background.cpp src/room/room.cpp src/game/game.cpp src/epidemic/epidemic.cpp src/entities/character/character.cpp src/entities/enemy/enemy.cpp src/entities/entity/entity.cpp)
 target_link_libraries(fnad PRIVATE sfml-graphics)
 target_link_libraries(fnad PRIVATE tmxlite)
 

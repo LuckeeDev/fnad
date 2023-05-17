@@ -3,7 +3,7 @@
 #include "../../map/map.hpp"
 
 namespace fnad {
-Entity::Entity(Map& map, sf::Vector2f position, float speed)
+Entity::Entity(Map const& map, sf::Vector2f position, float speed)
     : sf::RectangleShape(sf::Vector2f{10.f, 10.f}),
       map_ptr_{&map},
       room_ptr_{nullptr},
@@ -11,13 +11,7 @@ Entity::Entity(Map& map, sf::Vector2f position, float speed)
   setPosition(position);
 };
 
-void Entity::setMap(Map& map, sf::Vector2f position) {
-  map_ptr_ = &map;
-  setPosition(position);
-}
-void Entity::setSpeed(const float& speed) { speed_ = speed; }
-
-Map const& Entity::getMap() const { return *map_ptr_; }
+void Entity::setSpeed(float speed) { speed_ = speed; }
 
 Room const& Entity::getRoom() const { return *room_ptr_; }
 

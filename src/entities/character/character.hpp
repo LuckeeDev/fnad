@@ -17,7 +17,7 @@ class Character final : public Entity {
   int life_points_;
 
  public:
-  Character(Map&, sf::Vector2f);
+  Character(Map const&, sf::Vector2f);
 
   bool checkContact(const Enemy&);
   void move(const Direction&, const sf::Time&);
