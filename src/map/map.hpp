@@ -12,9 +12,9 @@ class Map {
  private:
   const std::vector<Room> rooms_;
 
- public:
   Map(std::vector<Room>);
 
+ public:
   std::vector<Room> const &getRooms() const;
 
   static Map create(tmx::Map const &);
