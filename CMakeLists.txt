@@ -5,7 +5,7 @@ project(fnad VERSION 0.0.1)
 include(CTest)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_MODULE_PATH ./modules)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/modules)
 
 # richiedi l'uso di C++17, senza estensioni non-standard offerte dal compilatore usato
 set(CMAKE_CXX_STANDARD 17)
@@ -37,9 +37,10 @@ target_link_libraries(fnad PRIVATE tmxlite)
 if (BUILD_TESTING)
     # aggiungi l'eseguibile all.test
     add_executable(all.test test/all.test.cpp)
-    target_link_libraries(all.test PRIVATE sfml-graphics)
     target_sources(all.test PRIVATE src/entities/enemy/enemy.test.cpp src/entities/character/character.test.cpp src/epidemic/epidemic.test.cpp)
     target_sources(all.test PRIVATE src/entities/character/character.cpp src/entities/enemy/enemy.cpp src/entities/entity/entity.cpp src/epidemic/epidemic.cpp src/room/room.cpp src/map/map.cpp)
+    target_link_libraries(all.test PRIVATE sfml-graphics)
+    target_link_libraries(all.test PRIVATE tmxlite)
     # aggiungi l'eseguibile all.test alla lista dei test
     add_test(NAME all.test COMMAND all.test)
 endif ()
