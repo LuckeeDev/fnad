@@ -3,27 +3,27 @@
 #include <cmath>
 
 #include "../../../test/doctest.h"
+#include "../../map/map.hpp"
 #include "../character/character.hpp"
 
 TEST_CASE("Testing the Enemy class") {
+  tmx::Map tiled_map;
+
+  tiled_map.load("assets/map/map0.tmx");
+
+  fnad::Map map = fnad::Map::create(tiled_map);
+
   SUBCASE("Calling evolve moves the enemy") {
-    fnad::Enemy enemy(fnad::Status::infectious);
+    fnad::Enemy enemy(map, sf::Vector2f{0.f, 0.f}, fnad::Status::infectious);
     sf::Time time{sf::seconds(1.f)};
-    fnad::Character character;
+    fnad::Character character{map, sf::Vector2f{15.79865f, 20.153f}};
 
     SUBCASE("With infected enemy") {
       auto position_before = enemy.getPosition();
-      auto floor_before = enemy.getFloor();
-
-      character.setPosition(15.79865f, 20.153f);
 
       enemy.evolve(time, character);
 
       auto position_after = enemy.getPosition();
-      auto floor_after = enemy.getFloor();
-
-      // Test that evolve does not change enemy's floor
-      CHECK_EQ(floor_before, floor_after);
 
       float distance = static_cast<float>(
           std::sqrt(std::pow((position_after.x - position_before.x), 2) +
@@ -83,18 +83,6 @@ TEST_CASE("Testing the Enemy class") {
 
       CHECK_EQ(enemy.getPosition(), character.getPosition());
 
-      // Test Enemy::evolve when character and enemy are on different floors
-      character.setFloor(fnad::Floor::roof);
-
-      position_before = enemy.getPosition();
-      enemy.evolve(time, character);
-      position_after = enemy.getPosition();
-
-      CHECK_EQ(position_before, position_after);
-
-      // Test Enemy::evolve when character and enemy share the same position
-      // and floor
-      character.setFloor(enemy.getFloor());
       character.setPosition(enemy.getPosition());
 
       position_before = enemy.getPosition();
@@ -102,13 +90,12 @@ TEST_CASE("Testing the Enemy class") {
       position_after = enemy.getPosition();
 
       CHECK_EQ(position_before, position_after);
-
-      character.setPosition(1561.f, 2478.f);
     }
 
     SUBCASE("With susceptible enemy") {
       // Test that evolve does not move the enemy when it is subsceptible
-      fnad::Enemy susceptible(fnad::Status::susceptible);
+      fnad::Enemy susceptible(map, sf::Vector2f{0.f, 0.f},
+                              fnad::Status::susceptible);
 
       auto position_before = susceptible.getPosition();
       susceptible.evolve(time, character);
@@ -119,7 +106,7 @@ TEST_CASE("Testing the Enemy class") {
 
     SUBCASE("With removed enemy") {
       // Test that evolve does not move the enemy when it is subsceptible
-      fnad::Enemy removed(fnad::Status::removed);
+      fnad::Enemy removed(map, sf::Vector2f{0.f, 0.f}, fnad::Status::removed);
 
       auto position_before = removed.getPosition();
       removed.evolve(time, character);
@@ -129,7 +116,7 @@ TEST_CASE("Testing the Enemy class") {
     }
   }
 
-  fnad::Enemy enemy;
+  fnad::Enemy enemy(map, sf::Vector2f{0.f, 0.f}, fnad::Status::susceptible);
 
   SUBCASE("Calling infect changes the status") {
     enemy.infect();

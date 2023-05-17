@@ -1,22 +1,23 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
-#include <SFML/Graphics.hpp>
+#include <tmxlite/Map.hpp>
+#include <tmxlite/ObjectGroup.hpp>
 #include <vector>
 
-#include "../entities/character/character.hpp"
-#include "../epidemic/epidemic.hpp"
+#include "../room/room.hpp"
 
 namespace fnad {
-class Room;
-
-class Map : public sf::Drawable {
+class Map {
  private:
-  std::vector<Room> rooms;
-  Character character;
-  Epidemic epidemic;
+  const std::vector<Room> rooms_;
 
-  void draw(sf::RenderTarget&, sf::RenderStates) const override;
+  Map(std::vector<Room>);
+
+ public:
+  std::vector<Room> const &getRooms() const;
+
+  static Map create(tmx::Map const &);
 };
 }  // namespace fnad
 

@@ -3,22 +3,24 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "../../common/floor.hpp"
+#include "../../room/room.hpp"
 
 namespace fnad {
+class Map;
+
 class Entity : public sf::RectangleShape {
  protected:
-  Floor floor_;
+  const Map* map_ptr_;
+  Room* room_ptr_;
   // Defined in pixels/second
   float speed_;
 
-  Entity(Floor, sf::Vector2f, float);
+  Entity(Map const&, sf::Vector2f, float);
 
  public:
-  void setFloor(const Floor&);
-  void setSpeed(const float&);
+  void setSpeed(float);
 
-  Floor getFloor() const;
+  Room const& getRoom() const;
   float getSpeed() const;
 };
 }  // namespace fnad

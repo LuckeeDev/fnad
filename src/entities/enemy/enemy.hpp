@@ -4,7 +4,6 @@
 #include "../entity/entity.hpp"
 
 namespace fnad {
-enum class Floor;
 class Character;
 
 enum class Status { susceptible, infectious, removed };
@@ -14,10 +13,8 @@ class Enemy final : public Entity {
   Status status_;
 
  public:
-  Enemy(Status, Floor, sf::Vector2f, float);
-  Enemy(Status, Floor, sf::Vector2f);
-  Enemy(Status);
-  Enemy();
+  Enemy(Map const&, sf::Vector2f, Status, float);
+  Enemy(Map const&, sf::Vector2f, Status);
 
   Status getStatus() const;
 

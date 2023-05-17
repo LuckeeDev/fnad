@@ -6,7 +6,6 @@
 #include "../entity/entity.hpp"
 
 namespace fnad {
-enum class Floor;
 class Enemy;
 
 enum class Direction { up, down, right, left };
@@ -18,7 +17,7 @@ class Character final : public Entity {
   int life_points_;
 
  public:
-  Character();
+  Character(Map const&, sf::Vector2f);
 
   bool checkContact(const Enemy&);
   void move(const Direction&, const sf::Time&);

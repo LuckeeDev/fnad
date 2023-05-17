@@ -6,21 +6,32 @@
 #include <random>
 
 #include "../entities/enemy/enemy.hpp"
+#include "../map/map.hpp"
 
 namespace fnad {
 void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
-  for (auto e : enemies_) {
-    target.draw(e);
+  auto const& view_size = view_.getSize();
+  auto const& view_center = view_.getCenter();
+  auto const& top_left = view_center - view_size / 2.f;
+
+  sf::FloatRect view_rect(top_left, view_size);
+
+  for (auto const& e : enemies_) {
+    if (view_rect.intersects(e.getGlobalBounds())) {
+      target.draw(e);
+    }
   }
 }
 
-Epidemic::Epidemic(const int s, const int i, const sf::Vector2f map)
-    : SIR{static_cast<double>(s), static_cast<double>(i), 0.} {
+// TODO ridefinire il costruttore per inserire i nemici solo dentro alle stanze
+Epidemic::Epidemic(const int s, const int i, Map const& map, sf::View& view)
+    : SIR{static_cast<double>(s), static_cast<double>(i), 0.}, view_{view} {
+  // provvisorio (chiaramente così non ha senso)
+  sf::Vector2f map_bounds{960.f, 540.f};
   std::random_device r;
   std::default_random_engine gen(r());
-  std::uniform_int_distribution floor_dist(0, 3);
-  std::uniform_real_distribution<float> x_dist(0.f, map.x);
-  std::uniform_real_distribution<float> y_dist(0.f, map.y);
+  std::uniform_real_distribution<float> x_dist(0.f, map_bounds.x);
+  std::uniform_real_distribution<float> y_dist(0.f, map_bounds.y);
 
   std::vector<Enemy> enemies;
 
@@ -28,20 +39,18 @@ Epidemic::Epidemic(const int s, const int i, const sf::Vector2f map)
 
   // Create susceptible enemies
   for (int j{}; j < s_; j++) {
-    auto floor = static_cast<Floor>(floor_dist(gen));
     auto x = x_dist(gen);
     auto y = y_dist(gen);
-    Enemy enemy(Status::susceptible, floor, sf::Vector2f{x, y});
+    Enemy enemy(map, sf::Vector2f{x, y}, Status::susceptible);
 
     enemies.push_back(enemy);
   }
 
   // Create first infectious enemy
   for (int j{}; j < i_; j++) {
-    auto floor = static_cast<Floor>(floor_dist(gen));
     auto x = x_dist(gen);
     auto y = y_dist(gen);
-    Enemy enemy(Status::infectious, floor, sf::Vector2f{x, y});
+    Enemy enemy(map, sf::Vector2f{x, y}, Status::infectious);
 
     enemies.push_back(enemy);
   }
