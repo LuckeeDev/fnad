@@ -2,8 +2,8 @@
 #define MAP_HPP
 
 #include <SFML/Graphics.hpp>
-#include <tmxlite/ObjectGroup.hpp>
 #include <tmxlite/Object.hpp>
+#include <tmxlite/ObjectGroup.hpp>
 #include <tmxlite/ObjectTypes.hpp>
 #include <tmxlite/TileLayer.hpp>
 #include <tmxlite/Tileset.hpp>
@@ -32,8 +32,11 @@ class Map : public sf::Drawable {
 
  public:
   Map(std::string const &);
+
+  sf::Vector2u getBounds() const;
   Floor getFloor() const;
-  std::vector<Room> const& getRooms() const;
+
+  std::vector<Room> const &getRooms() const;
 };
 }  // namespace fnad
 
