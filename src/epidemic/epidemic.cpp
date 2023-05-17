@@ -10,8 +10,8 @@
 
 namespace fnad {
 void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
-  auto const& view_size = view_->getSize();
-  auto const& view_center = view_->getCenter();
+  auto const& view_size = view_.getSize();
+  auto const& view_center = view_.getCenter();
   auto const& top_left = view_center - view_size / 2.f;
 
   sf::FloatRect view_rect(top_left, view_size);
@@ -43,7 +43,6 @@ Epidemic::Epidemic(const int s, const int i,
 
   // Create susceptible enemies
   for (int j{}; j < s_; j++) {
-    auto floor = static_cast<Floor>(floor_dist(gen));
     auto x = x_dist(gen);
     auto y = y_dist(gen);
     Enemy enemy(map, sf::Vector2f{x, y}, Status::susceptible);
@@ -53,7 +52,6 @@ Epidemic::Epidemic(const int s, const int i,
 
   // Create first infectious enemy
   for (int j{}; j < i_; j++) {
-    auto floor = static_cast<Floor>(floor_dist(gen));
     auto x = x_dist(gen);
     auto y = y_dist(gen);
     Enemy enemy(map, sf::Vector2f{x, y}, Status::infectious);

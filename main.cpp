@@ -10,9 +10,9 @@ int main() {
   fnad::Map map("assets/map/test.tmx");
   auto const map_bounds = static_cast<sf::Vector2f>(map.getBounds());
 
-  fnad::Epidemic epidemic(99, 1, map_bounds, &view);
+  fnad::Epidemic epidemic(99, 1, map, view);
 
-  fnad::Character character;
+  fnad::Character character(map, sf::Vector2f{0.f, 0.f});
 
   fnad::Game game(window, view, character, epidemic, map);
 
