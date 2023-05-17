@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="1">
- <tileset firstgid="1" source="interior_room.tsx"/>
- <tileset firstgid="392" source="Interiors_free_32x32.tsx"/>
+ <tileset firstgid="1" source="interiors_room.tsx"/>
+ <tileset firstgid="392" source="interiors_32x32.tsx"/>
  <layer id="1" name="Livello tile 1" width="30" height="20">
   <data encoding="csv">
 97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,97,
