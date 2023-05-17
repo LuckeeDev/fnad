@@ -10,36 +10,12 @@ Entity::Entity(Map& map, sf::Vector2f position, float speed)
       floor_{map.getFloor()},
       speed_{speed} {
   setPosition(position);
-
-  auto rooms = map.getRooms();
-  for (auto& room : rooms) {
-    if (room.contains(position)) {
-      room_ptr_ = &room;
-      break;
-    }
-  }
-
-  if (room_ptr_ == nullptr) {
-    throw std::invalid_argument("Cannot create an entity outside the map.");
-  }
 };
 
 void Entity::setFloor(Map& map, sf::Vector2f position) {
   floor_ = map.getFloor();
 
   setPosition(position);
-
-  auto rooms = map.getRooms();
-  for (auto& room : rooms) {
-    if (room.contains(position)) {
-      room_ptr_ = &room;
-      break;
-    }
-  }
-
-  if (room_ptr_ == nullptr) {
-    throw std::invalid_argument("Cannot put an entity outside the map.");
-  }
 }
 void Entity::setSpeed(const float& speed) { speed_ = speed; }
 

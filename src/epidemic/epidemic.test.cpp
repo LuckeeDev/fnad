@@ -1,13 +1,13 @@
 #include "epidemic.hpp"
-#include "../map/map.hpp"
 
 #include <cmath>
 #include <iostream>
 
 #include "../../test/doctest.h"
+#include "../map/map.hpp"
 
 TEST_CASE("Testing Epidemic") {
-  fnad::Map map{"../../assets/map/map0.tmx"};
+  fnad::Map map("assets/map/map0.tmx");
 
   SUBCASE("Testing evolve") {
     sf::View test_view;

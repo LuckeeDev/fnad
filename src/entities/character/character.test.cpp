@@ -1,11 +1,11 @@
 #include "character.hpp"
 
 #include "../../../test/doctest.h"
-#include "../enemy/enemy.hpp"
 #include "../../map/map.hpp"
+#include "../enemy/enemy.hpp"
 
 TEST_CASE("Testing the Character class") {
-  fnad::Map map{"../../../assets/map/test.tmx"};
+  fnad::Map map("assets/map/test.tmx");
   fnad::Character character{map, sf::Vector2f{170.f, 100.f}};
 
   SUBCASE("Move character") {
@@ -25,7 +25,8 @@ TEST_CASE("Testing the Character class") {
   }
 
   SUBCASE("Check contact with infectious enemy") {
-    fnad::Enemy infectious(map, sf::Vector2f{170.f, 100.f}, fnad::Status::infectious);
+    fnad::Enemy infectious(map, sf::Vector2f{170.f, 100.f},
+                           fnad::Status::infectious);
 
     CHECK_EQ(character.checkContact(infectious), true);
     CHECK_EQ(character.getLifePoints(), 2);
@@ -41,7 +42,8 @@ TEST_CASE("Testing the Character class") {
   }
 
   SUBCASE("Check contact with non infectious enemy") {
-    fnad::Enemy susceptible(map, sf::Vector2f{170.f, 100.f}, fnad::Status::susceptible);
+    fnad::Enemy susceptible(map, sf::Vector2f{170.f, 100.f},
+                            fnad::Status::susceptible);
 
     CHECK_EQ(character.checkContact(susceptible), false);
   }
