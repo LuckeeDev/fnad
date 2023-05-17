@@ -1,13 +1,15 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
+#include <SFML/Graphics/Rect.hpp>
 #include <tmxlite/Map.hpp>
 #include <tmxlite/ObjectGroup.hpp>
 #include <vector>
 
-#include "../room/room.hpp"
-
 namespace fnad {
+using Room = sf::FloatRect;
+using Wall = sf::FloatRect;
+
 class Map {
  private:
   const std::vector<Room> rooms_;

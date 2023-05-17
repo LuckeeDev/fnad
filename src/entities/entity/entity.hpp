@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "../../room/room.hpp"
+#include "../../map/map.hpp"
 
 namespace fnad {
 class Map;
