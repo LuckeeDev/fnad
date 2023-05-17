@@ -16,15 +16,10 @@ TEST_CASE("Testing the Enemy class") {
 
     SUBCASE("With infected enemy") {
       auto position_before = enemy.getPosition();
-      auto floor_before = enemy.getFloor();
 
       enemy.evolve(time, character);
 
       auto position_after = enemy.getPosition();
-      auto floor_after = enemy.getFloor();
-
-      // Test that evolve does not change enemy's floor
-      CHECK_EQ(floor_before, floor_after);
 
       float distance = static_cast<float>(
           std::sqrt(std::pow((position_after.x - position_before.x), 2) +

@@ -34,11 +34,6 @@ TEST_CASE("Testing the Character class") {
     character.move(fnad::Direction::down, sf::seconds(100.f));
     CHECK_EQ(character.checkContact(infectious), false);
     CHECK_EQ(character.getLifePoints(), 2);
-
-    // fnad::Enemy another_floor(fnad::Status::infectious, fnad::Floor::second,
-    //                           sf::Vector2f{0.f, 0.f});
-    // CHECK_EQ(character.checkContact(another_floor), false);
-    // CHECK_EQ(character.getLifePoints(), 2);
   }
 
   SUBCASE("Check contact with non infectious enemy") {

@@ -117,7 +117,7 @@ void Map::loadRooms(tmx::ObjectGroup const& object_layer) {
     auto const& AABB = o.getAABB();
 
     Room room{sf::Vector2f{AABB.left, AABB.top},
-              sf::Vector2f{AABB.width, AABB.height}, floor_};
+              sf::Vector2f{AABB.width, AABB.height}};
 
     rooms_.push_back(room);
   }
@@ -128,8 +128,6 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates) const {
 };
 
 sf::Vector2u Map::getBounds() const { return background_.getSize(); }
-
-Floor Map::getFloor() const { return floor_; }
 
 std::vector<Room> const& Map::getRooms() const { return rooms_; }
 }  // namespace fnad

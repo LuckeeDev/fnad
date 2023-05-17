@@ -16,7 +16,6 @@
 namespace fnad {
 class Map : public sf::Drawable {
  private:
-  Floor floor_;
   std::vector<Room> rooms_;
   void loadRooms(tmx::ObjectGroup const &);
 
@@ -34,7 +33,6 @@ class Map : public sf::Drawable {
   Map(std::string const &);
 
   sf::Vector2u getBounds() const;
-  Floor getFloor() const;
 
   std::vector<Room> const &getRooms() const;
 };

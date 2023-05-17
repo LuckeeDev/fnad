@@ -6,7 +6,6 @@
 #include "../entity/entity.hpp"
 
 namespace fnad {
-enum class Floor;
 class Enemy;
 
 enum class Direction { up, down, right, left };

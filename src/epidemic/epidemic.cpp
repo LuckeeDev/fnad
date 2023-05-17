@@ -28,12 +28,11 @@ Epidemic::Epidemic(const int s, const int i,
                               // inserire i nemici solo dentro alle stanze
                    sf::View& view)
     : SIR{static_cast<double>(s), static_cast<double>(i), 0.},
-      view_{view} {  // per ora considero un solo piano
+      view_{view} {   // per ora considero un solo piano
   sf::Vector2f map_bounds{
       960.f, 540.f};  // provvisorio (chiaramente così non ha senso)
   std::random_device r;
   std::default_random_engine gen(r());
-  std::uniform_int_distribution floor_dist(0, 3);
   std::uniform_real_distribution<float> x_dist(0.f, map_bounds.x);
   std::uniform_real_distribution<float> y_dist(0.f, map_bounds.y);
 

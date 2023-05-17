@@ -4,7 +4,6 @@
 #include "../entity/entity.hpp"
 
 namespace fnad {
-enum class Floor;
 class Character;
 
 enum class Status { susceptible, infectious, removed };
