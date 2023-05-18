@@ -6,7 +6,9 @@
 namespace fnad {
 // Constructors
 Character::Character(Map const& map, sf::Vector2f position)
-    : Entity(map, position, 1.f), life_points_{3} {}
+    : Entity(map, position, 1.f), life_points_{3} {
+  setFillColor(sf::Color::Blue);
+}
 
 void Character::move(const Direction& dir, const sf::Time& dt) {
   auto seconds = dt.asSeconds();

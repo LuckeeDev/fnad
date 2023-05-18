@@ -8,7 +8,9 @@
 namespace fnad {
 // Constructors
 Enemy::Enemy(Map const& map, sf::Vector2f position, Status status, float speed)
-    : Entity(map, position, speed), status_{status} {}
+    : Entity(map, position, speed), status_{status} {
+  setFillColor(sf::Color::Green);
+}
 
 Enemy::Enemy(Map const& map, sf::Vector2f position, Status status)
     : Enemy(map, position, status, 1.f) {}
@@ -34,7 +36,11 @@ void Enemy::infect() {
   }
 
   status_ = Status::infectious;
+  setFillColor(sf::Color::Red);
 }
 
-void Enemy::remove() { status_ = Status::removed; }
+void Enemy::remove() {
+  status_ = Status::removed;
+  setFillColor(sf::Color::Black);
+}
 }  // namespace fnad
