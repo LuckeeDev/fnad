@@ -3,8 +3,9 @@
 
 #include <SFML/Graphics/Rect.hpp>
 #include <tmxlite/Map.hpp>
-#include <tmxlite/ObjectGroup.hpp>
 #include <vector>
+
+#include "../spawner/spawner.hpp"
 
 namespace fnad {
 using Wall = sf::FloatRect;
