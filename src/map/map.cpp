@@ -26,8 +26,8 @@ Map Map::create(tmx::Map const& map) {
   for (auto const& o : wall_objects) {
     auto const& AABB = o.getAABB();
 
-    Wall wall{sf::Vector2f{AABB.left, AABB.top},
-              sf::Vector2f{AABB.width, AABB.height}};
+    Wall wall(sf::Vector2f{AABB.left, AABB.top},
+              sf::Vector2f{AABB.width, AABB.height});
 
     walls.push_back(wall);
   }
@@ -37,8 +37,8 @@ Map Map::create(tmx::Map const& map) {
   for (auto const& o : spawner_objects) {
     auto const& AABB = o.getAABB();
 
-    Spawner spawner{sf::Vector2f{AABB.left, AABB.top},
-                    sf::Vector2f{AABB.width, AABB.height}};
+    Spawner spawner(sf::Vector2f{AABB.left, AABB.top},
+                    sf::Vector2f{AABB.width, AABB.height});
 
     spawners.push_back(spawner);
   }
