@@ -4,6 +4,8 @@
 #include <tmxlite/ObjectGroup.hpp>
 #include <vector>
 
+#include "../spawner/spawner.hpp"
+
 namespace fnad {
 Map::Map(std::vector<Wall> walls, std::vector<Spawner> spawners)
     : walls_{walls}, spawners_{spawners} {}

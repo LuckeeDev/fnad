@@ -7,7 +7,6 @@
 #include <vector>
 
 namespace fnad {
-using Spawner = sf::FloatRect;  // TODO definire la classe Spawner
 using Wall = sf::FloatRect;
 
 class Map {
