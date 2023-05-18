@@ -7,7 +7,7 @@
 namespace fnad {
 class Spawner : public sf::FloatRect {
  private:
-  std::mt19937 gen_;
+  std::default_random_engine eng_;
   std::uniform_real_distribution<float> x_dist_;
   std::uniform_real_distribution<float> y_dist_;
 
