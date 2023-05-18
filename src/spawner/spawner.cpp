@@ -6,4 +6,13 @@ Spawner::Spawner(sf::Vector2f position, sf::Vector2f size)
       gen_((std::random_device())()),
       x_dist_(position.x, position.x + size.x),
       y_dist_(position.y, position.y + size.y) {}
+
+float Spawner::getArea() const { return width * height; }
+
+sf::Vector2f Spawner::getSpawnPoint() {
+  auto x = x_dist_(gen_);
+  auto y = y_dist_(gen_);
+
+  return sf::Vector2f(x, y);
+}
 }  // namespace fnad
