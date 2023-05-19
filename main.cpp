@@ -9,7 +9,7 @@ int main() {
 
   tmx::Map tiled_map;
 
-  if (tiled_map.load("assets/map/test.tmx")) {
+  if (tiled_map.load("assets/map/map0.tmx")) {
     const fnad::Map map = fnad::Map::create(tiled_map);
 
     const fnad::Background background(tiled_map);
