@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics/Rect.hpp>
 #include <tmxlite/Map.hpp>
+#include <tmxlite/Object.hpp>
 #include <vector>
 
 #include "../spawner/spawner.hpp"
@@ -14,6 +15,9 @@ class Map {
  private:
   const std::vector<Wall> walls_;
   const std::vector<Spawner> spawners_;
+
+  template <class T>
+  static T convertObject(tmx::Object const&);
 
   Map(std::vector<Wall>, std::vector<Spawner>);
 
