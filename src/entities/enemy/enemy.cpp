@@ -16,10 +16,27 @@ Enemy::Enemy(Map const& map, sf::Vector2f position, Status status)
     : Enemy(map, position, status, 1.f) {}
 
 // Functions
+bool Enemy::sees(const Character& character) {
+  auto joining_vector = character.getPosition() - getPosition();
+  auto const& walls = map_ptr_->getWalls();
+
+  auto v = joining_vector / 100.f;
+  for (auto const& wall : walls) {
+    for (auto i{0}; i != 100; i++) {
+      auto p = static_cast<float>(i) * v;
+      if (wall.contains(p)) {
+        return false;
+      };
+    }
+  }
+
+  return true;
+}
+
 Status Enemy::getStatus() const { return status_; }
 
 void Enemy::evolve(const sf::Time& dt, const Character& character) {
-  if (character.getPosition() != getPosition() &&
+  if (sees(character) && character.getPosition() != getPosition() &&
       status_ == Status::infectious) {
     sf::Vector2f direction{character.getPosition() - getPosition()};
     float norm2{direction.x * direction.x + direction.y * direction.y};
