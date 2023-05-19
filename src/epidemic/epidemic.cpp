@@ -23,36 +23,64 @@ void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
   }
 }
 
-// TODO ridefinire il costruttore per inserire i nemici solo dentro alle stanze
 Epidemic::Epidemic(const int s, const int i, Map const& map, sf::View& view)
     : SIR{static_cast<double>(s), static_cast<double>(i), 0.}, view_{view} {
-  // provvisorio (chiaramente così non ha senso)
-  sf::Vector2f map_bounds{960.f, 540.f};
-  std::random_device r;
-  std::default_random_engine gen(r());
-  std::uniform_real_distribution<float> x_dist(0.f, map_bounds.x);
-  std::uniform_real_distribution<float> y_dist(0.f, map_bounds.y);
+  auto spawners = map.getSpawners();
+  double total_area{};
+
+  for (auto const& spawner : spawners) {
+    total_area += static_cast<double>(spawner.getArea());
+  }
 
   std::vector<Enemy> enemies;
 
   enemies.reserve(static_cast<unsigned int>(s + i));
 
-  // Create susceptible enemies
-  for (int j{}; j < s_; j++) {
-    auto x = x_dist(gen);
-    auto y = y_dist(gen);
-    Enemy enemy(map, sf::Vector2f{x, y}, Status::susceptible);
+  for (auto& spawner : spawners) {
+    int spawner_s =
+        static_cast<int>(static_cast<double>(s) *
+                         static_cast<double>(spawner.getArea()) / total_area);
+    int spawner_i =
+        static_cast<int>(static_cast<double>(i) *
+                         static_cast<double>(spawner.getArea()) / total_area);
 
-    enemies.push_back(enemy);
+    for (int j{}; j != spawner_s; j++) {
+      Enemy enemy(map, spawner.getSpawnPoint(), Status::susceptible);
+      enemies.push_back(enemy);
+    }
+
+    for (int j{}; j != spawner_i; j++) {
+      Enemy enemy(map, spawner.getSpawnPoint(), Status::susceptible);
+      enemies.push_back(enemy);
+    }
   }
 
-  // Create first infectious enemy
-  for (int j{}; j < i_; j++) {
-    auto x = x_dist(gen);
-    auto y = y_dist(gen);
-    Enemy enemy(map, sf::Vector2f{x, y}, Status::infectious);
+  int delta_s{s}, delta_i{i};
 
+  for (auto const& enemy : enemies) {
+    if (enemy.getStatus() == Status::susceptible) {
+      delta_s--;
+    } else {
+      delta_i--;
+    }
+  }
+
+  auto spawners_begin{spawners.begin()}, spawners_end{spawners.end()};
+
+  for (auto it{spawners_begin}; delta_s > 0; it++, delta_s--) {
+    Enemy enemy(map, it->getSpawnPoint(), Status::susceptible);
     enemies.push_back(enemy);
+    if (it == spawners_end - 1) {
+      it = spawners_begin;
+    }
+  }
+
+  for (auto it{spawners_begin}; delta_i > 0; it++, delta_i--) {
+    Enemy enemy(map, it->getSpawnPoint(), Status::infectious);
+    enemies.push_back(enemy);
+    if (it == spawners_end - 1) {
+      it = spawners_begin;
+    }
   }
 
   enemies_ = enemies;
