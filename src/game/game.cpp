@@ -33,13 +33,16 @@ void Game::run() {
       character_.move(Direction::down, dt);
     }
 
+    // Set the view centered on the character
     view_.setCenter(character_.getPosition() + character_.getSize() / 2.f);
+    window_.setView(view_);
 
     window_.clear(sf::Color::Black);
 
-    window_.setView(view_);
-
     window_.draw(background_);
+
+    epidemic_.evolve(dt);
+    window_.draw(epidemic_);
 
     window_.draw(character_);
 
