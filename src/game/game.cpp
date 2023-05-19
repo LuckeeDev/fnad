@@ -10,31 +10,38 @@ Game::Game(sf::RenderWindow& window, sf::View& view, Character& character,
       map_{map},
       background_{background} {}
 
-void Game::run() const {
+void Game::run() {
   while (window_.isOpen()) {
     sf::Event event;
+
     while (window_.pollEvent(event)) {
       if (event.type == sf::Event::Closed) window_.close();
     }
 
+    auto const& dt = clock_.restart();
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-      view_.move(-5.f, 0.f);
+      character_.move(Direction::left, dt);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-      view_.move(5.f, 0.f);
+      character_.move(Direction::right, dt);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-      view_.move(0.f, -5.f);
+      character_.move(Direction::up, dt);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-      view_.move(0.f, 5.f);
+      character_.move(Direction::down, dt);
     }
+
+    view_.setCenter(character_.getPosition() + character_.getSize() / 2.f);
 
     window_.clear(sf::Color::Black);
 
     window_.setView(view_);
 
     window_.draw(background_);
+
+    window_.draw(character_);
 
     window_.display();
   }
