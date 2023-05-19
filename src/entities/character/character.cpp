@@ -17,15 +17,27 @@ void Character::move(const Direction& dir, const sf::Time& dt) {
   switch (dir) {
     case Direction::up:
       move(0.f, -ds);
+      if (isWallCollision()) {
+        move(0.f, ds);
+      }
       break;
     case Direction::down:
       move(0.f, ds);
+      if (isWallCollision()) {
+        move(0.f, -ds);
+      }
       break;
     case Direction::left:
       move(-ds, 0.f);
+      if (isWallCollision()) {
+        move(ds, 0.f);
+      }
       break;
     case Direction::right:
       move(ds, 0.f);
+      if (isWallCollision()) {
+        move(-ds, 0.f);
+      }
       break;
   }
 }
