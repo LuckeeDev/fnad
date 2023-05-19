@@ -2,10 +2,11 @@
 #include "src/map/map.hpp"
 
 int main() {
-  sf::RenderWindow window(sf::VideoMode(960, 640), "Map test");
+  sf::RenderWindow window(sf::VideoMode::getDesktopMode(),
+                          "Five nights at DIFA");
   window.setFramerateLimit(60);
 
-  sf::View view(sf::Vector2f(100.f, 100.f), sf::Vector2f(300.f, 200.f));
+  sf::View view({0.f, 0.f}, {300.f, 200.f});
 
   tmx::Map tiled_map;
 

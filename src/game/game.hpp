@@ -14,6 +14,7 @@ class Game final {
   sf::Clock clock_;
   sf::RenderWindow& window_;
   sf::View& view_;
+  const float view_height_;
 
   Character& character_;
   Epidemic& epidemic_;

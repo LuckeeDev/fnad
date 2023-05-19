@@ -5,6 +5,7 @@ Game::Game(sf::RenderWindow& window, sf::View& view, Character& character,
            Epidemic& epidemic, Map const& map, Background const& background)
     : window_{window},
       view_{view},
+      view_height_{view.getSize().y},
       character_{character},
       epidemic_{epidemic},
       map_{map},
@@ -16,6 +17,13 @@ void Game::run() {
 
     while (window_.pollEvent(event)) {
       if (event.type == sf::Event::Closed) window_.close();
+
+      if (event.type == sf::Event::Resized) {
+        auto aspect_ratio = static_cast<float>(event.size.width) /
+                            static_cast<float>(event.size.height);
+
+        view_.setSize({aspect_ratio * view_height_, view_height_});
+      }
     }
 
     auto const& dt = clock_.restart();
