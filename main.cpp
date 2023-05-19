@@ -21,6 +21,8 @@ int main() {
 
     fnad::Game game(window, view, character, epidemic, map, background);
 
+    game.printStory();
+
     game.run();
   }
 }

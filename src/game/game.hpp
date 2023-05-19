@@ -25,6 +25,8 @@ class Game final {
   Game(sf::RenderWindow&, sf::View&, Character&, Epidemic&, Map const&,
        Background const&);
 
+  void printStory() const;
+
   void run();
 };
 }  // namespace fnad
