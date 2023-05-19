@@ -11,34 +11,34 @@ TEST_CASE("Testing the Character class") {
 
   fnad::Map map = fnad::Map::create(tiled_map);
 
-  fnad::Character character{map, sf::Vector2f{170.f, 100.f}};
+  fnad::Character character{map, sf::Vector2f{0.f, 0.f}};
 
   SUBCASE("Move character") {
     sf::Time time{sf::seconds(1.f)};
 
     character.move(fnad::Direction::up, time);
-    CHECK(character.getPosition() == sf::Vector2f{170.f, 70.f});
+    CHECK(character.getPosition() == sf::Vector2f{0.f, -30.f});
 
     character.move(fnad::Direction::right, time);
-    CHECK(character.getPosition() == sf::Vector2f{200.f, 70.f});
+    CHECK(character.getPosition() == sf::Vector2f{30.f, -30.f});
 
     character.move(fnad::Direction::down, time);
-    CHECK(character.getPosition() == sf::Vector2f{200.f, 100.f});
+    CHECK(character.getPosition() == sf::Vector2f{30.f, 0.f});
 
     character.move(fnad::Direction::left, time);
-    CHECK(character.getPosition() == sf::Vector2f{170.f, 100.f});
+    CHECK(character.getPosition() == sf::Vector2f{0.f, 0.f});
   }
 
   SUBCASE("Check contact with infectious enemy") {
-    fnad::Enemy infectious(map, sf::Vector2f{170.f, 100.f},
+    fnad::Enemy infectious(map, character.getPosition(),
                            fnad::Status::infectious);
 
-    CHECK_EQ(character.checkContact(infectious), true);
-    CHECK_EQ(character.getLifePoints(), 2);
+    CHECK(character.checkContact(infectious) == true);
+    CHECK(character.getLifePoints() == 2);
 
     character.move(fnad::Direction::down, sf::seconds(100.f));
-    CHECK_EQ(character.checkContact(infectious), false);
-    CHECK_EQ(character.getLifePoints(), 2);
+    CHECK(character.checkContact(infectious) == false);
+    CHECK(character.getLifePoints() == 2);
   }
 
   SUBCASE("Check contact with non infectious enemy") {
