@@ -70,7 +70,7 @@ int Epidemic::count(Status const& status) const {
   return static_cast<int>(count);
 }
 
-void Epidemic::evolve(const sf::Time& dt) {
+void Epidemic::evolve(const sf::Time& dt, const Character& character) {
   double const seconds = static_cast<double>(dt.asSeconds());
   double const days = seconds * days_per_second_;
 
@@ -120,5 +120,9 @@ void Epidemic::evolve(const sf::Time& dt) {
   s_ = new_s;
   i_ = new_i;
   r_ = new_r;
+
+  for (auto& enemy : enemies_) {
+    enemy.evolve(dt, character);
+  }
 }
 }  // namespace fnad

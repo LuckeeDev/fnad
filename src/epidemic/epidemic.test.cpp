@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "../../test/doctest.h"
+#include "../entities/character/character.hpp"
 #include "../map/map.hpp"
 
 TEST_CASE("Testing Epidemic") {
@@ -16,6 +17,7 @@ TEST_CASE("Testing Epidemic") {
   SUBCASE("Testing evolve") {
     sf::View test_view;
     fnad::Epidemic epidemic(99, 1, map, test_view);
+    fnad::Character character(map, {0.f, 0.f});
 
     sf::Time time{sf::seconds(1.f)};
 
@@ -24,7 +26,7 @@ TEST_CASE("Testing Epidemic") {
         r_0{epidemic.count(fnad::Status::removed)};
 
     for (int i{}; i < 1000; i++) {
-      epidemic.evolve(time);
+      epidemic.evolve(time, character);
     }
 
     int s_1{epidemic.count(fnad::Status::susceptible)},
