@@ -48,7 +48,7 @@ void Game::run() {
     epidemic_.evolve(dt, character_);
 
     // Set the view centered on the character
-    view_.setCenter(character_.getPosition() + character_.getSize() / 2.f);
+    view_.setCenter(character_.getPosition());
     window_.setView(view_);
 
     window_.clear(sf::Color::Black);
