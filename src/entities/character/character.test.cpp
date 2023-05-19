@@ -17,13 +17,13 @@ TEST_CASE("Testing the Character class") {
     sf::Time time{sf::seconds(1.f)};
 
     character.move(fnad::Direction::up, time);
-    CHECK(character.getPosition() == sf::Vector2f{0.f, -30.f});
+    CHECK(character.getPosition() == sf::Vector2f{0.f, -60.f});
 
     character.move(fnad::Direction::right, time);
-    CHECK(character.getPosition() == sf::Vector2f{30.f, -30.f});
+    CHECK(character.getPosition() == sf::Vector2f{60.f, -60.f});
 
     character.move(fnad::Direction::down, time);
-    CHECK(character.getPosition() == sf::Vector2f{30.f, 0.f});
+    CHECK(character.getPosition() == sf::Vector2f{60.f, 0.f});
 
     character.move(fnad::Direction::left, time);
     CHECK(character.getPosition() == sf::Vector2f{0.f, 0.f});
