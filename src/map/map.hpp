@@ -23,6 +23,7 @@ class Map {
 
  public:
   std::vector<Wall> const& getWalls() const;
+  std::vector<Spawner> const& getSpawners() const;
 
   static Map create(tmx::Map const&);
 };

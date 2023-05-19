@@ -13,6 +13,8 @@ Map::Map(std::vector<Wall> walls, std::vector<Spawner> spawners)
 
 std::vector<Wall> const& Map::getWalls() const { return walls_; }
 
+std::vector<Spawner> const& Map::getSpawners() const { return spawners_; }
+
 template <class T>
 T Map::convertObject(tmx::Object const& o) {
   auto const& AABB = o.getAABB();
