@@ -10,6 +10,19 @@ Entity::Entity(Map const& map, sf::Vector2f position, float speed)
   setPosition(position);
 };
 
+bool Entity::isWallCollision() {
+  auto walls = map_ptr_->getWalls();
+  sf::FloatRect entity{getPosition(), getSize()};
+
+  for (auto const& wall : walls) {
+    if (entity.intersects(wall)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 void Entity::setSpeed(float speed) { speed_ = speed; }
 
 float Entity::getSpeed() const { return speed_; }
