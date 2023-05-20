@@ -106,7 +106,13 @@ void Enemy::evolve(const sf::Time& dt, const Character& character) {
     float norm2{direction.x * direction.x + direction.y * direction.y};
     direction /= std::sqrt(norm2);
 
-    move(direction * speed_ * dt.asSeconds());
+    auto ds = direction * speed_ * dt.asSeconds();
+
+    move(ds);
+
+    if (isWallCollision()) {
+      move(-ds);
+    }
   }
 }
 
