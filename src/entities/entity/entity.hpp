@@ -16,7 +16,7 @@ class Entity : public sf::RectangleShape {
 
   Entity(Map const&, sf::Vector2f, float);
 
-  bool isWallCollision();
+  bool isWallCollision() const;
 
  public:
   void setSpeed(float);
