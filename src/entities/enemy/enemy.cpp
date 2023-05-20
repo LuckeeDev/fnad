@@ -68,12 +68,8 @@ bool Enemy::sees(const Character& character) const {
           auto const right = left + wall.width;
           auto const& top = wall.top;
 
-          if (enemy_position.x > left && enemy_position.x < right &&
-              (enemy_position.y - top) * (character_position.y - top) < 0) {
-            return true;
-          }
-
-          return false;
+          return enemy_position.x > left && enemy_position.x < right &&
+                 (enemy_position.y - top) * (character_position.y - top) < 0;
         });
   } else {
     return !std::any_of(
@@ -83,12 +79,8 @@ bool Enemy::sees(const Character& character) const {
           auto const bottom = top + wall.height;
           auto const& left = wall.left;
 
-          if (enemy_position.y > top && enemy_position.y < bottom &&
-              (enemy_position.x - left) * (character_position.x - left) < 0) {
-            return true;
-          }
-
-          return false;
+          return enemy_position.y > top && enemy_position.y < bottom &&
+                 (enemy_position.x - left) * (character_position.x - left) < 0;
         });
   }
 }
