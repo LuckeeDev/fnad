@@ -17,20 +17,84 @@ Enemy::Enemy(Map const& map, sf::Vector2f position, Status status)
 
 // Functions
 bool Enemy::sees(const Character& character) const {
+  auto enemy_position = getPosition();
+  auto character_position = character.getPosition();
   auto joining_vector = character.getPosition() - getPosition();
   auto const& walls = map_ptr_->getWalls();
 
-  auto v = joining_vector / 100.f;
-  for (auto const& wall : walls) {
-    for (auto i{0}; i != 100; i++) {
-      auto p = static_cast<float>(i) * v;
-      if (wall.contains(p)) {
-        return false;
-      };
-    }
+  bool r{};
+
+  if (joining_vector.x != 0.f && joining_vector.y != 0.f) {
+    auto m = joining_vector.y / joining_vector.x;
+    auto q = enemy_position.y - m * enemy_position.x;
+
+    r = std::any_of(
+        walls.begin(), walls.end(),
+        [&m, &q, &enemy_position, &character_position](Wall const& wall) {
+          auto a = wall.top;
+          auto b = wall.left;
+          auto c = wall.top + wall.height;
+          auto d = wall.left + wall.width;
+
+          auto intersection_a_x = (a - q) / m;
+          if (intersection_a_x > b && intersection_a_x < d &&
+              (enemy_position.y - a) * (character_position.y - a) < 0) {
+            return true;
+          }
+
+          auto intersection_b_y = m * b + q;
+          if (intersection_b_y > a && intersection_b_y < c &&
+              (enemy_position.x - b) * (character_position.x - b) < 0) {
+            return true;
+          }
+
+          auto intersection_c_x = (c - q) / m;
+          if (intersection_c_x > b && intersection_c_x < d &&
+              (enemy_position.y - c) * (character_position.y - c) < 0) {
+            return true;
+          }
+
+          auto intersection_d_y = m * d + q;
+          if (intersection_d_y > a && intersection_d_y < c &&
+              (enemy_position.x - d) * (character_position.x - d) < 0) {
+            return true;
+          }
+
+          return false;
+        });
+  } else if (joining_vector.x == 0) {
+    r = std::any_of(
+        walls.begin(), walls.end(),
+        [&enemy_position, &character_position](Wall const& wall) {
+          auto left = wall.left;
+          auto right = left + wall.width;
+          auto top = wall.top;
+
+          if (enemy_position.x > left && enemy_position.x < right &&
+              (enemy_position.y - top) * (character_position.y - top) < 0) {
+            return true;
+          }
+
+          return false;
+        });
+  } else {
+    r = std::any_of(
+        walls.begin(), walls.end(),
+        [&enemy_position, &character_position](Wall const& wall) {
+          auto top = wall.top;
+          auto bottom = top + wall.height;
+          auto left = wall.left;
+
+          if (enemy_position.y > top && enemy_position.y < bottom &&
+              (enemy_position.x - left) * (character_position.x - left) < 0) {
+            return true;
+          }
+
+          return false;
+        });
   }
 
-  return true;
+  return r ? false : true;
 }
 
 Status Enemy::getStatus() const { return status_; }
