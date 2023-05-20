@@ -30,7 +30,7 @@ TEST_CASE("Testing the Enemy class") {
                     std::pow((position_after.y - position_before.y), 2)));
 
       // Test distance traveled after calling evolve
-      CHECK(distance == 1.f);
+      CHECK(distance == 30.f);
 
       // Test distance traveled after calling evolve with character in a
       // different position
@@ -44,7 +44,7 @@ TEST_CASE("Testing the Enemy class") {
           std::sqrt(std::pow((position_after.x - position_before.x), 2) +
                     std::pow((position_after.y - position_before.y), 2)));
 
-      CHECK(distance == 1.f);
+      CHECK(distance == 30.f);
 
       // Test the dependence of distance on speed
       enemy.setSpeed(2.f);

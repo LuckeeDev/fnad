@@ -13,7 +13,7 @@ Enemy::Enemy(Map const& map, sf::Vector2f position, Status status, float speed)
 }
 
 Enemy::Enemy(Map const& map, sf::Vector2f position, Status status)
-    : Enemy(map, position, status, 1.f) {}
+    : Enemy(map, position, status, 30.f) {}
 
 // Functions
 bool Enemy::sees(const Character& character) const {
