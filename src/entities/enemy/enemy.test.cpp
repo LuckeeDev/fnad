@@ -14,7 +14,8 @@ TEST_CASE("Testing the Enemy class") {
   fnad::Map map = fnad::Map::create(tiled_map);
 
   SUBCASE("Calling evolve moves the enemy") {
-    fnad::Enemy enemy(map, sf::Vector2f{0.f, 0.f}, fnad::Status::infectious);
+    fnad::Enemy enemy(map, sf::Vector2f{0.f, 0.f}, fnad::Status::infectious,
+                      30.f);
     sf::Time time{sf::seconds(1.f)};
     fnad::Character character{map, sf::Vector2f{15.79865f, 20.153f}};
 
@@ -95,7 +96,7 @@ TEST_CASE("Testing the Enemy class") {
     SUBCASE("With susceptible enemy") {
       // Test that evolve does not move the enemy when it is subsceptible
       fnad::Enemy susceptible(map, sf::Vector2f{0.f, 0.f},
-                              fnad::Status::susceptible);
+                              fnad::Status::susceptible, 30.f);
 
       auto position_before = susceptible.getPosition();
       susceptible.evolve(time, character);
@@ -106,7 +107,8 @@ TEST_CASE("Testing the Enemy class") {
 
     SUBCASE("With removed enemy") {
       // Test that evolve does not move the enemy when it is subsceptible
-      fnad::Enemy removed(map, sf::Vector2f{0.f, 0.f}, fnad::Status::removed);
+      fnad::Enemy removed(map, sf::Vector2f{0.f, 0.f}, fnad::Status::removed,
+                          30.f);
 
       auto position_before = removed.getPosition();
       removed.evolve(time, character);
@@ -117,7 +119,8 @@ TEST_CASE("Testing the Enemy class") {
   }
 
   SUBCASE("Testing the infect method") {
-    fnad::Enemy enemy(map, sf::Vector2f{0.f, 0.f}, fnad::Status::susceptible);
+    fnad::Enemy enemy(map, sf::Vector2f{0.f, 0.f}, fnad::Status::susceptible,
+                      30.f);
 
     SUBCASE("Calling infect changes the status") {
       enemy.infect();
@@ -135,8 +138,10 @@ TEST_CASE("Testing the Enemy class") {
   }
 
   SUBCASE("Testing the sees method") {
-    fnad::Enemy hidden_enemy(map, {154.f, 223.f}, fnad::Status::infectious);
-    fnad::Enemy visible_enemy(map, {239.f, 141.f}, fnad::Status::infectious);
+    fnad::Enemy hidden_enemy(map, {154.f, 223.f}, fnad::Status::infectious,
+                             30.f);
+    fnad::Enemy visible_enemy(map, {239.f, 141.f}, fnad::Status::infectious,
+                              30.f);
     fnad::Character character(map, {314.f, 219.f});
 
     CHECK(hidden_enemy.sees(character) == false);
