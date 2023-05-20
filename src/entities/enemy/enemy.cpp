@@ -26,7 +26,7 @@ bool Enemy::sees(const Character& character) const {
     auto const m = joining_vector.y / joining_vector.x;
     auto const q = enemy_position.y - m * enemy_position.x;
 
-    return !std::any_of(
+    return std::none_of(
         walls.begin(), walls.end(),
         [&m, &q, &enemy_position, &character_position](Wall const& wall) {
           auto const& a = wall.top;
@@ -61,7 +61,7 @@ bool Enemy::sees(const Character& character) const {
           return false;
         });
   } else if (joining_vector.x == 0) {
-    return !std::any_of(
+    return std::none_of(
         walls.begin(), walls.end(),
         [&enemy_position, &character_position](Wall const& wall) {
           auto const& left = wall.left;
@@ -72,7 +72,7 @@ bool Enemy::sees(const Character& character) const {
                  (enemy_position.y - top) * (character_position.y - top) < 0;
         });
   } else {
-    return !std::any_of(
+    return std::none_of(
         walls.begin(), walls.end(),
         [&enemy_position, &character_position](Wall const& wall) {
           auto const& top = wall.top;
