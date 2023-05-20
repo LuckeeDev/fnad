@@ -30,7 +30,7 @@ TEST_CASE("Testing the Enemy class") {
                     std::pow((position_after.y - position_before.y), 2)));
 
       // Test distance traveled after calling evolve
-      CHECK_EQ(distance, 1.f);
+      CHECK(distance == 1.f);
 
       // Test distance traveled after calling evolve with character in a
       // different position
@@ -44,7 +44,7 @@ TEST_CASE("Testing the Enemy class") {
           std::sqrt(std::pow((position_after.x - position_before.x), 2) +
                     std::pow((position_after.y - position_before.y), 2)));
 
-      CHECK_EQ(distance, 1.f);
+      CHECK(distance == 1.f);
 
       // Test the dependence of distance on speed
       enemy.setSpeed(2.f);
@@ -58,7 +58,7 @@ TEST_CASE("Testing the Enemy class") {
           std::sqrt(std::pow((position_after.x - position_before.x), 2) +
                     std::pow((position_after.y - position_before.y), 2)));
 
-      CHECK_EQ(distance, 2.f);
+      CHECK(distance == 2.f);
 
       // Test the dependence of distance on time
       time = sf::seconds(5.f);
@@ -72,7 +72,7 @@ TEST_CASE("Testing the Enemy class") {
           std::sqrt(std::pow((position_after.x - position_before.x), 2) +
                     std::pow((position_after.y - position_before.y), 2)));
 
-      CHECK_EQ(distance, 10.f);
+      CHECK(distance == 10.f);
 
       // Check the direction of enemy's motion after calling evolve
       enemy.setSpeed(1.f);
@@ -81,7 +81,7 @@ TEST_CASE("Testing the Enemy class") {
 
       enemy.evolve(time, character);
 
-      CHECK_EQ(enemy.getPosition(), character.getPosition());
+      CHECK(enemy.getPosition() == character.getPosition());
 
       character.setPosition(enemy.getPosition());
 
@@ -89,7 +89,7 @@ TEST_CASE("Testing the Enemy class") {
       enemy.evolve(time, character);
       position_after = enemy.getPosition();
 
-      CHECK_EQ(position_before, position_after);
+      CHECK(position_before == position_after);
     }
 
     SUBCASE("With susceptible enemy") {
@@ -101,7 +101,7 @@ TEST_CASE("Testing the Enemy class") {
       susceptible.evolve(time, character);
       auto position_after = susceptible.getPosition();
 
-      CHECK_EQ(position_before, position_after);
+      CHECK(position_before == position_after);
     }
 
     SUBCASE("With removed enemy") {
@@ -112,23 +112,25 @@ TEST_CASE("Testing the Enemy class") {
       removed.evolve(time, character);
       auto position_after = removed.getPosition();
 
-      CHECK_EQ(position_before, position_after);
+      CHECK(position_before == position_after);
     }
   }
 
-  fnad::Enemy enemy(map, sf::Vector2f{0.f, 0.f}, fnad::Status::susceptible);
+  SUBCASE("Testing the infect method") {
+    fnad::Enemy enemy(map, sf::Vector2f{0.f, 0.f}, fnad::Status::susceptible);
 
-  SUBCASE("Calling infect changes the status") {
-    enemy.infect();
+    SUBCASE("Calling infect changes the status") {
+      enemy.infect();
 
-    auto status_after = enemy.getStatus();
+      auto status_after = enemy.getStatus();
 
-    CHECK_EQ(status_after, fnad::Status::infectious);
-  }
+      CHECK(status_after == fnad::Status::infectious);
+    }
 
-  SUBCASE("Calling infect on an infected enemy throws") {
-    enemy.infect();
+    SUBCASE("Calling infect on an infected enemy throws") {
+      enemy.infect();
 
-    CHECK_THROWS(enemy.infect());
+      CHECK_THROWS(enemy.infect());
+    }
   }
 }

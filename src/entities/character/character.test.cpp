@@ -45,6 +45,6 @@ TEST_CASE("Testing the Character class") {
     fnad::Enemy susceptible(map, sf::Vector2f{170.f, 100.f},
                             fnad::Status::susceptible);
 
-    CHECK_EQ(character.checkContact(susceptible), false);
+    CHECK(character.checkContact(susceptible) == false);
   }
 }
