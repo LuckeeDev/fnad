@@ -13,14 +13,11 @@ Entity::Entity(Map const& map, sf::Vector2f position, float speed)
 
 bool Entity::isWallCollision() const {
   auto const& walls = map_ptr_->getWalls();
-  sf::FloatRect entity{getGlobalBounds()};
+  sf::FloatRect const& entity{getGlobalBounds()};
 
-  if (std::any_of(walls.begin(), walls.end(),
-                  [entity](Wall wall) { return entity.intersects(wall); })) {
-    return true;
-  }
-
-  return false;
+  return std::any_of(walls.begin(), walls.end(), [&entity](Wall const& wall) {
+    return entity.intersects(wall);
+  });
 }
 
 void Entity::setSpeed(float speed) { speed_ = speed; }
