@@ -16,7 +16,7 @@ Enemy::Enemy(Map const& map, sf::Vector2f position, Status status)
     : Enemy(map, position, status, 1.f) {}
 
 // Functions
-bool Enemy::sees(const Character& character) {
+bool Enemy::sees(const Character& character) const {
   auto joining_vector = character.getPosition() - getPosition();
   auto const& walls = map_ptr_->getWalls();
 

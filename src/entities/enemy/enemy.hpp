@@ -12,13 +12,13 @@ class Enemy final : public Entity {
  private:
   Status status_;
 
-  bool sees(const Character&);
-
  public:
   Enemy(Map const&, sf::Vector2f, Status, float);
   Enemy(Map const&, sf::Vector2f, Status);
 
   Status getStatus() const;
+
+  bool sees(const Character&) const;
 
   /**
    * @param dt delta time object indicating how much time has passed since the

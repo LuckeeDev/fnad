@@ -133,4 +133,13 @@ TEST_CASE("Testing the Enemy class") {
       CHECK_THROWS(enemy.infect());
     }
   }
+
+  SUBCASE("Testing the sees method") {
+    fnad::Enemy hidden_enemy(map, {154.f, 223.f}, fnad::Status::infectious);
+    fnad::Enemy visible_enemy(map, {239.f, 141.f}, fnad::Status::infectious);
+    fnad::Character character(map, {314.f, 219.f});
+
+    CHECK(hidden_enemy.sees(character) == false);
+    CHECK(visible_enemy.sees(character) == true);
+  }
 }
