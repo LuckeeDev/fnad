@@ -14,7 +14,7 @@ class Spawner : public sf::FloatRect {
  public:
   Spawner(sf::Vector2f, sf::Vector2f);
 
-  float getArea() const;
+  double getArea() const;
 
   sf::Vector2f getSpawnPoint();
 };

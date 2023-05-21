@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#include <numeric>
 #include <random>
 
 #include "../entities/enemy/enemy.hpp"
@@ -26,61 +27,37 @@ void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
 Epidemic::Epidemic(const int s, const int i, Map const& map, sf::View& view)
     : SIR{static_cast<double>(s), static_cast<double>(i), 0.}, view_{view} {
   auto spawners = map.getSpawners();
-  double total_area{};
-
-  for (auto const& spawner : spawners) {
-    total_area += static_cast<double>(spawner.getArea());
-  }
+  double total_area = std::accumulate(spawners.begin(), spawners.end(), 0.,
+                                      [](double sum, Spawner const& spawner) {
+                                        return sum + spawner.getArea();
+                                      });
 
   std::vector<Enemy> enemies;
 
   enemies.reserve(static_cast<unsigned int>(s + i));
 
-  for (auto& spawner : spawners) {
-    int spawner_s =
-        static_cast<int>(static_cast<double>(s) *
-                         static_cast<double>(spawner.getArea()) / total_area);
-    int spawner_i =
-        static_cast<int>(static_cast<double>(i) *
-                         static_cast<double>(spawner.getArea()) / total_area);
+  std::vector<double> weights;
+  // Fill weights with the ratio between the Spawner area and the total area
+  std::transform(spawners.begin(), spawners.end(), std::back_inserter(weights),
+                 [total_area](Spawner const& spawner) {
+                   return spawner.getArea() / total_area;
+                 });
 
-    for (int j{}; j != spawner_s; j++) {
-      Enemy enemy(map, spawner.getSpawnPoint(), Status::susceptible);
-      enemies.push_back(enemy);
-    }
+  std::random_device rd;
+  std::default_random_engine eng(rd());
+  std::discrete_distribution<unsigned int> spawner_dist(weights.begin(),
+                                                        weights.end());
 
-    for (int j{}; j != spawner_i; j++) {
-      Enemy enemy(map, spawner.getSpawnPoint(), Status::susceptible);
-      enemies.push_back(enemy);
-    }
-  }
-
-  int delta_s{s}, delta_i{i};
-
-  for (auto const& enemy : enemies) {
-    if (enemy.getStatus() == Status::susceptible) {
-      delta_s--;
-    } else {
-      delta_i--;
-    }
-  }
-
-  auto spawners_begin{spawners.begin()}, spawners_end{spawners.end()};
-
-  for (auto it{spawners_begin}; delta_s > 0; it++, delta_s--) {
-    Enemy enemy(map, it->getSpawnPoint(), Status::susceptible);
+  for (int j{}; j < i; j++) {
+    auto& spawner = spawners[spawner_dist(eng)];
+    Enemy enemy(map, spawner.getSpawnPoint(), fnad::Status::infectious);
     enemies.push_back(enemy);
-    if (it == spawners_end - 1) {
-      it = spawners_begin;
-    }
   }
 
-  for (auto it{spawners_begin}; delta_i > 0; it++, delta_i--) {
-    Enemy enemy(map, it->getSpawnPoint(), Status::infectious);
+  for (int j{}; j < s; j++) {
+    auto& spawner = spawners[spawner_dist(eng)];
+    Enemy enemy(map, spawner.getSpawnPoint(), fnad::Status::susceptible);
     enemies.push_back(enemy);
-    if (it == spawners_end - 1) {
-      it = spawners_begin;
-    }
   }
 
   enemies_ = enemies;

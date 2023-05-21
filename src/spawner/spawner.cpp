@@ -7,7 +7,9 @@ Spawner::Spawner(sf::Vector2f position, sf::Vector2f size)
       x_dist_(position.x + 5.f, position.x + size.x - 5.f),
       y_dist_(position.y + 5.f, position.y + size.y - 5.f) {}
 
-float Spawner::getArea() const { return width * height; }
+double Spawner::getArea() const {
+  return static_cast<double>(width) * static_cast<double>(height);
+}
 
 sf::Vector2f Spawner::getSpawnPoint() {
   auto x = x_dist_(eng_);
