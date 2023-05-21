@@ -11,7 +11,7 @@ TEST_CASE("Testing the Character class") {
 
   fnad::Map map = fnad::Map::create(tiled_map);
 
-  fnad::Character character{map, sf::Vector2f{0.f, 0.f}};
+  fnad::Character character{map, sf::Vector2f{0.f, 0.f}, 60.f};
 
   SUBCASE("Move character") {
     sf::Time time{sf::seconds(1.f)};

@@ -5,11 +5,15 @@
 
 namespace fnad {
 // Constructors
-Character::Character(Map const& map, sf::Vector2f position)
-    : Entity(map, position, 60.f), life_points_{3} {
+Character::Character(Map const& map, sf::Vector2f position, float speed)
+    : Entity(map, position, speed), life_points_{3} {
   setFillColor(sf::Color::Blue);
 }
 
+Character::Character(Map const& map, sf::Vector2f position)
+    : Character(map, position, 60.f) {}
+
+// Functions
 void Character::move(const Direction& dir, const sf::Time& dt) {
   auto seconds = dt.asSeconds();
   auto ds = speed_ * seconds;

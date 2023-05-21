@@ -17,6 +17,7 @@ class Character final : public Entity {
   int life_points_;
 
  public:
+  Character(Map const&, sf::Vector2f, float);
   Character(Map const&, sf::Vector2f);
 
   bool checkContact(const Enemy&);
