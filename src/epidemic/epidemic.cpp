@@ -18,7 +18,8 @@ void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
   sf::FloatRect view_rect(top_left, view_size);
 
   for (auto const& e : enemies_) {
-    if (view_rect.intersects(e.getGlobalBounds())) {
+    if (e.getStatus() != Status::removed &&
+        view_rect.intersects(e.getGlobalBounds())) {
       target.draw(e);
     }
   }
