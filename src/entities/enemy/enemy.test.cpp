@@ -118,23 +118,20 @@ TEST_CASE("Testing the Enemy class") {
     }
   }
 
-  SUBCASE("Testing the infect method") {
-    fnad::Enemy enemy(map, sf::Vector2f{0.f, 0.f}, fnad::Status::susceptible,
-                      30.f);
+  SUBCASE("Testing infect and remove method") {
+    fnad::Enemy enemy(map, sf::Vector2f{0.f, 0.f}, fnad::Status::susceptible);
 
-    SUBCASE("Calling infect changes the status") {
-      enemy.infect();
+    enemy.infect();
 
-      auto status_after = enemy.getStatus();
+    CHECK(enemy.getStatus() == fnad::Status::infectious);
 
-      CHECK(status_after == fnad::Status::infectious);
-    }
+    CHECK_THROWS(enemy.infect());
 
-    SUBCASE("Calling infect on an infected enemy throws") {
-      enemy.infect();
+    enemy.remove();
 
-      CHECK_THROWS(enemy.infect());
-    }
+    CHECK(enemy.getStatus() == fnad::Status::removed);
+
+    CHECK_THROWS(enemy.remove());
   }
 
   SUBCASE("Testing the sees method") {

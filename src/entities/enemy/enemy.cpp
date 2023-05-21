@@ -125,6 +125,11 @@ void Enemy::infect() {
 }
 
 void Enemy::remove() {
+  if (status_ != Status::infectious) {
+    throw std::logic_error(
+        "remove can not be called on a non-infectious Enemy");
+  }
+
   status_ = Status::removed;
   setFillColor(sf::Color::Black);
 }
