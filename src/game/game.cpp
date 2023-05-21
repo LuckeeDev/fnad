@@ -30,20 +30,24 @@ void Game::run() {
       }
     }
 
-    auto const& dt = clock_.restart();
+    character_.resetMovement();
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-      character_.move(Direction::left, dt);
+      character_.addMovement(Direction::left);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-      character_.move(Direction::right, dt);
+      character_.addMovement(Direction::right);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-      character_.move(Direction::up, dt);
+      character_.addMovement(Direction::up);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-      character_.move(Direction::down, dt);
+      character_.addMovement(Direction::down);
     }
+
+    auto const& dt = clock_.restart();
+
+    character_.applyMovement(dt);
 
     epidemic_.evolve(dt, character_);
 

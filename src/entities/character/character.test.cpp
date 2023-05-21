@@ -16,16 +16,24 @@ TEST_CASE("Testing the Character class") {
   SUBCASE("Move character") {
     sf::Time time{sf::seconds(1.f)};
 
-    character.move(fnad::Direction::up, time);
+    character.resetMovement();
+    character.addMovement(fnad::Direction::up);
+    character.applyMovement(time);
     CHECK(character.getPosition() == sf::Vector2f{0.f, -60.f});
 
-    character.move(fnad::Direction::right, time);
+    character.resetMovement();
+    character.addMovement(fnad::Direction::right);
+    character.applyMovement(time);
     CHECK(character.getPosition() == sf::Vector2f{60.f, -60.f});
 
-    character.move(fnad::Direction::down, time);
+    character.resetMovement();
+    character.addMovement(fnad::Direction::down);
+    character.applyMovement(time);
     CHECK(character.getPosition() == sf::Vector2f{60.f, 0.f});
 
-    character.move(fnad::Direction::left, time);
+    character.resetMovement();
+    character.addMovement(fnad::Direction::left);
+    character.applyMovement(time);
     CHECK(character.getPosition() == sf::Vector2f{0.f, 0.f});
   }
 
@@ -36,7 +44,9 @@ TEST_CASE("Testing the Character class") {
     CHECK(character.checkContact(infectious) == true);
     CHECK(character.getLifePoints() == 2);
 
-    character.move(fnad::Direction::down, sf::seconds(100.f));
+    character.resetMovement();
+    character.addMovement(fnad::Direction::down);
+    character.applyMovement(sf::seconds(100.f));
     CHECK(character.checkContact(infectious) == false);
     CHECK(character.getLifePoints() == 2);
   }
