@@ -32,65 +32,90 @@ bool Enemy::sees(const Character& character) const {
   auto const joining_vector = character.getPosition() - getPosition();
   auto const& walls = map_ptr_->getWalls();
 
+  // Check general case
   if (joining_vector.x != 0.f && joining_vector.y != 0.f) {
-    auto const m = joining_vector.y / joining_vector.x;
-    auto const q = enemy_position.y - m * enemy_position.x;
+    auto const line_slope = joining_vector.y / joining_vector.x;
+    auto const line_intercept =
+        enemy_position.y - line_slope * enemy_position.x;
 
     return std::none_of(
         walls.begin(), walls.end(),
-        [&m, &q, &enemy_position, &character_position](Wall const& wall) {
-          auto const& a = wall.top;
-          auto const& b = wall.left;
-          auto const c = wall.top + wall.height;
-          auto const d = wall.left + wall.width;
+        [&line_slope, &line_intercept, &enemy_position,
+         &character_position](Wall const& wall) {
+          auto const& top_side = wall.top;
+          auto const& left_side = wall.left;
+          auto const bottom_side = wall.top + wall.height;
+          auto const right_side = wall.left + wall.width;
 
-          auto const intersection_a_x = (a - q) / m;
-          if (intersection_a_x > b && intersection_a_x < d &&
-              (enemy_position.y - a) * (character_position.y - a) < 0) {
+          auto const top_intersection =
+              (top_side - line_intercept) / line_slope;
+          if (top_intersection > left_side && top_intersection < right_side &&
+              (enemy_position.y - top_side) *
+                      (character_position.y - top_side) <
+                  0) {
             return true;
           }
 
-          auto const intersection_b_y = m * b + q;
-          if (intersection_b_y > a && intersection_b_y < c &&
-              (enemy_position.x - b) * (character_position.x - b) < 0) {
+          auto const left_intersection =
+              line_slope * left_side + line_intercept;
+          if (left_intersection > top_side && left_intersection < bottom_side &&
+              (enemy_position.x - left_side) *
+                      (character_position.x - left_side) <
+                  0) {
             return true;
           }
 
-          auto const intersection_c_x = (c - q) / m;
-          if (intersection_c_x > b && intersection_c_x < d &&
-              (enemy_position.y - c) * (character_position.y - c) < 0) {
+          auto const bottom_intersection =
+              (bottom_side - line_slope) / line_intercept;
+          if (bottom_intersection > left_side &&
+              bottom_intersection < right_side &&
+              (enemy_position.y - bottom_side) *
+                      (character_position.y - bottom_side) <
+                  0) {
             return true;
           }
 
-          auto const intersection_d_y = m * d + q;
-          if (intersection_d_y > a && intersection_d_y < c &&
-              (enemy_position.x - d) * (character_position.x - d) < 0) {
+          auto const right_intersection =
+              line_slope * right_side + line_intercept;
+          if (right_intersection > top_side &&
+              right_intersection < bottom_side &&
+              (enemy_position.x - right_side) *
+                      (character_position.x - right_side) <
+                  0) {
             return true;
           }
 
           return false;
         });
-  } else if (joining_vector.x == 0) {
+    // Check when the joining vector is parallel to the right and left sides
+  } else if (joining_vector.x == 0.f) {
     return std::none_of(
         walls.begin(), walls.end(),
         [&enemy_position, &character_position](Wall const& wall) {
-          auto const& left = wall.left;
-          auto const right = left + wall.width;
-          auto const& top = wall.top;
+          auto const& left_side = wall.left;
+          auto const right_side = left_side + wall.width;
+          auto const& top_side = wall.top;
 
-          return enemy_position.x > left && enemy_position.x < right &&
-                 (enemy_position.y - top) * (character_position.y - top) < 0;
+          return enemy_position.x > left_side &&
+                 enemy_position.x < right_side &&
+                 (enemy_position.y - top_side) *
+                         (character_position.y - top_side) <
+                     0;
         });
+    // Check when the joining vector is parallel to the top and bottom sides
   } else {
     return std::none_of(
         walls.begin(), walls.end(),
         [&enemy_position, &character_position](Wall const& wall) {
-          auto const& top = wall.top;
-          auto const bottom = top + wall.height;
-          auto const& left = wall.left;
+          auto const& top_side = wall.top;
+          auto const bottom_side = top_side + wall.height;
+          auto const& left_side = wall.left;
 
-          return enemy_position.y > top && enemy_position.y < bottom &&
-                 (enemy_position.x - left) * (character_position.x - left) < 0;
+          return enemy_position.y > top_side &&
+                 enemy_position.y < bottom_side &&
+                 (enemy_position.x - left_side) *
+                         (character_position.x - left_side) <
+                     0;
         });
   }
 }
