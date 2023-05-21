@@ -59,18 +59,7 @@ void Character::applyMovement(sf::Time const& dt) {
   if (norm > 0) {
     auto const ds = movement_ / norm * speed_ * seconds;
 
-    if (ds.x != 0.f) {
-      move(ds.x, 0.f);
-
-      handleWallCollision(Axis::x, ds.x);
-    }
-
-    // Handle vertical movement
-    if (ds.y != 0.f) {
-      move(0.f, ds.y);
-
-      handleWallCollision(Axis::y, ds.y);
-    }
+    safeMove(ds);
   }
 }
 }  // namespace fnad

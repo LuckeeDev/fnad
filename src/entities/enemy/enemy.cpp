@@ -131,11 +131,7 @@ void Enemy::evolve(const sf::Time& dt, const Character& character) {
 
     auto const ds = direction * speed_ * dt.asSeconds();
 
-    move(ds);
-
-    if (isWallCollision()) {
-      move(-ds);
-    }
+    safeMove(ds);
   }
 }
 

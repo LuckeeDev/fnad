@@ -20,10 +20,10 @@ class Epidemic : private SIR, public sf::Drawable {
   std::vector<Enemy> enemies_;
 
   double const beta_{0.7};
-  double const gamma_{0.4};
+  double const gamma_{0.05};
 
   // Rate of how many days pass each second
-  double const days_per_second_{1.};
+  double const days_per_second_{0.5};
 
   sf::View& view_;
 

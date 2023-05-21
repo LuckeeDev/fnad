@@ -13,15 +13,6 @@ Entity::Entity(Map const& map, sf::Vector2f position, float speed)
   setPosition(position);
 };
 
-bool Entity::isWallCollision() const {
-  auto const& walls = map_ptr_->getWalls();
-  sf::FloatRect const& entity{getGlobalBounds()};
-
-  return std::any_of(walls.begin(), walls.end(), [&entity](Wall const& wall) {
-    return entity.intersects(wall);
-  });
-}
-
 void Entity::handleWallCollision(Axis const& axis, float const& movement) {
   auto const& position = getPosition();
   auto const& size = getSize();
@@ -58,6 +49,21 @@ void Entity::handleWallCollision(Axis const& axis, float const& movement) {
 
       move(0.f, correction);
     }
+  }
+}
+
+void Entity::safeMove(sf::Vector2f const& ds) {
+  if (ds.x != 0.f) {
+    move(ds.x, 0.f);
+
+    handleWallCollision(Axis::x, ds.x);
+  }
+
+  // Handle vertical movement
+  if (ds.y != 0.f) {
+    move(0.f, ds.y);
+
+    handleWallCollision(Axis::y, ds.y);
   }
 }
 

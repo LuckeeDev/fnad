@@ -14,6 +14,9 @@ enum class Axis {
 };
 
 class Entity : public sf::RectangleShape {
+ private:
+  void handleWallCollision(Axis const&, float const&);
+
  protected:
   const Map* map_ptr_;
   // Defined in pixels/second
@@ -21,9 +24,7 @@ class Entity : public sf::RectangleShape {
 
   Entity(Map const&, sf::Vector2f, float);
 
-  bool isWallCollision() const;
-
-  void handleWallCollision(Axis const&, float const&);
+  void safeMove(sf::Vector2f const&);
 
  public:
   void setSpeed(float);
