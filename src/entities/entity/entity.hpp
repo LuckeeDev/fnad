@@ -8,6 +8,11 @@
 namespace fnad {
 class Map;
 
+enum class Axis {
+  x,
+  y,
+};
+
 class Entity : public sf::RectangleShape {
  protected:
   const Map* map_ptr_;
@@ -17,6 +22,8 @@ class Entity : public sf::RectangleShape {
   Entity(Map const&, sf::Vector2f, float);
 
   bool isWallCollision() const;
+
+  void handleWallCollision(Axis const&, float const&);
 
  public:
   void setSpeed(float);

@@ -52,14 +52,24 @@ void Character::addMovement(Direction const& dir) {
 }
 
 void Character::applyMovement(sf::Time const& dt) {
-  if (movement_.x != 0.f || movement_.y != 0.f) {
-    float const norm2 = std::pow(movement_.x, 2.f) + std::pow(movement_.y, 2.f);
-    auto ds = (movement_ / std::sqrt(norm2)) * speed_ * dt.asSeconds();
+  float const norm =
+      std::sqrt(std::pow(movement_.x, 2.f) + std::pow(movement_.y, 2.f));
+  auto const seconds = dt.asSeconds();
 
-    move(ds);
+  if (norm > 0) {
+    auto const ds = movement_ / norm * speed_ * seconds;
 
-    if (isWallCollision()) {
-      move(-ds);
+    if (ds.x != 0.f) {
+      move(ds.x, 0.f);
+
+      handleWallCollision(Axis::x, ds.x);
+    }
+
+    // Handle vertical movement
+    if (ds.y != 0.f) {
+      move(0.f, ds.y);
+
+      handleWallCollision(Axis::y, ds.y);
     }
   }
 }
