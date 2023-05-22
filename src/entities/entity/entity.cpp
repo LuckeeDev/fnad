@@ -17,11 +17,40 @@ void Entity::handleWallCollision(Axis const& axis, float const& movement) {
   auto const& position = getPosition();
   auto const& size = getSize();
   auto const& walls = map_ptr_->getWalls();
-  sf::FloatRect const& entity_rect{getGlobalBounds()};
+  auto const& entity_rect{getGlobalBounds()};
 
-  auto const wall = std::find_if(
-      walls.begin(), walls.end(),
-      [&entity_rect](Wall const& w) { return entity_rect.intersects(w); });
+  Map::WallIterator wall{walls.end()};
+
+  for (auto it{walls.begin()}; it < walls.end(); it++) {
+    auto const intersects = entity_rect.intersects(*it);
+
+    if (intersects) {
+      if (wall == walls.end()) {
+        wall = it;
+        continue;
+      }
+
+      auto const is_closer_right = movement > 0.f && it->left < wall->left;
+      auto const is_closer_left =
+          movement < 0.f && (it->left + it->width) > (wall->left + it->width);
+      auto const is_closer_x = is_closer_right || is_closer_left;
+
+      auto const is_closer_top = movement > 0.f && it->top < wall->top;
+      auto const is_closer_bottom =
+          movement < 0.f && (it->top + it->height) > (wall->top + it->height);
+      auto const is_closer_y = is_closer_top || is_closer_bottom;
+
+      if (axis == Axis::x && is_closer_x) {
+        wall = it;
+        continue;
+      }
+
+      if (axis == Axis::y && is_closer_y) {
+        wall = it;
+        continue;
+      }
+    }
+  }
 
   if (wall != walls.end()) {
     // Handle horizontal collision
