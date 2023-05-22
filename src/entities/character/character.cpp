@@ -56,7 +56,7 @@ void Character::applyMovement(sf::Time const& dt) {
       std::sqrt(std::pow(movement_.x, 2.f) + std::pow(movement_.y, 2.f));
   auto const seconds = dt.asSeconds();
 
-  if (norm > 0) {
+  if (norm > 0.f) {
     auto const ds = movement_ / norm * speed_ * seconds;
 
     safeMove(ds);
