@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#include <numeric>
 #include <random>
 
 #include "../entities/enemy/enemy.hpp"
@@ -17,41 +18,46 @@ void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
   sf::FloatRect view_rect(top_left, view_size);
 
   for (auto const& e : enemies_) {
-    if (view_rect.intersects(e.getGlobalBounds())) {
+    if (e.getStatus() != Status::removed &&
+        view_rect.intersects(e.getGlobalBounds())) {
       target.draw(e);
     }
   }
 }
 
-// TODO ridefinire il costruttore per inserire i nemici solo dentro alle stanze
 Epidemic::Epidemic(const int s, const int i, Map const& map, sf::View& view)
     : SIR{static_cast<double>(s), static_cast<double>(i), 0.}, view_{view} {
-  // provvisorio (chiaramente così non ha senso)
-  sf::Vector2f map_bounds{960.f, 540.f};
-  std::random_device r;
-  std::default_random_engine gen(r());
-  std::uniform_real_distribution<float> x_dist(0.f, map_bounds.x);
-  std::uniform_real_distribution<float> y_dist(0.f, map_bounds.y);
+  auto spawners = map.getSpawners();
+  double total_area = std::accumulate(spawners.begin(), spawners.end(), 0.,
+                                      [](double sum, Spawner const& spawner) {
+                                        return sum + spawner.getArea();
+                                      });
 
   std::vector<Enemy> enemies;
 
   enemies.reserve(static_cast<unsigned int>(s + i));
 
-  // Create susceptible enemies
-  for (int j{}; j < s_; j++) {
-    auto x = x_dist(gen);
-    auto y = y_dist(gen);
-    Enemy enemy(map, sf::Vector2f{x, y}, Status::susceptible);
+  std::vector<double> weights;
+  // Fill weights with the ratio between the Spawner area and the total area
+  std::transform(spawners.begin(), spawners.end(), std::back_inserter(weights),
+                 [total_area](Spawner const& spawner) {
+                   return spawner.getArea() / total_area;
+                 });
 
+  std::random_device rd;
+  std::default_random_engine eng(rd());
+  std::discrete_distribution<unsigned int> spawner_dist(weights.begin(),
+                                                        weights.end());
+
+  for (int j{}; j < i; j++) {
+    auto& spawner = spawners[spawner_dist(eng)];
+    Enemy enemy(map, spawner.getSpawnPoint(), fnad::Status::infectious);
     enemies.push_back(enemy);
   }
 
-  // Create first infectious enemy
-  for (int j{}; j < i_; j++) {
-    auto x = x_dist(gen);
-    auto y = y_dist(gen);
-    Enemy enemy(map, sf::Vector2f{x, y}, Status::infectious);
-
+  for (int j{}; j < s; j++) {
+    auto& spawner = spawners[spawner_dist(eng)];
+    Enemy enemy(map, spawner.getSpawnPoint(), fnad::Status::susceptible);
     enemies.push_back(enemy);
   }
 
@@ -70,7 +76,7 @@ int Epidemic::count(Status const& status) const {
   return static_cast<int>(count);
 }
 
-void Epidemic::evolve(const sf::Time& dt) {
+void Epidemic::evolve(const sf::Time& dt, const Character& character) {
   double const seconds = static_cast<double>(dt.asSeconds());
   double const days = seconds * days_per_second_;
 
@@ -120,5 +126,9 @@ void Epidemic::evolve(const sf::Time& dt) {
   s_ = new_s;
   i_ = new_i;
   r_ = new_r;
+
+  for (auto& enemy : enemies_) {
+    enemy.evolve(dt, character);
+  }
 }
 }  // namespace fnad

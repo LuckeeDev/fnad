@@ -11,8 +11,10 @@
 namespace fnad {
 class Game final {
  private:
+  sf::Clock clock_;
   sf::RenderWindow& window_;
   sf::View& view_;
+  const float view_height_;
 
   Character& character_;
   Epidemic& epidemic_;
@@ -23,7 +25,9 @@ class Game final {
   Game(sf::RenderWindow&, sf::View&, Character&, Epidemic&, Map const&,
        Background const&);
 
-  void run() const;
+  void printStory() const;
+
+  void run();
 };
 }  // namespace fnad
 

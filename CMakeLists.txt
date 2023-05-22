@@ -28,7 +28,7 @@ string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-o
 find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
 find_package(tmxlite)
 
-add_executable(fnad main.cpp src/map/map.cpp src/background/background.cpp src/room/room.cpp src/game/game.cpp src/epidemic/epidemic.cpp src/entities/character/character.cpp src/entities/enemy/enemy.cpp src/entities/entity/entity.cpp)
+add_executable(fnad main.cpp src/map/map.cpp src/background/background.cpp src/game/game.cpp src/epidemic/epidemic.cpp src/entities/character/character.cpp src/entities/enemy/enemy.cpp src/entities/entity/entity.cpp src/spawner/spawner.cpp)
 target_link_libraries(fnad PRIVATE sfml-graphics)
 target_link_libraries(fnad PRIVATE tmxlite)
 
@@ -37,8 +37,8 @@ target_link_libraries(fnad PRIVATE tmxlite)
 if (BUILD_TESTING)
     # aggiungi l'eseguibile all.test
     add_executable(all.test test/all.test.cpp)
-    target_sources(all.test PRIVATE src/entities/enemy/enemy.test.cpp src/entities/character/character.test.cpp src/epidemic/epidemic.test.cpp)
-    target_sources(all.test PRIVATE src/entities/character/character.cpp src/entities/enemy/enemy.cpp src/entities/entity/entity.cpp src/epidemic/epidemic.cpp src/room/room.cpp src/map/map.cpp)
+    target_sources(all.test PRIVATE src/entities/enemy/enemy.test.cpp src/entities/character/character.test.cpp src/epidemic/epidemic.test.cpp src/spawner/spawner.test.cpp)
+    target_sources(all.test PRIVATE src/entities/character/character.cpp src/entities/enemy/enemy.cpp src/entities/entity/entity.cpp src/epidemic/epidemic.cpp src/map/map.cpp src/spawner/spawner.cpp)
     target_link_libraries(all.test PRIVATE sfml-graphics)
     target_link_libraries(all.test PRIVATE tmxlite)
     # aggiungi l'eseguibile all.test alla lista dei test

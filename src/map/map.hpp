@@ -1,23 +1,33 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
+#include <SFML/Graphics/Rect.hpp>
 #include <tmxlite/Map.hpp>
-#include <tmxlite/ObjectGroup.hpp>
+#include <tmxlite/Object.hpp>
 #include <vector>
 
-#include "../room/room.hpp"
+#include "../spawner/spawner.hpp"
 
 namespace fnad {
+using Wall = sf::FloatRect;
+
 class Map {
  private:
-  const std::vector<Room> rooms_;
+  const std::vector<Wall> walls_;
+  const std::vector<Spawner> spawners_;
 
-  Map(std::vector<Room>);
+  template <class T>
+  static T convertObject(tmx::Object const&);
+
+  Map(std::vector<Wall>, std::vector<Spawner>);
 
  public:
-  std::vector<Room> const &getRooms() const;
+  std::vector<Wall> const& getWalls() const;
+  std::vector<Spawner> const& getSpawners() const;
 
-  static Map create(tmx::Map const &);
+  static Map create(tmx::Map const&);
+
+  using WallIterator = std::vector<Wall>::const_iterator;
 };
 }  // namespace fnad
 

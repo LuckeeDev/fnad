@@ -18,6 +18,8 @@ class Enemy final : public Entity {
 
   Status getStatus() const;
 
+  bool sees(const Character&) const;
+
   /**
    * @param dt delta time object indicating how much time has passed since the
    * last render

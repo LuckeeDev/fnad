@@ -3,24 +3,32 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "../../room/room.hpp"
+#include "../../map/map.hpp"
 
 namespace fnad {
 class Map;
 
+enum class Axis {
+  x,
+  y,
+};
+
 class Entity : public sf::RectangleShape {
+ private:
+  void handleWallCollision(Axis const&, float const&);
+
  protected:
   const Map* map_ptr_;
-  Room* room_ptr_;
   // Defined in pixels/second
   float speed_;
 
   Entity(Map const&, sf::Vector2f, float);
 
+  void safeMove(sf::Vector2f const&);
+
  public:
   void setSpeed(float);
 
-  Room const& getRoom() const;
   float getSpeed() const;
 };
 }  // namespace fnad

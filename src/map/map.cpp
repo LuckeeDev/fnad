@@ -1,32 +1,47 @@
 #include "map.hpp"
 
+#include <iterator>
 #include <tmxlite/Map.hpp>
 #include <tmxlite/ObjectGroup.hpp>
 #include <vector>
 
-namespace fnad {
-Map::Map(std::vector<Room> rooms) : rooms_{rooms} {}
+#include "../spawner/spawner.hpp"
 
-std::vector<Room> const& Map::getRooms() const { return rooms_; }
+namespace fnad {
+Map::Map(std::vector<Wall> walls, std::vector<Spawner> spawners)
+    : walls_{walls}, spawners_{spawners} {}
+
+std::vector<Wall> const& Map::getWalls() const { return walls_; }
+
+std::vector<Spawner> const& Map::getSpawners() const { return spawners_; }
+
+template <class T>
+T Map::convertObject(tmx::Object const& o) {
+  auto const& AABB = o.getAABB();
+
+  return T(sf::Vector2f{AABB.left, AABB.top},
+           sf::Vector2f{AABB.width, AABB.height});
+};
 
 Map Map::create(tmx::Map const& map) {
   auto const& layers = map.getLayers();
 
-  auto const& object_layer = layers[0]->getLayerAs<tmx::ObjectGroup>();
+  // Read objects from the first layer and write them to `walls` vector
+  auto const& wall_object_layer = layers[0]->getLayerAs<tmx::ObjectGroup>();
+  auto const& wall_objects = wall_object_layer.getObjects();
+  std::vector<Wall> walls;
 
-  auto const& objects = object_layer.getObjects();
+  std::transform(wall_objects.begin(), wall_objects.end(),
+                 std::back_inserter(walls), convertObject<Wall>);
 
-  std::vector<Room> rooms;
+  // Read objects from the second layer and write them to `spawners` vector
+  auto const& spawner_object_layer = layers[1]->getLayerAs<tmx::ObjectGroup>();
+  auto const& spawner_objects = spawner_object_layer.getObjects();
+  std::vector<Spawner> spawners;
 
-  for (auto const& o : objects) {
-    auto const& AABB = o.getAABB();
+  std::transform(spawner_objects.begin(), spawner_objects.end(),
+                 std::back_inserter(spawners), convertObject<Spawner>);
 
-    Room room{sf::Vector2f{AABB.left, AABB.top},
-              sf::Vector2f{AABB.width, AABB.height}};
-
-    rooms.push_back(room);
-  }
-
-  return Map(rooms);
+  return Map(walls, spawners);
 }
 }  // namespace fnad
