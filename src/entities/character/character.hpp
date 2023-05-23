@@ -16,8 +16,8 @@ class Character final : public Entity {
   sf::Vector2f movement_;
 
  public:
-  Character(Map const&, sf::Vector2f, float);
-  Character(Map const&, sf::Vector2f);
+  Character(Map const&, sf::Vector2f const&, float);
+  Character(Map const&, sf::Vector2f const&);
 
   bool checkContact(const Enemy&);
 
