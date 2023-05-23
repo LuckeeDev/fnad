@@ -26,8 +26,12 @@ class Key : public sf::RectangleShape {
    */
   void checkTaken(Character const&);
 
-  // Retrieve the current "taken" state. True if the character
-  // has already collected the key, false otherwise.
+  /**
+   * Retrieve the current "taken" state.
+   *
+   * @return true if the character has already collected the key, false
+   * otherwise
+   */
   bool getTaken() const;
 };
 }  // namespace fnad
