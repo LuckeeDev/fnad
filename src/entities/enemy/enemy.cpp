@@ -1,3 +1,5 @@
+#define _USE_MATH_DEFINES
+
 #include "enemy.hpp"
 
 #include <cmath>
@@ -24,9 +26,10 @@ Enemy::Enemy(Map const& map, sf::Vector2f position, Status status, float speed)
 
   std::random_device rand;
   std::default_random_engine eng(rand());
-  std::uniform_real_distribution<float> dist(0.f, 360.f);
+  std::uniform_real_distribution<float> dist(0.f,
+                                             static_cast<float>(2. * M_PI));
 
-  float theta{dist(eng)};
+  float const theta{dist(eng)};
 
   direction_ = {std::cos(theta), std::sin(theta)};
 }
@@ -129,6 +132,31 @@ bool Enemy::sees(const Character& character) const {
   }
 }
 
+void Enemy::randomMove(sf::Time const& dt) {
+  if (clock_.getElapsedTime().asSeconds() >= 2.f) {
+    clock_.restart();
+
+    std::random_device rand;
+    std::default_random_engine eng(rand());
+    std::uniform_real_distribution dist(static_cast<float>(-0.5 * M_PI),
+                                        static_cast<float>(0.5 * M_PI));
+
+    float const delta_theta{dist(eng)};
+
+    auto const direction_x = direction_.x;
+    auto const direction_y = direction_.y;
+
+    direction_.x = direction_x * std::cos(delta_theta) -
+                   direction_y * std::sin(delta_theta);
+    direction_.y = direction_x * std::sin(delta_theta) +
+                   direction_y * std::cos(delta_theta);
+  }
+
+  auto const ds = direction_ * speed_ * dt.asSeconds();
+
+  safeMove(ds);
+}
+
 Status Enemy::getStatus() const { return status_; }
 
 void Enemy::evolve(const sf::Time& dt, const Character& character) {
@@ -141,6 +169,8 @@ void Enemy::evolve(const sf::Time& dt, const Character& character) {
     auto const ds = direction * speed_ * dt.asSeconds();
 
     safeMove(ds);
+  } else if (status_ != Status::removed) {
+    randomMove(dt);
   }
 }
 
