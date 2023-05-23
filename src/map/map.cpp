@@ -8,7 +8,7 @@
 #include "../spawner/spawner.hpp"
 
 namespace fnad {
-Map::Map(std::vector<Wall> walls, std::vector<Spawner> spawners)
+Map::Map(std::vector<Wall> const& walls, std::vector<Spawner> const& spawners)
     : walls_{walls}, spawners_{spawners} {}
 
 std::vector<Wall> const& Map::getWalls() const { return walls_; }
@@ -21,7 +21,7 @@ T Map::convertObject(tmx::Object const& o) {
 
   return T(sf::Vector2f{AABB.left, AABB.top},
            sf::Vector2f{AABB.width, AABB.height});
-};
+}
 
 Map Map::create(tmx::Map const& map) {
   auto const& layers = map.getLayers();

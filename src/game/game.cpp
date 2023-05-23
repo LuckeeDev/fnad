@@ -1,7 +1,5 @@
 #include "game.hpp"
 
-#include <iostream>
-
 namespace fnad {
 Game::Game(sf::RenderWindow& window, sf::View& view, Character& character,
            Epidemic& epidemic, Map const& map, Background const& background)

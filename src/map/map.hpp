@@ -19,7 +19,7 @@ class Map {
   template <class T>
   static T convertObject(tmx::Object const&);
 
-  Map(std::vector<Wall>, std::vector<Spawner>);
+  Map(std::vector<Wall> const&, std::vector<Spawner> const&);
 
  public:
   std::vector<Wall> const& getWalls() const;

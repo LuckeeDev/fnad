@@ -9,7 +9,7 @@ TEST_CASE("Testing the Spawner class") {
   sf::Vector2f size(100.f, 50.f);
   fnad::Spawner spawner(position, size);
 
-  CHECK(spawner.getArea() == 5000.f);
+  CHECK(spawner.getArea() == 5000.);
 
   auto coordinates = spawner.getSpawnPoint();
 

@@ -1,7 +1,6 @@
 #include "epidemic.hpp"
 
 #include <cmath>
-#include <iostream>
 
 #include "../../test/doctest.h"
 #include "../entities/character/character.hpp"
