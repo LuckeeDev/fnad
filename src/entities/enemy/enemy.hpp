@@ -12,6 +12,10 @@ class Enemy final : public Entity {
  private:
   Status status_;
 
+  sf::Vector2f direction_;
+
+  sf::Clock clock_;
+
   bool sees(const Character&) const;
 
   void randomMove();
