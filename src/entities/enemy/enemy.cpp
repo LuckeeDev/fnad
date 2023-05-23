@@ -1,6 +1,7 @@
 #include "enemy.hpp"
 
 #include <cmath>
+#include <random>
 #include <stdexcept>
 
 #include "../character/character.hpp"
@@ -20,6 +21,14 @@ Enemy::Enemy(Map const& map, sf::Vector2f position, Status status, float speed)
       setFillColor(sf::Color::Black);
       break;
   }
+
+  std::random_device rand;
+  std::default_random_engine eng(rand());
+  std::uniform_real_distribution<float> dist(0.f, 360.f);
+
+  float theta{dist(eng)};
+
+  direction_ = {std::cos(theta), std::sin(theta)};
 }
 
 Enemy::Enemy(Map const& map, sf::Vector2f position, Status status)
