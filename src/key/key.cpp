@@ -4,7 +4,7 @@
 
 namespace fnad {
 Key::Key(sf::Vector2f const& position, sf::Vector2f const& size)
-    : sf::RectangleShape(size), taken_{false} {
+    : sf::RectangleShape(size) {
   setPosition(position);
 }
 
