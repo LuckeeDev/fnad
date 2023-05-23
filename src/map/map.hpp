@@ -17,7 +17,7 @@ class Map {
   const std::vector<Spawner> spawners_;
 
   template <class T>
-  static T convertObject(tmx::Object const&);
+  static std::vector<T> parseLayer(tmx::ObjectGroup const& layer);
 
   Map(std::vector<Wall> const&, std::vector<Spawner> const&);
 
