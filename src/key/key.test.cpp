@@ -7,7 +7,7 @@
 TEST_CASE("Testing the Key class") {
   tmx::Map tiled_map;
 
-  tiled_map.load("assets/map/test.tmx");
+  tiled_map.load("assets/map/map0.tmx");
 
   auto map = fnad::Map::create(tiled_map);
 
