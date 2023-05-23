@@ -18,11 +18,13 @@ class Game final {
 
   Character& character_;
   Epidemic& epidemic_;
-  Map const& map_;
+  Map& map_;
   Background const& background_;
 
+  bool win_{false};
+
  public:
-  Game(sf::RenderWindow&, sf::View&, Character&, Epidemic&, Map const&,
+  Game(sf::RenderWindow&, sf::View&, Character&, Epidemic&, Map&,
        Background const&);
 
   void printStory() const;

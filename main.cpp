@@ -1,3 +1,5 @@
+#include <string>
+
 #include "src/game/game.hpp"
 #include "src/map/map.hpp"
 
@@ -11,7 +13,18 @@ int main() {
   tmx::Map tiled_map;
 
   if (tiled_map.load("assets/map/map0.tmx")) {
-    const fnad::Map map = fnad::Map::create(tiled_map);
+    std::vector<sf::Texture> key_textures;
+
+    for (int i{}; i < 3; i++) {
+      sf::Texture texture;
+
+      texture.loadFromFile("assets/map/items/key_" + std::to_string(i) +
+                           ".png");
+
+      key_textures.push_back(texture);
+    }
+
+    fnad::Map map = fnad::Map::create(tiled_map, key_textures);
 
     const fnad::Background background(tiled_map);
 
