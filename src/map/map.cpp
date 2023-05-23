@@ -10,6 +10,14 @@
 #include "../spawner/spawner.hpp"
 
 namespace fnad {
+// Constructors
+
+Map::Map(std::vector<Wall> const& walls, std::vector<Spawner> const& spawners,
+         std::vector<Exit> const& exits, std::vector<Key> const& keys)
+    : walls_{walls}, spawners_{spawners}, exits_{exits}, keys_{keys} {}
+
+// Private functions
+
 void Map::draw(sf::RenderTarget& target, sf::RenderStates) const {
   for (auto const& key : keys_) {
     if (key.getTaken() == false) {
@@ -17,14 +25,6 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates) const {
     }
   }
 }
-
-Map::Map(std::vector<Wall> const& walls, std::vector<Spawner> const& spawners,
-         std::vector<Exit> const& exits, std::vector<Key> const& keys)
-    : walls_{walls}, spawners_{spawners}, exits_{exits}, keys_{keys} {}
-
-std::vector<Wall> const& Map::getWalls() const { return walls_; }
-
-std::vector<Spawner> const& Map::getSpawners() const { return spawners_; }
 
 template <class T>
 T Map::convertObject(tmx::Object const& o) {
@@ -45,7 +45,14 @@ std::vector<T> Map::parseLayer(tmx::ObjectGroup const& layer) {
   return layer_vector;
 }
 
-void Map::checkKeysTaken(Character const& character) {
+// Public functions
+
+std::vector<Wall> const& Map::getWalls() const { return walls_; }
+std::vector<Spawner> const& Map::getSpawners() const { return spawners_; }
+std::vector<Exit> const& Map::getExits() const { return exits_; }
+std::vector<Key> const& Map::getKeys() const { return keys_; }
+
+void Map::collectKeys(Character const& character) {
   for (auto& key : keys_) {
     key.checkTaken(character);
   }
@@ -63,6 +70,12 @@ bool Map::hasWon(Character const& character) const {
          std::all_of(keys_.begin(), keys_.end(),
                      [](Key const& key) { return key.getTaken(); });
 };
+
+int Map::countTakenKeys() const {
+  return static_cast<int>(
+      std::count_if(keys_.begin(), keys_.end(),
+                    [](Key const& key) { return key.getTaken(); }));
+}
 
 Map Map::create(tmx::Map const& map) {
   return create(map, std::vector<sf::Texture>{});

@@ -49,7 +49,7 @@ void Game::run() {
 
     epidemic_.evolve(dt, character_);
 
-    map_.checkKeysTaken(character_);
+    map_.collectKeys(character_);
 
     if (map_.hasWon(character_)) {
       win_ = true;

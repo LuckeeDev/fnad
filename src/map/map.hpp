@@ -26,19 +26,22 @@ class Map : public sf::Drawable {
   template <class T>
   static std::vector<T> parseLayer(tmx::ObjectGroup const& layer);
 
+  void draw(sf::RenderTarget&, sf::RenderStates) const override;
+
   Map(std::vector<Wall> const&, std::vector<Spawner> const&,
       std::vector<Exit> const&, std::vector<Key> const&);
-
-  void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
  public:
   std::vector<Wall> const& getWalls() const;
   std::vector<Spawner> const& getSpawners() const;
+  std::vector<Exit> const& getExits() const;
+  std::vector<Key> const& getKeys() const;
 
   static Map create(tmx::Map const&);
   static Map create(tmx::Map const&, std::vector<sf::Texture> const&);
 
-  void checkKeysTaken(Character const&);
+  void collectKeys(Character const&);
+  int countTakenKeys() const;
   bool hasWon(Character const&) const;
 
   using WallIterator = std::vector<Wall>::const_iterator;
