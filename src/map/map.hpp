@@ -72,7 +72,7 @@ class Map : public sf::Drawable {
   static Map create(tmx::Map const&);
 
   /**
-   * Static method to create a map and loading texturs for the keys-
+   * Static method to create a map and loading textures for the keys.
    *
    * @param map a parsed tmx map
    * @param textures a vector of textures to be used for the keys
