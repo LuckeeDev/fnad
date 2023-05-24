@@ -2,7 +2,7 @@
 
 namespace fnad {
 Game::Game(sf::RenderWindow& window, sf::View& view, Character& character,
-           Epidemic& epidemic, Map const& map, Background const& background)
+           Epidemic& epidemic, Map& map, Background const& background)
     : window_{window},
       view_{view},
       view_height_{view.getSize().y},
@@ -49,6 +49,13 @@ void Game::run() {
 
     epidemic_.evolve(dt, character_);
 
+    map_.collectKeys(character_);
+
+    if (map_.hasWon(character_)) {
+      win_ = true;
+      break;
+    }
+
     // Set the view centered on the character
     view_.setCenter(character_.getPosition());
     window_.setView(view_);
@@ -56,6 +63,8 @@ void Game::run() {
     window_.clear(sf::Color::Black);
 
     window_.draw(background_);
+
+    window_.draw(map_);
 
     window_.draw(epidemic_);
 

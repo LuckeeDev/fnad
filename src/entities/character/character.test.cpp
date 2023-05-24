@@ -7,7 +7,7 @@
 TEST_CASE("Testing the Character class") {
   tmx::Map tiled_map;
 
-  tiled_map.load("assets/map/test.tmx");
+  tiled_map.load("assets/map/map0.tmx");
 
   fnad::Map map = fnad::Map::create(tiled_map);
 

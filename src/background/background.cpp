@@ -87,7 +87,7 @@ Background::Background(tmx::Map const& map) {
   background_.create(map_width, map_height);
   background_.clear();
 
-  for (auto it{layers.begin() + 2}; it < layers.end(); it++) {
+  for (auto it{layers.begin() + 4}; it < layers.end(); it++) {
     auto const& layer = (*it)->getLayerAs<tmx::TileLayer>();
     drawLayerToBackground(layer);
   }
