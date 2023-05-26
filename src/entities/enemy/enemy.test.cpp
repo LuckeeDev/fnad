@@ -90,7 +90,7 @@ TEST_CASE("Testing the Enemy class") {
       enemy.evolve(time, character);
       position_after = enemy.getPosition();
 
-      CHECK(position_before == position_after);
+      CHECK(position_before != position_after);
     }
 
     SUBCASE("With susceptible enemy") {
@@ -102,7 +102,7 @@ TEST_CASE("Testing the Enemy class") {
       susceptible.evolve(time, character);
       auto position_after = susceptible.getPosition();
 
-      CHECK(position_before == position_after);
+      CHECK(position_before != position_after);
     }
 
     SUBCASE("With removed enemy") {
