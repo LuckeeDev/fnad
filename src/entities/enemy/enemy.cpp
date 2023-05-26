@@ -11,7 +11,10 @@
 namespace fnad {
 // Constructors
 Enemy::Enemy(Map const& map, sf::Vector2f position, Status status, float speed)
-    : Entity(map, position, speed), status_{status} {
+    : Entity(map, position, speed),
+      status_{status},
+      eng_((std::random_device())()),
+      time_dist_(2.f, 4.f) {
   switch (status) {
     case Status::susceptible:
       setFillColor(sf::Color::Green);
@@ -26,12 +29,15 @@ Enemy::Enemy(Map const& map, sf::Vector2f position, Status status, float speed)
 
   std::random_device rand;
   std::default_random_engine eng(rand());
-  std::uniform_real_distribution<float> dist(0.f,
-                                             static_cast<float>(2. * M_PI));
 
-  float const theta{dist(eng)};
+  std::uniform_real_distribution<float> theta_dist(
+      0.f, static_cast<float>(2. * M_PI));
+
+  float const theta{theta_dist(eng)};
 
   direction_ = {std::cos(theta), std::sin(theta)};
+
+  time_limit_ = sf::seconds(time_dist_(eng_));
 }
 
 Enemy::Enemy(Map const& map, sf::Vector2f position, Status status)
@@ -133,7 +139,7 @@ bool Enemy::sees(const Character& character) const {
 }
 
 void Enemy::randomMove(sf::Time const& dt) {
-  if (clock_.getElapsedTime().asSeconds() >= 2.f) {
+  if (clock_.getElapsedTime().asSeconds() >= time_limit_.asSeconds()) {
     clock_.restart();
 
     std::random_device rand;
