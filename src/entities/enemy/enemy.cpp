@@ -156,6 +156,8 @@ void Enemy::randomMove(sf::Time const& dt) {
                    direction_y * std::sin(delta_theta);
     direction_.y = direction_x * std::sin(delta_theta) +
                    direction_y * std::cos(delta_theta);
+
+    time_limit_ = sf::seconds(time_dist_(eng_));
   }
 
   auto const ds = direction_ * speed_ * dt.asSeconds();
