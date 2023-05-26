@@ -16,6 +16,12 @@ class Enemy final : public Entity {
 
   sf::Clock clock_;
 
+  std::default_random_engine eng_;
+
+  std::uniform_real_distribution<float> time_dist_;
+
+  sf::Time time_limit_;
+
   void randomMove(sf::Time const&);
 
  public:
