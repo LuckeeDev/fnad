@@ -141,12 +141,7 @@ void Enemy::randomMove(sf::Time const& dt) {
   if (clock_.getElapsedTime().asSeconds() >= time_limit_.asSeconds()) {
     clock_.restart();
 
-    std::random_device rand;
-    std::default_random_engine eng(rand());
-    std::uniform_real_distribution dist(static_cast<float>(-0.5 * M_PI),
-                                        static_cast<float>(0.5 * M_PI));
-
-    float const delta_theta{dist(eng)};
+    float const delta_theta{direction_dist_(eng_)};
 
     auto const direction_x = direction_.x;
     auto const direction_y = direction_.y;
