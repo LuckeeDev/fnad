@@ -16,8 +16,7 @@ Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status,
       status_{status},
       eng_((std::random_device())()),
       time_dist_(2.f, 4.f),
-      direction_dist_(static_cast<float>(-0.5 * M_PI),
-                      static_cast<float>(0.5 * M_PI)) {
+      direction_dist_(static_cast<float>(-M_PI_2), static_cast<float>(M_PI_2)) {
   switch (status) {
     case Status::susceptible:
       setFillColor(sf::Color::Green);
@@ -30,8 +29,8 @@ Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status,
       break;
   }
 
-  std::uniform_real_distribution<float> theta_dist(
-      0.f, static_cast<float>(2. * M_PI));
+  std::uniform_real_distribution<float> theta_dist(0.f,
+                                                   static_cast<float>(M_2_PI));
 
   float const theta{theta_dist(eng_)};
 
