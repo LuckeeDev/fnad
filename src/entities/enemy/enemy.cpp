@@ -160,7 +160,7 @@ void Enemy::randomMove(sf::Time const& dt) {
 
   auto const& enemy_position = getPosition();
   auto const& enemy_size = getSize();
-  sf::Vector2f const delta_enemy_position_x{0.5f * enemy_size.x + 10.1f, 0.f};
+  sf::Vector2f const delta_enemy_position_x{0.5f * enemy_size.x + 0.1f, 0.f};
   sf::Vector2f const delta_enemy_position_y{0.f, delta_enemy_position_x.x};
 
   auto const& walls = map_ptr_->getWalls();
