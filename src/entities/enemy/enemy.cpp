@@ -156,22 +156,32 @@ void Enemy::randomMove(sf::Time const& dt) {
 
   auto const ds = direction_ * speed_ * dt.asSeconds();
 
-  move(ds);
+  safeMove(ds);
 
-  bool intersection{false};
-  auto const& enemy_rect = getGlobalBounds();
   auto const& walls = map_ptr_->getWalls();
-  for (auto const& wall : walls) {
-    if (enemy_rect.intersects(wall)) {
-      intersection = true;
-      break;
-    }
-  }
 
-  if (intersection) {
-    move(-ds);
-    safeMove(ds);
-    direction_ *= -1.f;
+  for (auto const& wall : walls) {
+    move(0.2f, 0.f);
+    if (wall.intersects(getGlobalBounds())) {
+      direction_.x *= -1.f;
+    }
+
+    move(-0.4f, 0.f);
+    if (wall.intersects(getGlobalBounds())) {
+      direction_.x *= -1.f;
+    }
+
+    move(0.2f, 0.2f);
+    if (wall.intersects(getGlobalBounds())) {
+      direction_.y *= -1.f;
+    }
+
+    move(0.f, -0.4f);
+    if (wall.intersects(getGlobalBounds())) {
+      direction_.y *= -1.f;
+    }
+
+    move(0.f, 0.2f);
   }
 }
 
