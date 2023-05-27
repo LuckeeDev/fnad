@@ -10,7 +10,8 @@
 
 namespace fnad {
 // Constructors
-Enemy::Enemy(Map const& map, sf::Vector2f position, Status status, float speed)
+Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status,
+             float const& speed)
     : Entity(map, position, speed),
       status_{status},
       eng_((std::random_device())()),
@@ -39,7 +40,7 @@ Enemy::Enemy(Map const& map, sf::Vector2f position, Status status, float speed)
   time_limit_ = sf::seconds(time_dist_(eng_));
 }
 
-Enemy::Enemy(Map const& map, sf::Vector2f position, Status status)
+Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status)
     : Enemy(map, position, status, 30.f) {}
 
 // Functions

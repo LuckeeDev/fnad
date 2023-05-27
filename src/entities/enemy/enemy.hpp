@@ -27,8 +27,8 @@ class Enemy final : public Entity {
   void randomMove(sf::Time const&);
 
  public:
-  Enemy(Map const&, sf::Vector2f, Status, float);
-  Enemy(Map const&, sf::Vector2f, Status);
+  Enemy(Map const&, sf::Vector2f const&, Status const&, float const&);
+  Enemy(Map const&, sf::Vector2f const&, Status const&);
 
   Status getStatus() const;
 
