@@ -103,6 +103,12 @@ TEST_CASE("Testing the Enemy class") {
       auto position_after = susceptible.getPosition();
 
       CHECK(position_before != position_after);
+
+      auto displacement =
+          std::sqrt(std::pow(position_after.x - position_before.x, 2.f) +
+                    std::pow(position_after.y - position_before.y, 2.f));
+
+      CHECK(displacement == doctest::Approx(30.f));
     }
 
     SUBCASE("With removed enemy") {
