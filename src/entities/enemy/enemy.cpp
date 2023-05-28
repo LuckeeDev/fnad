@@ -178,17 +178,18 @@ void Enemy::randomMove(sf::Time const& dt) {
 Status Enemy::getStatus() const { return status_; }
 
 void Enemy::evolve(const sf::Time& dt, const Character& character) {
-  if (sees(character) && character.getPosition() != getPosition() &&
-      status_ == Status::infectious) {
-    sf::Vector2f direction{character.getPosition() - getPosition()};
-    float const norm2{direction.x * direction.x + direction.y * direction.y};
-    direction /= std::sqrt(norm2);
+  if (character.getPosition() != getPosition()) {
+    if (sees(character) && status_ == Status::infectious) {
+      sf::Vector2f direction{character.getPosition() - getPosition()};
+      float const norm2{direction.x * direction.x + direction.y * direction.y};
+      direction /= std::sqrt(norm2);
 
-    auto const ds = direction * 1.5f * speed_ * dt.asSeconds();
+      auto const ds = direction * 1.5f * speed_ * dt.asSeconds();
 
-    safeMove(ds);
-  } else if (status_ != Status::removed) {
-    randomMove(dt);
+      safeMove(ds);
+    } else if (status_ != Status::removed) {
+      randomMove(dt);
+    }
   }
 }
 
