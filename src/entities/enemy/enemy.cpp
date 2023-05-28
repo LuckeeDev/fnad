@@ -159,19 +159,17 @@ void Enemy::randomMove(sf::Time const& dt) {
   safeMove(ds);
 
   auto const& enemy_position = getPosition();
-  auto const& enemy_size = getSize();
-  sf::Vector2f const delta_enemy_position_x{0.5f * enemy_size.x + 0.1f, 0.f};
-  sf::Vector2f const delta_enemy_position_y{0.f, delta_enemy_position_x.x};
+  auto const min_distance = 0.5f * getSize().x + 0.1f;
 
   auto const& walls = map_ptr_->getWalls();
 
   for (auto const& wall : walls) {
-    if (wall.contains(enemy_position + delta_enemy_position_x) ||
-        wall.contains(enemy_position - delta_enemy_position_x)) {
+    if (wall.contains(enemy_position + sf::Vector2f{min_distance, 0.f}) ||
+        wall.contains(enemy_position - sf::Vector2f{min_distance, 0.f})) {
       direction_.x *= -1.f;
     }
-    if (wall.contains(enemy_position + delta_enemy_position_y) ||
-        wall.contains(enemy_position - delta_enemy_position_y)) {
+    if (wall.contains(enemy_position + sf::Vector2f{0.f, min_distance}) ||
+        wall.contains(enemy_position - sf::Vector2f{0.f, min_distance})) {
       direction_.y *= -1.f;
     }
   }
