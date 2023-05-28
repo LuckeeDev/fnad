@@ -184,7 +184,7 @@ void Enemy::evolve(const sf::Time& dt, const Character& character) {
     float const norm2{direction.x * direction.x + direction.y * direction.y};
     direction /= std::sqrt(norm2);
 
-    auto const ds = direction * speed_ * dt.asSeconds();
+    auto const ds = direction * 1.5f * speed_ * dt.asSeconds();
 
     safeMove(ds);
   } else if (status_ != Status::removed) {
