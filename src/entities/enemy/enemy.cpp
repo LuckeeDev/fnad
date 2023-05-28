@@ -1,14 +1,22 @@
+#define _USE_MATH_DEFINES
+
 #include "enemy.hpp"
 
 #include <cmath>
+#include <random>
 #include <stdexcept>
 
 #include "../character/character.hpp"
 
 namespace fnad {
 // Constructors
-Enemy::Enemy(Map const& map, sf::Vector2f position, Status status, float speed)
-    : Entity(map, position, speed), status_{status} {
+Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status,
+             float const& speed)
+    : Entity(map, position, speed),
+      status_{status},
+      eng_((std::random_device())()),
+      time_dist_(2.f, 4.f),
+      direction_dist_(static_cast<float>(-M_PI_2), static_cast<float>(M_PI_2)) {
   switch (status) {
     case Status::susceptible:
       setFillColor(sf::Color::Green);
@@ -20,9 +28,18 @@ Enemy::Enemy(Map const& map, sf::Vector2f position, Status status, float speed)
       setFillColor(sf::Color::Black);
       break;
   }
+
+  std::uniform_real_distribution<float> theta_dist(0.f,
+                                                   static_cast<float>(M_2_PI));
+
+  float const theta{theta_dist(eng_)};
+
+  direction_ = {std::cos(theta), std::sin(theta)};
+
+  time_limit_ = sf::seconds(time_dist_(eng_));
 }
 
-Enemy::Enemy(Map const& map, sf::Vector2f position, Status status)
+Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status)
     : Enemy(map, position, status, 30.f) {}
 
 // Functions
@@ -120,18 +137,59 @@ bool Enemy::sees(const Character& character) const {
   }
 }
 
+void Enemy::randomMove(sf::Time const& dt) {
+  if (clock_.getElapsedTime().asSeconds() >= time_limit_.asSeconds()) {
+    clock_.restart();
+
+    float const delta_theta{direction_dist_(eng_)};
+
+    auto const direction_x = direction_.x;
+    auto const direction_y = direction_.y;
+
+    direction_.x = direction_x * std::cos(delta_theta) -
+                   direction_y * std::sin(delta_theta);
+    direction_.y = direction_x * std::sin(delta_theta) +
+                   direction_y * std::cos(delta_theta);
+
+    time_limit_ = sf::seconds(time_dist_(eng_));
+  }
+
+  auto const ds = direction_ * speed_ * dt.asSeconds();
+
+  safeMove(ds);
+
+  auto const& enemy_position = getPosition();
+  auto const min_distance = 0.5f * getSize().x + 0.1f;
+
+  auto const& walls = map_ptr_->getWalls();
+
+  for (auto const& wall : walls) {
+    if (wall.contains(enemy_position + sf::Vector2f{min_distance, 0.f}) ||
+        wall.contains(enemy_position - sf::Vector2f{min_distance, 0.f})) {
+      direction_.x *= -1.f;
+    }
+    if (wall.contains(enemy_position + sf::Vector2f{0.f, min_distance}) ||
+        wall.contains(enemy_position - sf::Vector2f{0.f, min_distance})) {
+      direction_.y *= -1.f;
+    }
+  }
+}
+
 Status Enemy::getStatus() const { return status_; }
 
 void Enemy::evolve(const sf::Time& dt, const Character& character) {
-  if (sees(character) && character.getPosition() != getPosition() &&
-      status_ == Status::infectious) {
-    sf::Vector2f direction{character.getPosition() - getPosition()};
-    float const norm2{direction.x * direction.x + direction.y * direction.y};
-    direction /= std::sqrt(norm2);
+  if (character.getPosition() != getPosition()) {
+    if (sees(character) && status_ == Status::infectious) {
+      sf::Vector2f direction{character.getPosition() - getPosition()};
+      float const norm2{direction.x * direction.x + direction.y * direction.y};
+      direction /= std::sqrt(norm2);
 
-    auto const ds = direction * speed_ * dt.asSeconds();
+      auto const ds = direction * 1.5f * speed_ * dt.asSeconds();
 
-    safeMove(ds);
+      safeMove(ds);
+    } else if (status_ != Status::removed) {
+      randomMove(dt);
+    }
   }
 }
 

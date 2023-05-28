@@ -12,23 +12,58 @@ class Enemy final : public Entity {
  private:
   Status status_;
 
- public:
-  Enemy(Map const&, sf::Vector2f, Status, float);
-  Enemy(Map const&, sf::Vector2f, Status);
+  sf::Vector2f direction_;
 
-  Status getStatus() const;
+  sf::Clock clock_;
 
-  bool sees(const Character&) const;
+  sf::Time time_limit_;
+
+  std::default_random_engine eng_;
+
+  std::uniform_real_distribution<float> time_dist_;
+
+  std::uniform_real_distribution<float> direction_dist_;
 
   /**
-   * @param dt delta time object indicating how much time has passed since the
-   * last render
-   * @param character a reference to the character, used by an infectious
-   * enemy
+   * A function that randomly moves the enemy.
+   */
+  void randomMove(sf::Time const&);
+
+ public:
+  Enemy(Map const&, sf::Vector2f const&, Status const&, float const&);
+  Enemy(Map const&, sf::Vector2f const&, Status const&);
+
+  /**
+   * @returns the status of the enemy.
+   */
+  Status getStatus() const;
+
+  /**
+   * @param character A reference to the character that the enemy could see.
+   * @returns true if the enemy sees the character, false otherwise.
+   */
+  bool sees(const Character& character) const;
+
+  /**
+   * @param dt Delta time object indicating how much time has passed since the
+   * last render.
+   * @param character A reference to the character, used by an infectious
+   * enemy.
    */
   void evolve(const sf::Time& dt, const Character& character);
 
+  /**
+   * A function that turns the status of the enemy on which is called into
+   * "infectious". It can be called only on enemies whose status is
+   * "susceptible".
+   */
   void infect();
+
+  /**
+   * A function that turns the status of the enemy on which is called into
+   * "removed". It can be called only on enemies whose status is
+   * "infectious".
+   */
   void remove();
 };
 }  // namespace fnad

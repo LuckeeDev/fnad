@@ -31,7 +31,7 @@ TEST_CASE("Testing the Enemy class") {
                     std::pow((position_after.y - position_before.y), 2)));
 
       // Test distance traveled after calling evolve
-      CHECK(distance == 30.f);
+      CHECK(distance == 45.f);
 
       // Test distance traveled after calling evolve with character in a
       // different position
@@ -45,7 +45,7 @@ TEST_CASE("Testing the Enemy class") {
           std::sqrt(std::pow((position_after.x - position_before.x), 2) +
                     std::pow((position_after.y - position_before.y), 2)));
 
-      CHECK(distance == 30.f);
+      CHECK(distance == doctest::Approx(45.f));
 
       // Test the dependence of distance on speed
       enemy.setSpeed(2.f);
@@ -59,7 +59,7 @@ TEST_CASE("Testing the Enemy class") {
           std::sqrt(std::pow((position_after.x - position_before.x), 2) +
                     std::pow((position_after.y - position_before.y), 2)));
 
-      CHECK(distance == 2.f);
+      CHECK(distance == doctest::Approx(3.f));
 
       // Test the dependence of distance on time
       time = sf::seconds(5.f);
@@ -73,12 +73,12 @@ TEST_CASE("Testing the Enemy class") {
           std::sqrt(std::pow((position_after.x - position_before.x), 2) +
                     std::pow((position_after.y - position_before.y), 2)));
 
-      CHECK(distance == 10.f);
+      CHECK(distance == doctest::Approx(15.f));
 
       // Check the direction of enemy's motion after calling evolve
-      enemy.setSpeed(1.f);
+      enemy.setSpeed(2.f);
       enemy.setPosition(0.f, 0.f);
-      character.setPosition(4.f, 3.f);
+      character.setPosition(12.f, 9.f);
 
       enemy.evolve(time, character);
 
@@ -102,7 +102,13 @@ TEST_CASE("Testing the Enemy class") {
       susceptible.evolve(time, character);
       auto position_after = susceptible.getPosition();
 
-      CHECK(position_before == position_after);
+      CHECK(position_before != position_after);
+
+      auto displacement =
+          std::sqrt(std::pow(position_after.x - position_before.x, 2.f) +
+                    std::pow(position_after.y - position_before.y, 2.f));
+
+      CHECK(displacement == doctest::Approx(30.f));
     }
 
     SUBCASE("With removed enemy") {
