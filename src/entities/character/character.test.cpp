@@ -41,13 +41,15 @@ TEST_CASE("Testing the Character class") {
     fnad::Enemy infectious(map, character.getPosition(),
                            fnad::Status::infectious);
 
-    CHECK(character.checkContact(infectious) == true);
+    CHECK(character.checkContacts({infectious}) == true);
+    // Life points should still be 3 because not enough time has passed
     CHECK(character.getLifePoints() == 3);
 
     character.resetMovement();
     character.addMovement(fnad::Direction::down);
     character.applyMovement(sf::seconds(100.f));
-    CHECK(character.checkContact(infectious) == false);
+    // Life points should still be 3 because not enough time has passed
+    CHECK(character.checkContacts({infectious}) == false);
     CHECK(character.getLifePoints() == 3);
   }
 
@@ -55,6 +57,6 @@ TEST_CASE("Testing the Character class") {
     fnad::Enemy susceptible(map, sf::Vector2f{170.f, 100.f},
                             fnad::Status::susceptible);
 
-    CHECK(character.checkContact(susceptible) == false);
+    CHECK(character.checkContacts({susceptible}) == false);
   }
 }

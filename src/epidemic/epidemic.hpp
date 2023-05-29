@@ -38,7 +38,7 @@ class Epidemic : private SIR, public sf::Drawable {
   SIR getSIRState() const;
   int count(Status const&) const;
 
-  void evolve(const sf::Time&, Character&);
+  void evolve(const sf::Time&, Character const&);
 };
 }  // namespace fnad
 

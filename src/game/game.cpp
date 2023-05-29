@@ -50,6 +50,15 @@ void Game::run() {
   while (window_.isOpen()) {
     auto const& dt = clock_.restart();
 
+    auto const& enemies = epidemic_.getEnemies();
+
+    character_.checkContacts(enemies);
+
+    if (character_.getLifePoints() <= 0) {
+      win_ = false;
+      break;
+    }
+
     sf::Event event;
 
     while (window_.pollEvent(event)) {
@@ -81,11 +90,6 @@ void Game::run() {
     character_.applyMovement(dt);
 
     epidemic_.evolve(dt, character_);
-
-    if (character_.getLifePoints() <= 0) {
-      win_ = false;
-      break;
-    }
 
     map_.collectKeys(character_);
 

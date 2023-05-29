@@ -14,18 +14,24 @@ Character::Character(Map const& map, sf::Vector2f const& position)
     : Character(map, position, 60.f) {}
 
 // Functions
-bool Character::checkContact(const Enemy& enemy) {
-  if (enemy.getStatus() != Status::infectious) {
-    return false;
-  }
+bool Character::checkContacts(std::vector<Enemy> const& enemies) {
+  bool is_contact{false};
 
-  auto const& enemy_rect = enemy.getGlobalBounds();
+  for (auto const& enemy : enemies) {
+    if (enemy.getStatus() == Status::infectious) {
+      auto const& enemy_rect = enemy.getGlobalBounds();
 
-  auto is_contact = getGlobalBounds().intersects(enemy_rect);
+      auto const intersect = getGlobalBounds().intersects(enemy_rect);
 
-  if (is_contact && last_hit_.getElapsedTime() >= min_elapsed_time) {
-    life_points_ -= 1;
-    last_hit_.restart();
+      if (intersect) {
+        is_contact = true;
+
+        if (last_hit_.getElapsedTime() >= min_elapsed_time) {
+          life_points_ -= 1;
+          last_hit_.restart();
+        }
+      }
+    }
   }
 
   return is_contact;

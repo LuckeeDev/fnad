@@ -23,7 +23,7 @@ class Character final : public Entity {
   Character(Map const&, sf::Vector2f const&, float);
   Character(Map const&, sf::Vector2f const&);
 
-  bool checkContact(const Enemy&);
+  bool checkContacts(std::vector<Enemy> const&);
 
   void resetMovement();
   void addMovement(Direction const&);
