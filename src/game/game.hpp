@@ -21,15 +21,19 @@ class Game final {
   Map& map_;
   Background const& background_;
 
+  sf::Font font_;
+
   bool win_{false};
 
  public:
   Game(sf::RenderWindow&, sf::View&, Character&, Epidemic&, Map&,
        Background const&);
 
-  void printStory() const;
+  void printStory();
 
   void run();
+
+  void end();
 };
 }  // namespace fnad
 

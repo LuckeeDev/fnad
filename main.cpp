@@ -37,5 +37,7 @@ int main() {
     game.printStory();
 
     game.run();
+
+    game.end();
   }
 }
