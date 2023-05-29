@@ -11,7 +11,7 @@ TEST_CASE("Testing the Enemy class") {
 
   tiled_map.load("assets/map/map0.tmx");
 
-  fnad::Map map = fnad::Map::create(tiled_map);
+  fnad::Map map{tiled_map};
 
   SUBCASE("Calling evolve moves the enemy") {
     fnad::Enemy enemy(map, sf::Vector2f{0.f, 0.f}, fnad::Status::infectious,

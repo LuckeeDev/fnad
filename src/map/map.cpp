@@ -12,9 +12,46 @@
 namespace fnad {
 // Constructors
 
-Map::Map(std::vector<Wall> const& walls, std::vector<Spawner> const& spawners,
-         std::vector<Exit> const& exits, std::vector<Key> const& keys)
-    : walls_{walls}, spawners_{spawners}, exits_{exits}, keys_{keys} {}
+Map::Map(tmx::Map const& map) : Map{map, std::vector<sf::Texture>{}} {}
+
+Map::Map(tmx::Map const& map, std::vector<sf::Texture> const& key_textures) {
+  auto const& layers = map.getLayers();
+
+  // Read objects from the first layer and write them to `walls` vector
+  auto const& wall_layer = layers[0]->getLayerAs<tmx::ObjectGroup>();
+  parseLayerInto<Wall>(wall_layer, walls_);
+
+  // Read objects from the second layer and write them to `spawners` vector
+  auto const& spawner_layer = layers[1]->getLayerAs<tmx::ObjectGroup>();
+  parseLayerInto<Spawner>(spawner_layer, spawners_);
+
+  // Read objects from the third layer and write them to `exits` vector
+  auto const& exit_layer = layers[2]->getLayerAs<tmx::ObjectGroup>();
+  parseLayerInto<Exit>(exit_layer, exits_);
+
+  // Read objects from the fourth layer and write them to `keys` vector
+  auto const& key_layer = layers[3]->getLayerAs<tmx::ObjectGroup>();
+  auto const& key_layer_objects = key_layer.getObjects();
+
+  auto const should_load_textures = key_textures.size() > 0;
+
+  std::transform(
+      key_layer_objects.begin(), key_layer_objects.end(),
+      std::back_inserter(keys_),
+      [&key_textures, &should_load_textures, this](tmx::Object const& o) {
+        auto const& AABB = o.getAABB();
+
+        Key key{{AABB.left, AABB.top}, {AABB.width, AABB.height}};
+
+        if (should_load_textures) {
+          auto i = keys_.size() % 3;
+
+          key.setTexture(&key_textures[i]);
+        }
+
+        return key;
+      });
+}
 
 // Private functions
 
@@ -27,23 +64,17 @@ void Map::draw(sf::RenderTarget& target, sf::RenderStates) const {
 }
 
 template <class T>
-T Map::convertObject(tmx::Object const& o) {
-  auto const& AABB = o.getAABB();
-
-  return T(sf::Vector2f{AABB.left, AABB.top},
-           sf::Vector2f{AABB.width, AABB.height});
-}
-
-template <class T>
-std::vector<T> Map::parseLayer(tmx::ObjectGroup const& layer) {
+void Map::parseLayerInto(tmx::ObjectGroup const& layer,
+                         std::vector<T>& layer_vector) {
   auto const& layer_objects = layer.getObjects();
-  std::vector<T> layer_vector;
 
   std::transform(layer_objects.begin(), layer_objects.end(),
-                 std::back_inserter(layer_vector), convertObject<T>);
+                 std::back_inserter(layer_vector), [](tmx::Object const& o) {
+                   auto const& AABB = o.getAABB();
 
-  return layer_vector;
-}
+                   return T({AABB.left, AABB.top}, {AABB.width, AABB.height});
+                 });
+};
 
 // Public functions
 
@@ -75,53 +106,5 @@ int Map::countTakenKeys() const {
   return static_cast<int>(
       std::count_if(keys_.begin(), keys_.end(),
                     [](Key const& key) { return key.getTaken(); }));
-}
-
-Map Map::create(tmx::Map const& map) {
-  return create(map, std::vector<sf::Texture>{});
-}
-
-Map Map::create(tmx::Map const& map,
-                std::vector<sf::Texture> const& key_textures) {
-  auto const& layers = map.getLayers();
-
-  // Read objects from the first layer and write them to `walls` vector
-  auto const& wall_layer = layers[0]->getLayerAs<tmx::ObjectGroup>();
-  auto const& walls = parseLayer<Wall>(wall_layer);
-
-  // Read objects from the second layer and write them to `spawners` vector
-  auto const& spawner_layer = layers[1]->getLayerAs<tmx::ObjectGroup>();
-  auto const& spawners = parseLayer<Spawner>(spawner_layer);
-
-  // Read objects from the third layer and write them to `exits` vector
-  auto const& exit_layer = layers[2]->getLayerAs<tmx::ObjectGroup>();
-  auto const& exits = parseLayer<Exit>(exit_layer);
-
-  // Read objects from the third layer and write them to `exits` vector
-  auto const& key_layer = layers[3]->getLayerAs<tmx::ObjectGroup>();
-  auto const& key_layer_objects = key_layer.getObjects();
-  std::vector<Key> keys;
-  unsigned int key_count{};
-
-  auto const should_load_textures = key_textures.size() > 0;
-
-  std::transform(
-      key_layer_objects.begin(), key_layer_objects.end(),
-      std::back_inserter(keys),
-      [&key_textures, &key_count, &should_load_textures](tmx::Object const& o) {
-        auto key = convertObject<Key>(o);
-
-        if (should_load_textures) {
-          auto i = key_count % 3;
-
-          key.setTexture(&key_textures[i]);
-
-          key_count++;
-        }
-
-        return key;
-      });
-
-  return Map(walls, spawners, exits, keys);
 }
 }  // namespace fnad

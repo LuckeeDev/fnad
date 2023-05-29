@@ -24,7 +24,7 @@ int main() {
       key_textures.push_back(texture);
     }
 
-    fnad::Map map = fnad::Map::create(tiled_map, key_textures);
+    fnad::Map map{tiled_map, key_textures};
 
     const fnad::Background background(tiled_map);
 

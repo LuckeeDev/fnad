@@ -19,7 +19,7 @@ void Entity::handleWallCollision(Axis const& axis, float const& movement) {
   auto const& walls = map_ptr_->getWalls();
   auto const& entity_rect{getGlobalBounds()};
 
-  Map::WallIterator wall{walls.end()};
+  auto wall = walls.end();
 
   for (auto it{walls.begin()}; it < walls.end(); it++) {
     auto const intersects = entity_rect.intersects(*it);

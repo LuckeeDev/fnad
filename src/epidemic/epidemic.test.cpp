@@ -11,7 +11,7 @@ TEST_CASE("Testing Epidemic") {
 
   tiled_map.load("assets/map/map0.tmx");
 
-  fnad::Map map = fnad::Map::create(tiled_map);
+  fnad::Map map{tiled_map};
 
   SUBCASE("Testing evolve") {
     sf::View test_view;

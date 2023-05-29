@@ -9,7 +9,7 @@ TEST_CASE("Testing the Key class") {
 
   tiled_map.load("assets/map/map0.tmx");
 
-  auto map = fnad::Map::create(tiled_map);
+  fnad::Map map{tiled_map};
 
   fnad::Key key{{0.f, 0.f}, {32.f, 32.f}};
   fnad::Character character{map, {10.f, 10.f}};

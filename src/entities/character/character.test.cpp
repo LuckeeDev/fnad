@@ -9,7 +9,7 @@ TEST_CASE("Testing the Character class") {
 
   tiled_map.load("assets/map/map0.tmx");
 
-  fnad::Map map = fnad::Map::create(tiled_map);
+  fnad::Map map{tiled_map};
 
   fnad::Character character{map, sf::Vector2f{0.f, 0.f}, 60.f};
 

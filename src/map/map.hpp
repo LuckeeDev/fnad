@@ -15,45 +15,41 @@ using Exit = sf::FloatRect;
 
 class Map : public sf::Drawable {
  private:
-  const std::vector<Wall> walls_;
-  const std::vector<Spawner> spawners_;
-  const std::vector<Exit> exits_;
+  std::vector<Wall> walls_;
+  std::vector<Spawner> spawners_;
+  std::vector<Exit> exits_;
   std::vector<Key> keys_;
-
-  /**
-   * Convert a tmx::Object to an entity of the game that accepts
-   * a position and a size as its constructor arguments.
-   *
-   * @param object the object to convert
-   * @return an object constructed with the class T
-   */
-  template <class T>
-  static T convertObject(tmx::Object const&);
 
   /**
    * Parse an entire tmx::ObjectGroup layer into a vector of elements of a
    * certain class T.
    *
    * @param layer the layer to parse
-   * @return a vector of T objects
+   * @param layer_vector a vector of T objects to push back the newly created
+   * objects
    */
   template <class T>
-  static std::vector<T> parseLayer(tmx::ObjectGroup const&);
+  void parseLayerInto(tmx::ObjectGroup const&, std::vector<T>&);
 
   void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
-  /**
-   * Construct a Map from vectors of walls, spawners, exits and keys.
-   *
-   * @param walls a vector of walls
-   * @param spawners a vector of spawners
-   * @param exits a vector of exits
-   * @param keys a vector of keys
-   */
-  Map(std::vector<Wall> const&, std::vector<Spawner> const&,
-      std::vector<Exit> const&, std::vector<Key> const&);
-
  public:
+  /**
+   * Create a map with textured keys.
+   *
+   * @param map a parsed Tiled map
+   * @param key_textures a vector of `sf::Texture` to be used for the keys
+   */
+  Map(tmx::Map const& map, std::vector<sf::Texture> const& key_textures);
+
+  /**
+   * Create a map without textured keys. This should be used for testing purpose
+   * only.
+   *
+   * @param map a parsed Tiled map
+   */
+  Map(tmx::Map const& map);
+
   // Get all walls in the map
   std::vector<Wall> const& getWalls() const;
   // Get all spawners in the map
@@ -64,28 +60,13 @@ class Map : public sf::Drawable {
   std::vector<Key> const& getKeys() const;
 
   /**
-   * Static method to create a map without loading textures for the keys.
-   * Should be used for testing purpose only.
-   *
-   * @param map a parsed tmx map
-   */
-  static Map create(tmx::Map const&);
-
-  /**
-   * Static method to create a map and loading textures for the keys.
-   *
-   * @param map a parsed tmx map
-   * @param textures a vector of textures to be used for the keys
-   */
-  static Map create(tmx::Map const&, std::vector<sf::Texture> const&);
-
-  /**
    * Allow the player to collect keys. It checks for intersections
    * between the Character and all keys.
    *
    * @param character the character used to check for intersections
    */
   void collectKeys(Character const&);
+
   /**
    * Count how many keys have been collected.
    *
@@ -100,8 +81,6 @@ class Map : public sf::Drawable {
    * @return true if the player has won, false otherwise
    */
   bool hasWon(Character const&) const;
-
-  using WallIterator = std::vector<Wall>::const_iterator;
 };
 }  // namespace fnad
 
