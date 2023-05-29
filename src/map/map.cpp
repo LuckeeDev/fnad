@@ -79,7 +79,7 @@ void Map::parseLayerInto(tmx::ObjectGroup const& layer,
 // Public functions
 
 std::vector<Wall> const& Map::getWalls() const { return walls_; }
-std::vector<Spawner> const& Map::getSpawners() const { return spawners_; }
+std::vector<Spawner>& Map::getSpawners() { return spawners_; }
 std::vector<Exit> const& Map::getExits() const { return exits_; }
 std::vector<Key> const& Map::getKeys() const { return keys_; }
 

@@ -27,17 +27,15 @@ void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
   }
 }
 
-Epidemic::Epidemic(const int s, const int i, Map const& map)
+Epidemic::Epidemic(const int s, const int i, Map& map)
     : SIR{static_cast<double>(s), static_cast<double>(i), 0.} {
-  auto spawners = map.getSpawners();
+  auto& spawners = map.getSpawners();
   double total_area = std::accumulate(spawners.begin(), spawners.end(), 0.,
                                       [](double sum, Spawner const& spawner) {
                                         return sum + spawner.getArea();
                                       });
 
-  std::vector<Enemy> enemies;
-
-  enemies.reserve(static_cast<unsigned int>(s + i));
+  enemies_.reserve(static_cast<unsigned int>(s + i));
 
   std::vector<double> weights;
   // Fill weights with the ratio between the Spawner area and the total area
@@ -53,17 +51,17 @@ Epidemic::Epidemic(const int s, const int i, Map const& map)
 
   for (int j{}; j < i; j++) {
     auto& spawner = spawners[spawner_dist(eng)];
-    Enemy enemy(map, spawner.getSpawnPoint(), fnad::Status::infectious);
-    enemies.push_back(enemy);
+
+    enemies_.push_back(
+        {map, spawner.getSpawnPoint(), fnad::Status::infectious});
   }
 
   for (int j{}; j < s; j++) {
     auto& spawner = spawners[spawner_dist(eng)];
-    Enemy enemy(map, spawner.getSpawnPoint(), fnad::Status::susceptible);
-    enemies.push_back(enemy);
-  }
 
-  enemies_ = enemies;
+    enemies_.push_back(
+        {map, spawner.getSpawnPoint(), fnad::Status::susceptible});
+  }
 }
 
 std::vector<Enemy> const& Epidemic::getEnemies() const { return enemies_; }

@@ -1,17 +1,17 @@
 #include "game.hpp"
 
-#include <iostream>
-
 namespace fnad {
-Game::Game(sf::RenderWindow& window, sf::View& view, Character& character,
-           Epidemic& epidemic, Map& map, Background const& background)
-    : window_{window},
-      view_{view},
-      view_height_{view.getSize().y},
-      character_{character},
-      epidemic_{epidemic},
-      map_{map},
-      background_{background} {
+Game::Game(tmx::Map const& tiled_map,
+           std::vector<sf::Texture> const& key_textures)
+    : window_{sf::VideoMode::getDesktopMode(), "Five nights at DIFA"},
+      view_{{0.f, 0.f}, {300.f, 200.f}},
+      map_{tiled_map, key_textures},
+      background_{tiled_map},
+      character_{map_, {0.f, 0.f}},
+      epidemic_{99, 1, map_},
+      default_view_height_{view_.getSize().y} {
+  window_.setFramerateLimit(60);
+
   font_.loadFromFile("assets/fonts/PressStart2P-Regular.ttf");
 }
 
@@ -26,7 +26,8 @@ void Game::printStory() {
         auto aspect_ratio = static_cast<float>(event.size.width) /
                             static_cast<float>(event.size.height);
 
-        view_.setSize({aspect_ratio * view_height_, view_height_});
+        view_.setSize(
+            {aspect_ratio * default_view_height_, default_view_height_});
       }
     }
 
@@ -68,7 +69,8 @@ void Game::run() {
         auto aspect_ratio = static_cast<float>(event.size.width) /
                             static_cast<float>(event.size.height);
 
-        view_.setSize({aspect_ratio * view_height_, view_height_});
+        view_.setSize(
+            {aspect_ratio * default_view_height_, default_view_height_});
       }
     }
 
@@ -133,7 +135,8 @@ void Game::end() {
         auto aspect_ratio = static_cast<float>(event.size.width) /
                             static_cast<float>(event.size.height);
 
-        view_.setSize({aspect_ratio * view_height_, view_height_});
+        view_.setSize(
+            {aspect_ratio * default_view_height_, default_view_height_});
 
         window_.setView(view_);
       }

@@ -18,11 +18,11 @@ class Entity : public sf::RectangleShape {
   void handleWallCollision(Axis const&, float const&);
 
  protected:
-  const Map* map_ptr_;
+  const Map* const map_ptr_;
   // Defined in pixels/second
   float speed_;
 
-  Entity(Map const&, sf::Vector2f, float);
+  Entity(Map const&, sf::Vector2f const&, float);
 
   void safeMove(sf::Vector2f const&);
 

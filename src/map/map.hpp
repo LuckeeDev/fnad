@@ -53,7 +53,7 @@ class Map : public sf::Drawable {
   // Get all walls in the map
   std::vector<Wall> const& getWalls() const;
   // Get all spawners in the map
-  std::vector<Spawner> const& getSpawners() const;
+  std::vector<Spawner>& getSpawners();
   // Get all exits in the map
   std::vector<Exit> const& getExits() const;
   // Get all keys in the map

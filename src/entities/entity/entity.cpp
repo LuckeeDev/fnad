@@ -5,7 +5,7 @@
 #include "../../map/map.hpp"
 
 namespace fnad {
-Entity::Entity(Map const& map, sf::Vector2f position, float speed)
+Entity::Entity(Map const& map, sf::Vector2f const& position, float speed)
     : sf::RectangleShape(sf::Vector2f{10.f, 10.f}),
       map_ptr_{&map},
       speed_{speed} {
