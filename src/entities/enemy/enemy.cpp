@@ -29,8 +29,8 @@ Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status,
       break;
   }
 
-  std::uniform_real_distribution<float> theta_dist(0.f,
-                                                   static_cast<float>(M_2_PI));
+  std::uniform_real_distribution<float> theta_dist(
+      0.f, static_cast<float>(M_PI * 2.));
 
   float const theta{theta_dist(eng_)};
 
