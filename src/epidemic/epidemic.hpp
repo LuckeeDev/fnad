@@ -1,14 +1,16 @@
 #ifndef EPIDEMIC_HPP
 #define EPIDEMIC_HPP
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/View.hpp>
+#include <SFML/System/Time.hpp>
 #include <vector>
 
 #include "../entities/enemy/enemy.hpp"
 
 namespace fnad {
-// class Enemy;
-
 struct SIR {
   double s_;
   double i_;
@@ -36,7 +38,7 @@ class Epidemic : private SIR, public sf::Drawable {
   SIR getSIRState() const;
   int count(Status const&) const;
 
-  void evolve(const sf::Time&, const Character&);
+  void evolve(const sf::Time&, Character&);
 };
 }  // namespace fnad
 

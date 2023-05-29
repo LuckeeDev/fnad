@@ -6,6 +6,7 @@
 #include <numeric>
 #include <random>
 
+#include "../entities/character/character.hpp"
 #include "../entities/enemy/enemy.hpp"
 #include "../map/map.hpp"
 
@@ -76,7 +77,7 @@ int Epidemic::count(Status const& status) const {
   return static_cast<int>(count);
 }
 
-void Epidemic::evolve(const sf::Time& dt, const Character& character) {
+void Epidemic::evolve(const sf::Time& dt, Character& character) {
   double const seconds = static_cast<double>(dt.asSeconds());
   double const days = seconds * days_per_second_;
 
@@ -129,6 +130,7 @@ void Epidemic::evolve(const sf::Time& dt, const Character& character) {
 
   for (auto& enemy : enemies_) {
     enemy.evolve(dt, character);
+    character.checkContact(enemy);
   }
 }
 }  // namespace fnad

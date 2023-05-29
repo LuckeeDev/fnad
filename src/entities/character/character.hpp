@@ -1,7 +1,9 @@
 #ifndef CHARACTER_HPP
 #define CHARACTER_HPP
 
-#include <SFML/Graphics.hpp>
+#include <SFML/System/Clock.hpp>
+#include <SFML/System/Time.hpp>
+#include <SFML/System/Vector2.hpp>
 
 #include "../entity/entity.hpp"
 
@@ -12,8 +14,10 @@ enum class Direction { up, down, right, left };
 
 class Character final : public Entity {
  private:
+  const sf::Time min_elapsed_time{sf::seconds(3.f)};
   int life_points_;
   sf::Vector2f movement_;
+  sf::Clock last_hit_;
 
  public:
   Character(Map const&, sf::Vector2f const&, float);

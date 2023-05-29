@@ -42,13 +42,13 @@ TEST_CASE("Testing the Character class") {
                            fnad::Status::infectious);
 
     CHECK(character.checkContact(infectious) == true);
-    CHECK(character.getLifePoints() == 2);
+    CHECK(character.getLifePoints() == 3);
 
     character.resetMovement();
     character.addMovement(fnad::Direction::down);
     character.applyMovement(sf::seconds(100.f));
     CHECK(character.checkContact(infectious) == false);
-    CHECK(character.getLifePoints() == 2);
+    CHECK(character.getLifePoints() == 3);
   }
 
   SUBCASE("Check contact with non infectious enemy") {

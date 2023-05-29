@@ -49,6 +49,11 @@ void Game::run() {
 
     epidemic_.evolve(dt, character_);
 
+    if (character_.getLifePoints() <= 0) {
+      win_ = false;
+      break;
+    }
+
     map_.collectKeys(character_);
 
     if (map_.hasWon(character_)) {

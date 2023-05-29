@@ -23,8 +23,9 @@ bool Character::checkContact(const Enemy& enemy) {
 
   auto is_contact = getGlobalBounds().intersects(enemy_rect);
 
-  if (is_contact) {
+  if (is_contact && last_hit_.getElapsedTime() >= min_elapsed_time) {
     life_points_ -= 1;
+    last_hit_.restart();
   }
 
   return is_contact;
