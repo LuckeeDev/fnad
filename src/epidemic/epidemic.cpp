@@ -12,11 +12,12 @@
 
 namespace fnad {
 void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
-  auto const& view_size = view_.getSize();
-  auto const& view_center = view_.getCenter();
+  auto const& view = target.getView();
+  auto const& view_size = view.getSize();
+  auto const& view_center = view.getCenter();
   auto const& top_left = view_center - view_size / 2.f;
 
-  sf::FloatRect view_rect(top_left, view_size);
+  sf::FloatRect view_rect{top_left, view_size};
 
   for (auto const& e : enemies_) {
     if (e.getStatus() != Status::removed &&
@@ -26,8 +27,8 @@ void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
   }
 }
 
-Epidemic::Epidemic(const int s, const int i, Map const& map, sf::View& view)
-    : SIR{static_cast<double>(s), static_cast<double>(i), 0.}, view_{view} {
+Epidemic::Epidemic(const int s, const int i, Map const& map)
+    : SIR{static_cast<double>(s), static_cast<double>(i), 0.} {
   auto spawners = map.getSpawners();
   double total_area = std::accumulate(spawners.begin(), spawners.end(), 0.,
                                       [](double sum, Spawner const& spawner) {

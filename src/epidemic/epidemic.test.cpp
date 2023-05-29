@@ -14,8 +14,7 @@ TEST_CASE("Testing Epidemic") {
   fnad::Map map{tiled_map};
 
   SUBCASE("Testing evolve") {
-    sf::View test_view;
-    fnad::Epidemic epidemic(99, 1, map, test_view);
+    fnad::Epidemic epidemic(99, 1, map);
     fnad::Character character(map, {0.f, 0.f});
 
     sf::Time time{sf::seconds(1.f)};

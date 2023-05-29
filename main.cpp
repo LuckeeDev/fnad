@@ -28,7 +28,7 @@ int main() {
 
     const fnad::Background background(tiled_map);
 
-    fnad::Epidemic epidemic(99, 1, map, view);
+    fnad::Epidemic epidemic(99, 1, map);
 
     fnad::Character character(map, sf::Vector2f{0.f, 0.f});
 
