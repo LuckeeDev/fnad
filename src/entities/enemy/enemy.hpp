@@ -24,6 +24,8 @@ class Enemy final : public Entity {
 
   std::uniform_real_distribution<float> direction_dist_;
 
+  Direction animation_direction_;
+  sf::Clock animation_clock_;
   static sf::Texture dynamic_texture_;
 
   /**
