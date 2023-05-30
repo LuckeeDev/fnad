@@ -202,6 +202,8 @@ void Enemy::evolve(const sf::Time& dt, const Character& character) {
       randomMove(dt);
     }
   }
+
+  animate();
 }
 
 void Enemy::infect() {
