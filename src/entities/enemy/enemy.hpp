@@ -24,6 +24,8 @@ class Enemy final : public Entity {
 
   std::uniform_real_distribution<float> direction_dist_;
 
+  static sf::Texture dynamic_texture_;
+
   /**
    * A function that randomly moves the enemy.
    */
