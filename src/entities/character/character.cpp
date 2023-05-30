@@ -91,10 +91,16 @@ void Character::animate() {
     animation_direction_ = Direction::up;
   }
 
-  int texture_position{
-      96 * static_cast<int>(animation_direction_) +
-      16 * ((animation_clock_.getElapsedTime().asMilliseconds() / 100) % 6)};
+  auto dt = animation_clock_.getElapsedTime().asMilliseconds();
+
+  int texture_position{96 * static_cast<int>(animation_direction_) +
+                       16 * ((dt / 100) % 6)};
+
   setTextureRect({texture_position, 8, 16, 24});
+
+  if (dt >= 600) {
+    animation_clock_.restart();
+  }
 }
 
 bool Character::isVisible() const {
