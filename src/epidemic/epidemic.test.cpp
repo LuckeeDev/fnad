@@ -13,7 +13,7 @@ TEST_CASE("Testing Epidemic") {
 
   fnad::Map map{tiled_map};
 
-  fnad::Epidemic epidemic(99, 1, map);
+  fnad::Epidemic epidemic{{99., 1., 0.}, {}, map};
   const fnad::Character character(map, {0.f, 0.f});
 
   // Test count method

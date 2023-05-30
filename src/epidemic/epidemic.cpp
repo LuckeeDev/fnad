@@ -11,6 +11,7 @@
 #include "../map/map.hpp"
 
 namespace fnad {
+// Private methods
 void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
   auto const& view = target.getView();
   auto const& view_size = view.getSize();
@@ -27,15 +28,16 @@ void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
   }
 }
 
-Epidemic::Epidemic(const int s, const int i, Map& map)
-    : sir_state_{static_cast<double>(s), static_cast<double>(i), 0.} {
+// Constructor
+Epidemic::Epidemic(SIRState const& state, SIRParams const& params, Map& map)
+    : sir_state_{state}, sir_params_{params} {
   auto& spawners = map.getSpawners();
   double total_area = std::accumulate(spawners.begin(), spawners.end(), 0.,
                                       [](double sum, Spawner const& spawner) {
                                         return sum + spawner.getArea();
                                       });
 
-  enemies_.reserve(static_cast<unsigned int>(s + i));
+  enemies_.reserve(static_cast<unsigned int>(sir_state_.s + sir_state_.i));
 
   std::vector<double> weights;
   // Fill weights with the ratio between the Spawner area and the total area
@@ -49,14 +51,14 @@ Epidemic::Epidemic(const int s, const int i, Map& map)
   std::discrete_distribution<unsigned int> spawner_dist(weights.begin(),
                                                         weights.end());
 
-  for (int j{}; j < i; j++) {
+  for (int j{}; j < sir_state_.i; j++) {
     auto& spawner = spawners[spawner_dist(eng)];
 
     enemies_.push_back(
         {map, spawner.getSpawnPoint(), fnad::Status::infectious});
   }
 
-  for (int j{}; j < s; j++) {
+  for (int j{}; j < sir_state_.s; j++) {
     auto& spawner = spawners[spawner_dist(eng)];
 
     enemies_.push_back(
@@ -64,6 +66,7 @@ Epidemic::Epidemic(const int s, const int i, Map& map)
   }
 }
 
+// Public methods
 std::vector<Enemy> const& Epidemic::getEnemies() const { return enemies_; }
 
 SIRState Epidemic::getSIRState() const { return sir_state_; }

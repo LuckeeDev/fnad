@@ -8,7 +8,7 @@ Game::Game(tmx::Map const& tiled_map,
       map_{tiled_map, key_textures},
       background_{tiled_map},
       character_{map_, {0.f, 0.f}},
-      epidemic_{99, 1, map_},
+      epidemic_{{99., 1., 0.}, {}, map_},
       game_view_height{200.f} {
   window_.setFramerateLimit(60);
 

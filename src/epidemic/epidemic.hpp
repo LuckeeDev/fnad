@@ -35,7 +35,7 @@ class Epidemic : public sf::Drawable {
   virtual void draw(sf::RenderTarget&, sf::RenderStates) const;
 
  public:
-  Epidemic(const int, const int, Map&);
+  Epidemic(SIRState const&, SIRParams const&, Map&);
 
   std::vector<Enemy> const& getEnemies() const;
   SIRState getSIRState() const;
