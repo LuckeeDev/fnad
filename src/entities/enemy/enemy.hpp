@@ -71,6 +71,8 @@ class Enemy final : public Entity {
    * "infectious".
    */
   void remove();
+
+  void animate();
 };
 }  // namespace fnad
 
