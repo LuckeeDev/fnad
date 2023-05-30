@@ -48,6 +48,8 @@ void Game::printStory() {
 }
 
 void Game::run() {
+  Enemy::loadTexture();
+
   while (window_.isOpen()) {
     auto const& dt = clock_.restart();
 
