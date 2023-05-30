@@ -7,8 +7,6 @@ namespace fnad {
 // Constructors
 Character::Character(Map const& map, sf::Vector2f const& position, float speed)
     : Entity(map, position, speed), life_points_{3}, movement_{0.f, 0.f} {
-  setFillColor(sf::Color::Blue);
-
   static_texture_.loadFromFile("assets/skins/character/character_static.png");
   dynamic_texture_.loadFromFile("assets/skins/character/character_dynamic.png");
 }
@@ -71,6 +69,18 @@ void Character::applyMovement(sf::Time const& dt) {
 
     safeMove(ds);
   }
+}
+
+void Character::animate(Direction const& direction, bool is_moving) {
+  if (is_moving) {
+    setTexture(&dynamic_texture_);
+  } else {
+    setTexture(&static_texture_);
+  }
+  int texture_position{
+      96 * static_cast<int>(direction) +
+      16 * ((animation_clock_.getElapsedTime().asMilliseconds() / 100) % 6)};
+  setTextureRect({texture_position, 8, 16, 24});
 }
 
 bool Character::isVisible() const {
