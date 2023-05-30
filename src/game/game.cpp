@@ -112,7 +112,9 @@ void Game::run() {
 
     window_.draw(epidemic_);
 
-    window_.draw(character_);
+    if (character_.isVisible()) {
+      window_.draw(character_);
+    }
 
     window_.display();
   }
