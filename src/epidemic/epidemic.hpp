@@ -18,8 +18,8 @@ struct SIRState {
 };
 
 struct SIRParams {
-  double beta{0.7};
-  double gamma{0.05};
+  const double beta{0.7};
+  const double gamma{0.05};
 };
 
 class Epidemic : public sf::Drawable {
