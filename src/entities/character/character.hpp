@@ -9,6 +9,7 @@
 
 namespace fnad {
 int const DEFAULT_LIFE_POINTS{3};
+
 class Enemy;
 
 enum class Direction { up, down, right, left };
@@ -19,6 +20,9 @@ class Character final : public Entity {
   int life_points_;
   sf::Vector2f movement_;
   sf::Clock last_hit_;
+  sf::Clock animation_clock_;
+  sf::Texture static_texture_;
+  sf::Texture dynamic_texture_;
 
  public:
   Character(Map const&, sf::Vector2f const&, float);
@@ -29,7 +33,6 @@ class Character final : public Entity {
   void resetMovement();
   void addMovement(Direction const&);
   void applyMovement(sf::Time const&);
-
   int getLifePoints() const;
 
   bool isVisible() const;
