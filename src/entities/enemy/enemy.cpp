@@ -218,4 +218,30 @@ void Enemy::remove() {
   status_ = Status::removed;
   setFillColor(sf::Color::Black);
 }
+
+void Enemy::animate() {
+  auto direction_x = direction_.x;
+  auto direction_y = direction_.y;
+
+  if (direction_x > 0.f && direction_x > direction_y) {
+    animation_direction_ = Direction::right;
+  } else if (direction_x < 0.f && direction_x < direction_y) {
+    animation_direction_ = Direction::left;
+  } else if (direction_x < 0.f && direction_x > direction_y) {
+    animation_direction_ = Direction::down;
+  } else {
+    animation_direction_ = Direction::up;
+  }
+
+  auto dt = animation_clock_.getElapsedTime().asMilliseconds();
+
+  int texture_position{96 * static_cast<int>(animation_direction_) +
+                       16 * ((dt / 100) % 6)};
+
+  setTextureRect({texture_position, 8, 16, 24});
+
+  if (dt >= 600) {
+    animation_clock_.restart();
+  }
+}
 }  // namespace fnad
