@@ -6,7 +6,10 @@
 namespace fnad {
 // Constructors
 Character::Character(Map const& map, sf::Vector2f const& position, float speed)
-    : Entity(map, position, speed), life_points_{3}, movement_{0.f, 0.f} {
+    : Entity(map, position, speed),
+      life_points_{3},
+      movement_{0.f, 0.f},
+      animation_direction_{Direction::down} {
   static_texture_.loadFromFile("assets/skins/character/character_static.png");
   dynamic_texture_.loadFromFile("assets/skins/character/character_dynamic.png");
 }
@@ -71,14 +74,25 @@ void Character::applyMovement(sf::Time const& dt) {
   }
 }
 
-void Character::animate(Direction const& direction, bool is_moving) {
-  if (is_moving) {
+void Character::animate() {
+  if (movement_ != sf::Vector2f{0.f, 0.f}) {
     setTexture(&dynamic_texture_);
   } else {
     setTexture(&static_texture_);
   }
+
+  if (movement_.x > 0.f) {
+    animation_direction_ = Direction::right;
+  } else if (movement_.x < 0.f) {
+    animation_direction_ = Direction::left;
+  } else if (movement_.y > 0.f) {
+    animation_direction_ = Direction::down;
+  } else if (movement_.y < 0.f) {
+    animation_direction_ = Direction::up;
+  }
+
   int texture_position{
-      96 * static_cast<int>(direction) +
+      96 * static_cast<int>(animation_direction_) +
       16 * ((animation_clock_.getElapsedTime().asMilliseconds() / 100) % 6)};
   setTextureRect({texture_position, 8, 16, 24});
 }
