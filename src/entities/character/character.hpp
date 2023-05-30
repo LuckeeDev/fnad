@@ -33,6 +33,9 @@ class Character final : public Entity {
   void resetMovement();
   void addMovement(Direction const&);
   void applyMovement(sf::Time const&);
+
+  void animate(Direction const&, bool);
+
   int getLifePoints() const;
 
   bool isVisible() const;
