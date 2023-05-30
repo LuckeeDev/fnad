@@ -11,6 +11,22 @@
 #include "../map/map.hpp"
 
 namespace fnad {
+// SIR constructors
+SIRState::SIRState(int new_s, int new_i, int new_r)
+    : s{static_cast<double>(new_s)},
+      i{static_cast<double>(new_i)},
+      r{static_cast<double>(new_r)} {
+  assert(new_s > 0);
+  assert(new_i > 0);
+  assert(new_r >= 0);
+};
+
+SIRParams::SIRParams(double new_beta, double new_gamma)
+    : beta{new_beta}, gamma{new_gamma} {
+  assert(new_beta >= 0. && new_beta < 1.);
+  assert(new_gamma >= 0. && new_gamma <= 1.);
+};
+
 // Private methods
 void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
   auto const& view = target.getView();
@@ -28,9 +44,19 @@ void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
   }
 }
 
-// Constructor
-Epidemic::Epidemic(SIRState const& state, SIRParams const& params, Map& map)
-    : sir_state_{state}, sir_params_{params} {
+// Epidemic constructors
+Epidemic::Epidemic(){};
+
+// Public methods
+std::vector<Enemy> const& Epidemic::getEnemies() const { return enemies_; }
+
+void Epidemic::setSIRParams(SIRParams const& params) { sir_params_ = params; }
+
+void Epidemic::resetSIRState(SIRState const& state, Map& map) {
+  sir_state_ = state;
+
+  enemies_.clear();
+
   auto& spawners = map.getSpawners();
   double total_area = std::accumulate(spawners.begin(), spawners.end(), 0.,
                                       [](double sum, Spawner const& spawner) {
@@ -66,9 +92,6 @@ Epidemic::Epidemic(SIRState const& state, SIRParams const& params, Map& map)
   }
 }
 
-// Public methods
-std::vector<Enemy> const& Epidemic::getEnemies() const { return enemies_; }
-
 SIRState Epidemic::getSIRState() const { return sir_state_; }
 
 int Epidemic::count(Status const& status) const {
@@ -80,6 +103,8 @@ int Epidemic::count(Status const& status) const {
 }
 
 void Epidemic::evolve(const sf::Time& dt, Character const& character) {
+  assert(sir_state_.i != 0. && sir_state_.s != 0.);
+
   double const seconds = static_cast<double>(dt.asSeconds());
   double const days = seconds * days_per_second_;
 
@@ -129,7 +154,9 @@ void Epidemic::evolve(const sf::Time& dt, Character const& character) {
     }
   }
 
-  sir_state_ = {new_s, new_i, new_r};
+  sir_state_.s = new_s;
+  sir_state_.i = new_i;
+  sir_state_.r = new_r;
 
   for (auto& enemy : enemies_) {
     enemy.evolve(dt, character);
