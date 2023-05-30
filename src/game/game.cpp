@@ -104,6 +104,8 @@ void Game::run() {
     view_.setCenter(character_.getPosition());
     window_.setView(view_);
 
+    character_.animate();
+
     window_.clear(sf::Color::Black);
 
     window_.draw(background_);
