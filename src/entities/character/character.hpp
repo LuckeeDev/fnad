@@ -12,8 +12,6 @@ int const DEFAULT_LIFE_POINTS{3};
 
 class Enemy;
 
-enum class Direction { right, up, left, down };
-
 class Character final : public Entity {
  private:
   const sf::Time min_elapsed_time{sf::seconds(3.f)};

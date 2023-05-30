@@ -13,6 +13,8 @@ enum class Axis {
   y,
 };
 
+enum class Direction { right, up, left, down };
+
 class Entity : public sf::RectangleShape {
  private:
   void handleWallCollision(Axis const&, float const&);

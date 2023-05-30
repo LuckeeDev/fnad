@@ -26,7 +26,6 @@ class Enemy final : public Entity {
 
   Direction animation_direction_;
   sf::Clock animation_clock_;
-  static sf::Texture dynamic_texture_;
 
   /**
    * A function that randomly moves the enemy.
