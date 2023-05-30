@@ -8,6 +8,8 @@
 #include "../entity/entity.hpp"
 
 namespace fnad {
+const int DEFAULT_LIFE_POINTS = 3;
+
 class Enemy;
 
 enum class Direction { up, down, right, left };

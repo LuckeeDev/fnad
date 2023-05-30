@@ -6,7 +6,9 @@
 namespace fnad {
 // Constructors
 Character::Character(Map const& map, sf::Vector2f const& position, float speed)
-    : Entity(map, position, speed), life_points_{3}, movement_{0.f, 0.f} {
+    : Entity(map, position, speed),
+      life_points_{DEFAULT_LIFE_POINTS},
+      movement_{0.f, 0.f} {
   setFillColor(sf::Color::Blue);
 }
 
@@ -26,7 +28,8 @@ bool Character::checkContacts(std::vector<Enemy> const& enemies) {
       if (intersect) {
         is_contact = true;
 
-        if (last_hit_.getElapsedTime() >= min_elapsed_time) {
+        if (life_points_ == DEFAULT_LIFE_POINTS ||
+            last_hit_.getElapsedTime() >= min_elapsed_time) {
           life_points_ -= 1;
           last_hit_.restart();
         }

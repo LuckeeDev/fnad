@@ -42,15 +42,17 @@ TEST_CASE("Testing the Character class") {
                            fnad::Status::infectious);
 
     CHECK(character.checkContacts({infectious}) == true);
-    // Life points should still be 3 because not enough time has passed
-    CHECK(character.getLifePoints() == 3);
+    CHECK(character.getLifePoints() == 2);
+
+    // Life points should still be 2 because not enough time has passed
+    CHECK(character.checkContacts({infectious}) == true);
+    CHECK(character.getLifePoints() == 2);
 
     character.resetMovement();
     character.addMovement(fnad::Direction::down);
     character.applyMovement(sf::seconds(100.f));
-    // Life points should still be 3 because not enough time has passed
     CHECK(character.checkContacts({infectious}) == false);
-    CHECK(character.getLifePoints() == 3);
+    CHECK(character.getLifePoints() == 2);
   }
 
   SUBCASE("Check contact with non infectious enemy") {
