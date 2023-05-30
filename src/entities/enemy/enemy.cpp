@@ -16,7 +16,8 @@ Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status,
       status_{status},
       eng_((std::random_device())()),
       time_dist_(2.f, 4.f),
-      direction_dist_(static_cast<float>(-M_PI_2), static_cast<float>(M_PI_2)) {
+      direction_dist_(static_cast<float>(-M_PI_2), static_cast<float>(M_PI_2)),
+      animation_direction_{Direction::down} {
   switch (status) {
     case Status::susceptible:
       setFillColor(sf::Color::Green);
