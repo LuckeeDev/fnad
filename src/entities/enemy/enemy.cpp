@@ -9,6 +9,9 @@
 #include "../character/character.hpp"
 
 namespace fnad {
+// Static data members
+sf::Texture Enemy::dynamic_texture_;
+
 // Constructors
 Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status,
              float const& speed)
@@ -18,6 +21,8 @@ Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status,
       time_dist_(2.f, 4.f),
       direction_dist_(static_cast<float>(-M_PI_2), static_cast<float>(M_PI_2)),
       animation_direction_{Direction::down} {
+  setTexture(&dynamic_texture_);
+
   switch (status) {
     case Status::susceptible:
       setFillColor(sf::Color::Green);
