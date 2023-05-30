@@ -8,6 +8,7 @@
 #include "../entity/entity.hpp"
 
 namespace fnad {
+int const DEFAULT_LIFE_POINTS{3};
 class Enemy;
 
 enum class Direction { up, down, right, left };
@@ -30,6 +31,8 @@ class Character final : public Entity {
   void applyMovement(sf::Time const&);
 
   int getLifePoints() const;
+
+  bool isVisible() const;
 };
 }  // namespace fnad
 
