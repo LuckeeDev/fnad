@@ -21,6 +21,7 @@ class Character final : public Entity {
   sf::Vector2f movement_;
   sf::Clock last_hit_;
   sf::Clock animation_clock_;
+  Direction animation_direction_;
   sf::Texture static_texture_;
   sf::Texture dynamic_texture_;
 
