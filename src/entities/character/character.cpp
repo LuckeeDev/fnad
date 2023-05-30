@@ -9,10 +9,8 @@ Character::Character(Map const& map, sf::Vector2f const& position, float speed)
     : Entity(map, position, speed), life_points_{3}, movement_{0.f, 0.f} {
   setFillColor(sf::Color::Blue);
 
-  static_texture_.loadFromFile(
-      "../../../assets/skins/character/character_static.png");
-  dynamic_texture_.loadFromFile(
-      "../../../assets/skins/character/character_dynamic.png");
+  static_texture_.loadFromFile("assets/skins/character/character_static.png");
+  dynamic_texture_.loadFromFile("assets/skins/character/character_dynamic.png");
 }
 
 Character::Character(Map const& map, sf::Vector2f const& position)
