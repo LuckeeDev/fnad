@@ -43,6 +43,10 @@ Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status)
     : Enemy(map, position, status, 30.f) {}
 
 // Functions
+void Enemy::loadTexture() {
+  dynamic_texture_.loadFromFile("assets/skins/enemy/enemy_dynamic.png");
+}
+
 bool Enemy::sees(const Character& character) const {
   auto const& enemy_position = getPosition();
   auto const& character_position = character.getPosition();
