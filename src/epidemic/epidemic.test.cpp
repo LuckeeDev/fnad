@@ -31,7 +31,7 @@ TEST_CASE("Testing Epidemic") {
         i_1{epidemic.count(fnad::Status::infectious)},
         r_1{epidemic.count(fnad::Status::removed)};
 
-    fnad::SIR sir{epidemic.getSIRState()};
+    auto const sir = epidemic.getSIRState();
 
     CHECK(s_0 == 99);
     CHECK(i_0 == 1);
@@ -43,8 +43,8 @@ TEST_CASE("Testing Epidemic") {
     CHECK(i_0 != i_1);
     CHECK(r_0 != r_1);
 
-    CHECK(std::round(sir.s_) == std::round(s_1));
-    CHECK(std::round(sir.i_) == std::round(i_1));
-    CHECK(std::round(sir.r_) == std::round(r_1));
+    CHECK(std::round(sir.s) == std::round(s_1));
+    CHECK(std::round(sir.i) == std::round(i_1));
+    CHECK(std::round(sir.r) == std::round(r_1));
   }
 }

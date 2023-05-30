@@ -28,7 +28,7 @@ void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
 }
 
 Epidemic::Epidemic(const int s, const int i, Map& map)
-    : SIR{static_cast<double>(s), static_cast<double>(i), 0.} {
+    : sir_state_{static_cast<double>(s), static_cast<double>(i), 0.} {
   auto& spawners = map.getSpawners();
   double total_area = std::accumulate(spawners.begin(), spawners.end(), 0.,
                                       [](double sum, Spawner const& spawner) {
@@ -66,7 +66,7 @@ Epidemic::Epidemic(const int s, const int i, Map& map)
 
 std::vector<Enemy> const& Epidemic::getEnemies() const { return enemies_; }
 
-SIR Epidemic::getSIRState() const { return {s_, i_, r_}; }
+SIRState Epidemic::getSIRState() const { return sir_state_; }
 
 int Epidemic::count(Status const& status) const {
   auto const count = std::count_if(
@@ -82,9 +82,12 @@ void Epidemic::evolve(const sf::Time& dt, Character const& character) {
 
   double const N = static_cast<double>(enemies_.size());
 
-  double const new_s = s_ * (1. - days * beta_ * i_ / N);
-  double const new_i = i_ * (1. + days * (beta_ * s_ / N - gamma_));
-  double const new_r = r_ + days * gamma_ * i_;
+  double const new_s =
+      sir_state_.s * (1. - days * sir_params_.beta * sir_state_.i / N);
+  double const new_i =
+      sir_state_.i *
+      (1. + days * (sir_params_.beta * sir_state_.s / N - sir_params_.gamma));
+  double const new_r = sir_state_.r + days * sir_params_.gamma * sir_state_.i;
 
   auto const e_begin = enemies_.begin();
   auto const e_end = enemies_.end();
@@ -123,9 +126,7 @@ void Epidemic::evolve(const sf::Time& dt, Character const& character) {
     }
   }
 
-  s_ = new_s;
-  i_ = new_i;
-  r_ = new_r;
+  sir_state_ = {new_s, new_i, new_r};
 
   for (auto& enemy : enemies_) {
     enemy.evolve(dt, character);

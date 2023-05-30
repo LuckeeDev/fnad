@@ -11,18 +11,23 @@
 #include "../entities/enemy/enemy.hpp"
 
 namespace fnad {
-struct SIR {
-  double s_;
-  double i_;
-  double r_;
+struct SIRState {
+  double s;
+  double i;
+  double r;
 };
 
-class Epidemic : private SIR, public sf::Drawable {
- private:
-  std::vector<Enemy> enemies_;
+struct SIRParams {
+  double beta{0.7};
+  double gamma{0.05};
+};
 
-  double const beta_{0.7};
-  double const gamma_{0.05};
+class Epidemic : public sf::Drawable {
+ private:
+  SIRState sir_state_;
+  SIRParams sir_params_;
+
+  std::vector<Enemy> enemies_;
 
   // Rate of how many days pass each second
   double const days_per_second_{0.5};
@@ -33,7 +38,7 @@ class Epidemic : private SIR, public sf::Drawable {
   Epidemic(const int, const int, Map&);
 
   std::vector<Enemy> const& getEnemies() const;
-  SIR getSIRState() const;
+  SIRState getSIRState() const;
   int count(Status const&) const;
 
   void evolve(const sf::Time&, Character const&);
