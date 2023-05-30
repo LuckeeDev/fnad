@@ -69,4 +69,14 @@ void Character::applyMovement(sf::Time const& dt) {
     safeMove(ds);
   }
 }
+
+bool Character::isVisible() const {
+  auto last_hit_elapsed_time = last_hit_.getElapsedTime();
+  if (life_points_ == DEFAULT_LIFE_POINTS) {
+    return true;
+  } else {
+    return last_hit_elapsed_time >= min_elapsed_time ||
+           last_hit_elapsed_time.asMilliseconds() % 200 < 100;
+  }
+}
 }  // namespace fnad
