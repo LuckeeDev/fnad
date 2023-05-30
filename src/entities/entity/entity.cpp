@@ -6,10 +6,8 @@
 
 namespace fnad {
 Entity::Entity(Map const& map, sf::Vector2f const& position, float speed)
-    : sf::RectangleShape(sf::Vector2f{10.f, 10.f}),
-      map_ptr_{&map},
-      speed_{speed} {
-  setOrigin(5.f, 5.f);
+    : sf::RectangleShape({8.f, 12.f}), map_ptr_{&map}, speed_{speed} {
+  setOrigin(0.5f * getSize());
   setPosition(position);
 };
 
