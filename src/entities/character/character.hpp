@@ -12,7 +12,7 @@ int const DEFAULT_LIFE_POINTS{3};
 
 class Enemy;
 
-enum class Direction { up, down, right, left };
+enum class Direction { right, up, left, down };
 
 class Character final : public Entity {
  private:
