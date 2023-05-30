@@ -35,6 +35,8 @@ class Enemy final : public Entity {
   Enemy(Map const&, sf::Vector2f const&, Status const&, float const&);
   Enemy(Map const&, sf::Vector2f const&, Status const&);
 
+  static void loadTexture();
+
   /**
    * @returns the status of the enemy.
    */
