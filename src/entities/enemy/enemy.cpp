@@ -230,11 +230,14 @@ void Enemy::animate() {
   auto direction_x = direction_.x;
   auto direction_y = direction_.y;
 
-  if (direction_x > 0.f && direction_x > direction_y) {
+  if (direction_x > 0.f && direction_y <= direction_x &&
+      direction_y >= -direction_x) {
     animation_direction_ = Direction::right;
-  } else if (direction_x < 0.f && direction_x < direction_y) {
+  } else if (direction_x < 0.f && direction_y <= -direction_x &&
+             direction_y >= direction_x) {
     animation_direction_ = Direction::left;
-  } else if (direction_x < 0.f && direction_x > direction_y) {
+  } else if (direction_y > 0.f && direction_x > -direction_y &&
+             direction_x < direction_y) {
     animation_direction_ = Direction::down;
   } else {
     animation_direction_ = Direction::up;
