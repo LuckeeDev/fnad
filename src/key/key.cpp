@@ -5,8 +5,7 @@
 namespace fnad {
 sf::Texture Key::texture_;
 
-Key::Key(sf::Vector2f const& position, sf::Vector2f const& size,
-         int const& key_index)
+Key::Key(sf::Vector2f const& position, sf::Vector2f const& size, int key_index)
     : sf::RectangleShape(size) {
   setPosition(position);
   sf::IntRect key_rect{32 * key_index, 0, 32, 32};

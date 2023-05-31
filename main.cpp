@@ -1,9 +1,6 @@
-#include <string>
+#include <tmxlite/Map.hpp>
 
-#include "src/entities/enemy/enemy.hpp"
 #include "src/game/game.hpp"
-#include "src/key/key.hpp"
-#include "src/map/map.hpp"
 
 int main() {
   tmx::Map tiled_map;

@@ -21,13 +21,13 @@ class Background : public sf::Drawable {
   std::unordered_map<int, Tile> tiles_;
   sf::RenderTexture background_;
   sf::Sprite background_sprite_;
-  void drawLayerToBackground(tmx::TileLayer const &,
-                             std::vector<tmx::Tileset> const &);
+  void drawLayerToBackground(tmx::TileLayer const&,
+                             std::vector<tmx::Tileset> const&);
 
-  void draw(sf::RenderTarget &, sf::RenderStates) const override;
+  void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
  public:
-  Background(tmx::Map const &);
+  Background(tmx::Map const&);
 };
 }  // namespace fnad
 
