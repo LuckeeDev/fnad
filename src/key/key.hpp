@@ -13,6 +13,8 @@ class Key : public sf::RectangleShape {
   bool taken_{false};
 
  public:
+  static bool isTextured();
+
   /**
    * Construct a Key object.
    *

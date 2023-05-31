@@ -24,6 +24,8 @@ Key::Key(sf::Vector2f const& position, sf::Vector2f const& size,
   setTextureRect(key_rect);
 }
 
+bool Key::isTextured() { return textured_; }
+
 void Key::checkTaken(Character const& character) {
   if (taken_ == false) {
     auto const& key_rect = getGlobalBounds();
