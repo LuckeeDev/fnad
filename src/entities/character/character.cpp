@@ -91,10 +91,10 @@ void Character::animate() {
     animation_direction_ = Direction::up;
   }
 
-  auto dt = animation_clock_.getElapsedTime().asMilliseconds();
+  auto const dt = animation_clock_.getElapsedTime().asMilliseconds();
 
-  int texture_position{96 * static_cast<int>(animation_direction_) +
-                       16 * ((dt / 100) % 6)};
+  auto const texture_position =
+      96 * static_cast<int>(animation_direction_) + 16 * ((dt / 100) % 6);
 
   setTextureRect({texture_position, 8, 16, 24});
 
