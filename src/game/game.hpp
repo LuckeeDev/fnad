@@ -18,6 +18,8 @@ class Game final {
 
   sf::RenderWindow window_;
   sf::View view_;
+  sf::Event event_;
+
   Map map_;
   Background const background_;
   Character character_;
@@ -26,7 +28,7 @@ class Game final {
   sf::Music music_;
 
   sf::Text info_life_{"Life points", font_, 32};
-  sf::Text info_keys_{"Keys", font_, 32};
+  sf::Text info_keys_{"Keys collected:", font_, 32};
 
   const float game_view_height{200.f};
 

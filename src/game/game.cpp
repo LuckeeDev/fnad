@@ -11,27 +11,29 @@ Game::Game(tmx::Map const& tiled_map,
       character_{map_, {0.f, 0.f}} {
   window_.setFramerateLimit(60);
 
+  music_.openFromFile("assets/music/music.ogg");
+
   font_.loadFromFile("assets/fonts/PressStart2P-Regular.ttf");
 
   info_life_.setFillColor(sf::Color::White);
   info_life_.setScale({0.25f, 0.25f});
   info_keys_.setFillColor(sf::Color::White);
   info_keys_.setScale({0.25f, 0.25f});
+
+  Enemy::loadTexture();
 }
 
 void Game::printStory() {
   window_.setView(view_);
 
   while (window_.isOpen()) {
-    sf::Event event;
+    while (window_.pollEvent(event_)) {
+      if (event_.type == sf::Event::Closed) window_.close();
 
-    while (window_.pollEvent(event)) {
-      if (event.type == sf::Event::Closed) window_.close();
-
-      if (event.type == sf::Event::Resized) {
+      if (event_.type == sf::Event::Resized) {
         const sf::Vector2f new_window_size{
-            static_cast<float>(event.size.width),
-            static_cast<float>(event.size.height)};
+            static_cast<float>(event_.size.width),
+            static_cast<float>(event_.size.height)};
 
         view_.setSize(new_window_size);
         view_.setCenter(new_window_size / 2.f);
@@ -57,10 +59,6 @@ void Game::printStory() {
 }
 
 void Game::run() {
-  music_.openFromFile("assets/music/music.ogg");
-
-  Enemy::loadTexture();
-
   music_.play();
 
   auto const window_size = static_cast<sf::Vector2f>(window_.getSize());
@@ -85,14 +83,12 @@ void Game::run() {
       break;
     }
 
-    sf::Event event;
+    while (window_.pollEvent(event_)) {
+      if (event_.type == sf::Event::Closed) window_.close();
 
-    while (window_.pollEvent(event)) {
-      if (event.type == sf::Event::Closed) window_.close();
-
-      if (event.type == sf::Event::Resized) {
-        auto const new_aspect_ratio = static_cast<float>(event.size.width) /
-                                      static_cast<float>(event.size.height);
+      if (event_.type == sf::Event::Resized) {
+        auto const new_aspect_ratio = static_cast<float>(event_.size.width) /
+                                      static_cast<float>(event_.size.height);
 
         view_.setSize({new_aspect_ratio * game_view_height, game_view_height});
       }
@@ -100,16 +96,21 @@ void Game::run() {
 
     character_.resetMovement();
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
+        sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
       character_.addMovement(Direction::left);
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
+        sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
       character_.addMovement(Direction::right);
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
+        // On Italian keyboards, this corresponds to the W key
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
       character_.addMovement(Direction::up);
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
+        sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
       character_.addMovement(Direction::down);
     }
 
@@ -170,15 +171,13 @@ void Game::end() {
   window_.setView(view_);
 
   while (window_.isOpen()) {
-    sf::Event event;
+    while (window_.pollEvent(event_)) {
+      if (event_.type == sf::Event::Closed) window_.close();
 
-    while (window_.pollEvent(event)) {
-      if (event.type == sf::Event::Closed) window_.close();
-
-      if (event.type == sf::Event::Resized) {
+      if (event_.type == sf::Event::Resized) {
         const sf::Vector2f new_window_size{
-            static_cast<float>(event.size.width),
-            static_cast<float>(event.size.height)};
+            static_cast<float>(event_.size.width),
+            static_cast<float>(event_.size.height)};
 
         view_.setSize(new_window_size);
         view_.setCenter(new_window_size / 2.f);
