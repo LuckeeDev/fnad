@@ -1,32 +1,39 @@
 #include "game.hpp"
 
+#include <string>
+
 namespace fnad {
 Game::Game(tmx::Map const& tiled_map,
            std::vector<sf::Texture> const& key_textures)
     : window_{sf::VideoMode::getDesktopMode(), "Five nights at DIFA"},
-      view_{},
       map_{tiled_map, key_textures},
       background_{tiled_map},
-      character_{map_, {0.f, 0.f}},
-      game_view_height{200.f} {
+      character_{map_, {0.f, 0.f}} {
   window_.setFramerateLimit(60);
 
+  music_.openFromFile("assets/music/music.ogg");
+
   font_.loadFromFile("assets/fonts/PressStart2P-Regular.ttf");
+
+  info_life_.setFillColor(sf::Color::White);
+  info_life_.setScale({0.2f, 0.2f});
+  info_keys_.setFillColor(sf::Color::White);
+  info_keys_.setScale({0.2f, 0.2f});
+
+  Enemy::loadTexture();
 }
 
 void Game::printStory() {
   window_.setView(view_);
 
   while (window_.isOpen()) {
-    sf::Event event;
+    while (window_.pollEvent(event_)) {
+      if (event_.type == sf::Event::Closed) window_.close();
 
-    while (window_.pollEvent(event)) {
-      if (event.type == sf::Event::Closed) window_.close();
-
-      if (event.type == sf::Event::Resized) {
+      if (event_.type == sf::Event::Resized) {
         const sf::Vector2f new_window_size{
-            static_cast<float>(event.size.width),
-            static_cast<float>(event.size.height)};
+            static_cast<float>(event_.size.width),
+            static_cast<float>(event_.size.height)};
 
         view_.setSize(new_window_size);
         view_.setCenter(new_window_size / 2.f);
@@ -52,10 +59,6 @@ void Game::printStory() {
 }
 
 void Game::run() {
-  music_.openFromFile("assets/music/music.ogg");
-
-  Enemy::loadTexture();
-
   music_.play();
 
   auto const window_size = static_cast<sf::Vector2f>(window_.getSize());
@@ -80,14 +83,12 @@ void Game::run() {
       break;
     }
 
-    sf::Event event;
+    while (window_.pollEvent(event_)) {
+      if (event_.type == sf::Event::Closed) window_.close();
 
-    while (window_.pollEvent(event)) {
-      if (event.type == sf::Event::Closed) window_.close();
-
-      if (event.type == sf::Event::Resized) {
-        auto const new_aspect_ratio = static_cast<float>(event.size.width) /
-                                      static_cast<float>(event.size.height);
+      if (event_.type == sf::Event::Resized) {
+        auto const new_aspect_ratio = static_cast<float>(event_.size.width) /
+                                      static_cast<float>(event_.size.height);
 
         view_.setSize({new_aspect_ratio * game_view_height, game_view_height});
       }
@@ -95,16 +96,21 @@ void Game::run() {
 
     character_.resetMovement();
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
+        sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
       character_.addMovement(Direction::left);
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
+        sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
       character_.addMovement(Direction::right);
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
+        // On Italian keyboards, this corresponds to the W key
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
       character_.addMovement(Direction::up);
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
+        sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
       character_.addMovement(Direction::down);
     }
 
@@ -137,6 +143,20 @@ void Game::run() {
       window_.draw(character_);
     }
 
+    auto const text_position = window_.mapPixelToCoords({20, 20});
+
+    info_life_.setPosition(text_position.x, text_position.y);
+    info_life_.setString("Life points: " +
+                         std::to_string(character_.getLifePoints()));
+
+    window_.draw(info_life_);
+
+    info_keys_.setPosition(text_position.x, text_position.y + 8.f);
+    info_keys_.setString("Keys collected: " +
+                         std::to_string(map_.countTakenKeys()));
+
+    window_.draw(info_keys_);
+
     window_.display();
   }
 }
@@ -151,15 +171,13 @@ void Game::end() {
   window_.setView(view_);
 
   while (window_.isOpen()) {
-    sf::Event event;
+    while (window_.pollEvent(event_)) {
+      if (event_.type == sf::Event::Closed) window_.close();
 
-    while (window_.pollEvent(event)) {
-      if (event.type == sf::Event::Closed) window_.close();
-
-      if (event.type == sf::Event::Resized) {
+      if (event_.type == sf::Event::Resized) {
         const sf::Vector2f new_window_size{
-            static_cast<float>(event.size.width),
-            static_cast<float>(event.size.height)};
+            static_cast<float>(event_.size.width),
+            static_cast<float>(event_.size.height)};
 
         view_.setSize(new_window_size);
         view_.setCenter(new_window_size / 2.f);
