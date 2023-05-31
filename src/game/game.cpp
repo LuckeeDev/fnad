@@ -1,17 +1,21 @@
 #include "game.hpp"
 
+#include "../key/key.hpp"
+
 namespace fnad {
-Game::Game(tmx::Map const& tiled_map,
-           std::vector<sf::Texture> const& key_textures)
+Game::Game(tmx::Map const& tiled_map)
     : window_{sf::VideoMode::getDesktopMode(), "Five nights at DIFA"},
       view_{},
-      map_{tiled_map, key_textures},
+      map_{tiled_map},
       background_{tiled_map},
       character_{map_, {0.f, 0.f}},
       game_view_height{200.f} {
   window_.setFramerateLimit(60);
 
   font_.loadFromFile("assets/fonts/PressStart2P-Regular.ttf");
+
+  Enemy::loadTexture();
+  Key::loadTexture();
 }
 
 void Game::printStory() {
@@ -52,8 +56,6 @@ void Game::printStory() {
 }
 
 void Game::run() {
-  Enemy::loadTexture();
-  
   auto const window_size = static_cast<sf::Vector2f>(window_.getSize());
   auto const aspect_ratio = window_size.x / window_size.y;
 

@@ -11,7 +11,7 @@ TEST_CASE("Testing the Key class") {
 
   fnad::Map map{tiled_map};
 
-  fnad::Key key{{0.f, 0.f}, {32.f, 32.f}};
+  fnad::Key key{{0.f, 0.f}, {32.f, 32.f}, 0};
   fnad::Character character{map, {10.f, 10.f}};
 
   SUBCASE("Key is taken") {

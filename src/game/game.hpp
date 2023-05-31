@@ -27,7 +27,7 @@ class Game final {
   bool win_{false};
 
  public:
-  Game(tmx::Map const&, std::vector<sf::Texture> const&);
+  Game(tmx::Map const&);
 
   void printStory();
 
