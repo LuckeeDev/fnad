@@ -8,18 +8,20 @@
 #include "../entity/entity.hpp"
 
 namespace fnad {
-const int DEFAULT_LIFE_POINTS = 3;
+int const DEFAULT_LIFE_POINTS{3};
 
 class Enemy;
 
-enum class Direction { up, down, right, left };
-
 class Character final : public Entity {
  private:
-  const sf::Time min_elapsed_time{sf::seconds(3.f)};
+  sf::Time const MIN_ELAPSED_TIME_{sf::seconds(3.f)};
   int life_points_;
   sf::Vector2f movement_;
   sf::Clock last_hit_;
+  sf::Clock animation_clock_;
+  Direction animation_direction_;
+  sf::Texture static_texture_;
+  sf::Texture dynamic_texture_;
 
  public:
   Character(Map const&, sf::Vector2f const&, float);
@@ -31,7 +33,11 @@ class Character final : public Entity {
   void addMovement(Direction const&);
   void applyMovement(sf::Time const&);
 
+  void animate();
+
   int getLifePoints() const;
+
+  bool shouldBeDrawn() const;
 };
 }  // namespace fnad
 

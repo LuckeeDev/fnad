@@ -52,6 +52,8 @@ void Game::printStory() {
 }
 
 void Game::run() {
+  Enemy::loadTexture();
+  
   auto const window_size = static_cast<sf::Vector2f>(window_.getSize());
   auto const aspect_ratio = window_size.x / window_size.y;
 
@@ -117,6 +119,8 @@ void Game::run() {
     view_.setCenter(character_.getPosition());
     window_.setView(view_);
 
+    character_.animate();
+
     window_.clear(sf::Color::Black);
 
     window_.draw(background_);
@@ -125,7 +129,9 @@ void Game::run() {
 
     window_.draw(epidemic_);
 
-    window_.draw(character_);
+    if (character_.shouldBeDrawn()) {
+      window_.draw(character_);
+    }
 
     window_.display();
   }

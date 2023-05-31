@@ -24,6 +24,10 @@ class Enemy final : public Entity {
 
   std::uniform_real_distribution<float> direction_dist_;
 
+  Direction animation_direction_;
+  sf::Clock animation_clock_;
+  static sf::Texture dynamic_texture_;
+
   /**
    * A function that randomly moves the enemy.
    */
@@ -32,6 +36,8 @@ class Enemy final : public Entity {
  public:
   Enemy(Map const&, sf::Vector2f const&, Status const&, float const&);
   Enemy(Map const&, sf::Vector2f const&, Status const&);
+
+  static void loadTexture();
 
   /**
    * @returns the status of the enemy.
@@ -65,6 +71,8 @@ class Enemy final : public Entity {
    * "infectious".
    */
   void remove();
+
+  void animate();
 };
 }  // namespace fnad
 
