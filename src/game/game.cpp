@@ -16,9 +16,9 @@ Game::Game(tmx::Map const& tiled_map,
   font_.loadFromFile("assets/fonts/PressStart2P-Regular.ttf");
 
   info_life_.setFillColor(sf::Color::White);
-  info_life_.setScale({0.25f, 0.25f});
+  info_life_.setScale({0.2f, 0.2f});
   info_keys_.setFillColor(sf::Color::White);
-  info_keys_.setScale({0.25f, 0.25f});
+  info_keys_.setScale({0.2f, 0.2f});
 
   Enemy::loadTexture();
 }
@@ -143,7 +143,7 @@ void Game::run() {
       window_.draw(character_);
     }
 
-    auto const text_position = window_.mapPixelToCoords({0, 0});
+    auto const text_position = window_.mapPixelToCoords({20, 20});
 
     info_life_.setPosition(text_position.x, text_position.y);
     info_life_.setString("Life points: " +
@@ -151,7 +151,7 @@ void Game::run() {
 
     window_.draw(info_life_);
 
-    info_keys_.setPosition(text_position.x, text_position.y + 12.f);
+    info_keys_.setPosition(text_position.x, text_position.y + 8.f);
     info_keys_.setString("Keys collected: " +
                          std::to_string(map_.countTakenKeys()));
 
