@@ -34,6 +34,8 @@ class Key : public sf::RectangleShape {
    * otherwise
    */
   bool getTaken() const;
+
+  void loadTexture();
 };
 }  // namespace fnad
 
