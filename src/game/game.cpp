@@ -17,15 +17,15 @@ Game::Game(tmx::Map const& tiled_map,
 
   font_.loadFromFile("assets/fonts/PressStart2P-Regular.ttf");
 
-  text_.setPosition(50.f, 50.f);
-  text_.setLineSpacing(1.5f);
-
   Enemy::loadTexture();
 }
 
 // Public methods
 
 void Game::printStory() {
+  text_.setPosition(50.f, 50.f);
+  text_.setLineSpacing(1.5f);
+
   window_.setView(view_);
 
   while (window_.isOpen()) {
@@ -189,6 +189,9 @@ void Game::run() {
 
 void Game::end() {
   music_.stop();
+
+  text_.setPosition(50.f, 50.f);
+  text_.setLineSpacing(1.5f);
 
   auto const window_size = static_cast<sf::Vector2f>(window_.getSize());
   view_.setSize(window_size);
