@@ -8,6 +8,7 @@ class Character;
 
 class Key : public sf::RectangleShape {
  private:
+  static sf::Texture texture_;
   bool taken_{false};
 
  public:
