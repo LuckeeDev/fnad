@@ -7,7 +7,7 @@ namespace fnad {
 // Constructors
 Character::Character(Map const& map, sf::Vector2f const& position, float speed)
     : Entity(map, position, speed),
-      life_points_{3},
+      life_points_{DEFAULT_LIFE_POINTS},
       movement_{0.f, 0.f},
       animation_direction_{Direction::down} {
   static_texture_.loadFromFile("assets/skins/character/character_static.png");
