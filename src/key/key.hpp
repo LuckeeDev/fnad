@@ -19,6 +19,7 @@ class Key : public sf::RectangleShape {
    * @param size an SFML vector representing the size
    */
   Key(sf::Vector2f const&, sf::Vector2f const&);
+  Key(sf::Vector2f const&, sf::Vector2f const&, int const&);
 
   /**
    * Used to check if the Character intersects with the Key,

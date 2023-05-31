@@ -10,6 +10,19 @@ Key::Key(sf::Vector2f const& position, sf::Vector2f const& size)
   setPosition(position);
 }
 
+Key::Key(sf::Vector2f const& position, sf::Vector2f const& size,
+         int const& key_index)
+    : Key::Key(position, size) {
+  auto const& texture_size = texture_.getSize();
+  // assume keys are squares
+  auto keys = static_cast<int>(texture_size.x / texture_size.y);
+  sf::IntRect key_rect{texture_size.x * key_index, 0, texture_size.x,
+                       texture_size.y};
+
+  setTexture(&texture_);
+  setTextureRect(key_rect);
+}
+
 void Key::checkTaken(Character const& character) {
   if (taken_ == false) {
     auto const& key_rect = getGlobalBounds();
