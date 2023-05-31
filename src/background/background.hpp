@@ -10,18 +10,19 @@
 
 namespace fnad {
 struct Tile {
-  std::string tileset_name_;
-  sf::IntRect tile_rect_;
+  std::string tileset_name;
+  sf::IntRect rect;
 };
+
 class Background : public sf::Drawable {
  private:
   unsigned int tile_size_ = 32;
-  std::vector<tmx::Tileset> tilesets_;
   std::unordered_map<std::string, sf::Texture> textures_;
   std::unordered_map<int, Tile> tiles_;
   sf::RenderTexture background_;
   sf::Sprite background_sprite_;
-  void drawLayerToBackground(tmx::TileLayer const &);
+  void drawLayerToBackground(tmx::TileLayer const &,
+                             std::vector<tmx::Tileset> const &);
 
   void draw(sf::RenderTarget &, sf::RenderStates) const override;
 

@@ -3,7 +3,8 @@
 #include <tmxlite/Map.hpp>
 
 namespace fnad {
-void Background::drawLayerToBackground(tmx::TileLayer const& layer) {
+void Background::drawLayerToBackground(
+    tmx::TileLayer const& layer, std::vector<tmx::Tileset> const& tilesets) {
   auto const& layer_tiles = layer.getTiles();
   auto const& tiles_count = layer_tiles.size();
 
@@ -17,12 +18,11 @@ void Background::drawLayerToBackground(tmx::TileLayer const& layer) {
     }
 
     if (tiles_.find(tile_ID) == tiles_.end()) {
-      auto const& tileset =
-          std::find_if(tilesets_.begin(), tilesets_.end(),
-                       [&tmx_tile](tmx::Tileset const& t) {
-                         return t.getFirstGID() <= tmx_tile.ID &&
-                                t.getLastGID() >= tmx_tile.ID;
-                       });
+      auto const& tileset = std::find_if(
+          tilesets.begin(), tilesets.end(), [&tmx_tile](tmx::Tileset const& t) {
+            return t.getFirstGID() <= tmx_tile.ID &&
+                   t.getLastGID() >= tmx_tile.ID;
+          });
       auto const& first_tile_ID = static_cast<int>(tileset->getFirstGID());
 
       auto const& column_count = static_cast<int>(tileset->getColumnCount());
@@ -42,8 +42,8 @@ void Background::drawLayerToBackground(tmx::TileLayer const& layer) {
 
     auto const& tile = tiles_[tile_ID];
 
-    auto const& tileset_name = tile.tileset_name_;
-    auto const& tile_rect = tile.tile_rect_;
+    auto const& tileset_name = tile.tileset_name;
+    auto const& tile_rect = tile.rect;
 
     sf::Sprite tile_sprite;
 
@@ -68,9 +68,9 @@ void Background::draw(sf::RenderTarget& target, sf::RenderStates) const {
 };
 
 Background::Background(tmx::Map const& map) {
-  tilesets_ = map.getTilesets();
+  auto const& tilesets = map.getTilesets();
 
-  for (auto const& t : tilesets_) {
+  for (auto const& t : tilesets) {
     sf::Texture texture;
     texture.loadFromFile(t.getImagePath());
 
@@ -91,7 +91,7 @@ Background::Background(tmx::Map const& map) {
 
   for (auto it{layers.begin() + 4}; it < layers.end(); it++) {
     auto const& layer = (*it)->getLayerAs<tmx::TileLayer>();
-    drawLayerToBackground(layer);
+    drawLayerToBackground(layer, tilesets);
   }
 
   background_.display();
