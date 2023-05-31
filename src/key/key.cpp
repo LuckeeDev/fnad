@@ -3,6 +3,8 @@
 #include "../entities/character/character.hpp"
 
 namespace fnad {
+sf::Texture Key::texture_;
+
 Key::Key(sf::Vector2f const& position, sf::Vector2f const& size)
     : sf::RectangleShape(size) {
   setPosition(position);
@@ -20,4 +22,6 @@ void Key::checkTaken(Character const& character) {
 }
 
 bool Key::getTaken() const { return taken_; }
+
+void Key::loadTexture() { texture_.loadFromFile("assets/map/items/keys.png"); }
 }  // namespace fnad
