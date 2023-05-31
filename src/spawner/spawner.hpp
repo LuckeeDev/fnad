@@ -14,8 +14,14 @@ class Spawner : public sf::FloatRect {
  public:
   Spawner(sf::Vector2f, sf::Vector2f);
 
+  /**
+   * @return the area of the spawner
+   */
   double getArea() const;
 
+  /**
+   * @return a random spawn point inside the spawner.
+   */
   sf::Vector2f getSpawnPoint();
 };
 }  // namespace fnad
