@@ -52,8 +52,12 @@ void Game::printStory() {
 }
 
 void Game::run() {
+  music_.openFromFile("assets/music/music.ogg");
+
   Enemy::loadTexture();
-  
+
+  music_.play();
+
   auto const window_size = static_cast<sf::Vector2f>(window_.getSize());
   auto const aspect_ratio = window_size.x / window_size.y;
 
@@ -138,6 +142,8 @@ void Game::run() {
 }
 
 void Game::end() {
+  music_.stop();
+
   auto const window_size = static_cast<sf::Vector2f>(window_.getSize());
   view_.setSize(window_size);
   view_.setCenter(window_size / 2.f);

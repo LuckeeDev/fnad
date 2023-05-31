@@ -1,6 +1,7 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <tmxlite/Map.hpp>
 
@@ -21,6 +22,8 @@ class Game final {
   Background const background_;
   Character character_;
   Epidemic epidemic_;
+
+  sf::Music music_;
 
   const float game_view_height;
 
