@@ -4,6 +4,7 @@
 
 namespace fnad {
 sf::Texture Key::texture_;
+bool Key::textured_{false};
 
 Key::Key(sf::Vector2f const& position, sf::Vector2f const& size)
     : sf::RectangleShape(size) {
@@ -36,5 +37,8 @@ void Key::checkTaken(Character const& character) {
 
 bool Key::getTaken() const { return taken_; }
 
-void Key::loadTexture() { texture_.loadFromFile("assets/map/items/keys.png"); }
+void Key::loadTexture() {
+  texture_.loadFromFile("assets/map/items/keys.png");
+  textured_ = true;
+}
 }  // namespace fnad
