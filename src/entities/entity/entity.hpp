@@ -20,7 +20,7 @@ class Entity : public sf::RectangleShape {
   void handleWallCollision(Axis const&, float const&);
 
  protected:
-  const Map* const map_ptr_;
+  Map const& map_;
   // Defined in pixels/second
   float speed_;
 

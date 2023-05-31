@@ -6,7 +6,7 @@
 
 namespace fnad {
 Entity::Entity(Map const& map, sf::Vector2f const& position, float speed)
-    : sf::RectangleShape({8.f, 12.f}), map_ptr_{&map}, speed_{speed} {
+    : sf::RectangleShape({8.f, 12.f}), map_{map}, speed_{speed} {
   setOrigin(0.5f * getSize());
   setPosition(position);
 };
@@ -14,7 +14,7 @@ Entity::Entity(Map const& map, sf::Vector2f const& position, float speed)
 void Entity::handleWallCollision(Axis const& axis, float const& movement) {
   auto const& position = getPosition();
   auto const& size = getSize();
-  auto const& walls = map_ptr_->getWalls();
+  auto const& walls = map_.getWalls();
   auto const& entity_rect{getGlobalBounds()};
 
   auto wall = walls.end();

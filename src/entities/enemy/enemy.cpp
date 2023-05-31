@@ -57,7 +57,7 @@ bool Enemy::sees(const Character& character) const {
   auto const& enemy_position = getPosition();
   auto const& character_position = character.getPosition();
   auto const joining_vector = character.getPosition() - getPosition();
-  auto const& walls = map_ptr_->getWalls();
+  auto const& walls = map_.getWalls();
 
   // Check general case
   if (joining_vector.x != 0.f && joining_vector.y != 0.f) {
@@ -172,7 +172,7 @@ void Enemy::randomMove(sf::Time const& dt) {
   auto const min_distance_x = 0.5f * getSize().x + 0.1f;
   auto const min_distance_y = 0.5f * getSize().y + 0.1f;
 
-  auto const& walls = map_ptr_->getWalls();
+  auto const& walls = map_.getWalls();
 
   for (auto const& wall : walls) {
     if (wall.contains(enemy_position + sf::Vector2f{min_distance_x, 0.f}) ||

@@ -4,18 +4,19 @@ namespace fnad {
 Game::Game(tmx::Map const& tiled_map,
            std::vector<sf::Texture> const& key_textures)
     : window_{sf::VideoMode::getDesktopMode(), "Five nights at DIFA"},
-      view_{{0.f, 0.f}, {300.f, 200.f}},
+      view_{},
       map_{tiled_map, key_textures},
       background_{tiled_map},
       character_{map_, {0.f, 0.f}},
-      epidemic_{99, 1, map_},
-      default_view_height_{view_.getSize().y} {
+      game_view_height{200.f} {
   window_.setFramerateLimit(60);
 
   font_.loadFromFile("assets/fonts/PressStart2P-Regular.ttf");
 }
 
 void Game::printStory() {
+  window_.setView(view_);
+
   while (window_.isOpen()) {
     sf::Event event;
 
@@ -23,16 +24,19 @@ void Game::printStory() {
       if (event.type == sf::Event::Closed) window_.close();
 
       if (event.type == sf::Event::Resized) {
-        auto aspect_ratio = static_cast<float>(event.size.width) /
-                            static_cast<float>(event.size.height);
+        const sf::Vector2f new_window_size{
+            static_cast<float>(event.size.width),
+            static_cast<float>(event.size.height)};
 
-        view_.setSize(
-            {aspect_ratio * default_view_height_, default_view_height_});
+        view_.setSize(new_window_size);
+        view_.setCenter(new_window_size / 2.f);
+
+        window_.setView(view_);
       }
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
-      clock_.restart();
+      epidemic_.resetSIRState({99, 1, 0}, map_);
       break;
     }
 
@@ -49,6 +53,16 @@ void Game::printStory() {
 
 void Game::run() {
   Enemy::loadTexture();
+  
+  auto const window_size = static_cast<sf::Vector2f>(window_.getSize());
+  auto const aspect_ratio = window_size.x / window_size.y;
+
+  view_.setSize({aspect_ratio * game_view_height, game_view_height});
+  view_.setCenter(character_.getPosition());
+
+  window_.setView(view_);
+
+  clock_.restart();
 
   while (window_.isOpen()) {
     auto const& dt = clock_.restart();
@@ -68,11 +82,10 @@ void Game::run() {
       if (event.type == sf::Event::Closed) window_.close();
 
       if (event.type == sf::Event::Resized) {
-        auto aspect_ratio = static_cast<float>(event.size.width) /
-                            static_cast<float>(event.size.height);
+        auto const new_aspect_ratio = static_cast<float>(event.size.width) /
+                                      static_cast<float>(event.size.height);
 
-        view_.setSize(
-            {aspect_ratio * default_view_height_, default_view_height_});
+        view_.setSize({new_aspect_ratio * game_view_height, game_view_height});
       }
     }
 
@@ -138,11 +151,12 @@ void Game::end() {
       if (event.type == sf::Event::Closed) window_.close();
 
       if (event.type == sf::Event::Resized) {
-        auto aspect_ratio = static_cast<float>(event.size.width) /
-                            static_cast<float>(event.size.height);
+        const sf::Vector2f new_window_size{
+            static_cast<float>(event.size.width),
+            static_cast<float>(event.size.height)};
 
-        view_.setSize(
-            {aspect_ratio * default_view_height_, default_view_height_});
+        view_.setSize(new_window_size);
+        view_.setCenter(new_window_size / 2.f);
 
         window_.setView(view_);
       }

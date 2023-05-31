@@ -30,7 +30,8 @@ bool Character::checkContacts(std::vector<Enemy> const& enemies) {
       if (intersect) {
         is_contact = true;
 
-        if (last_hit_.getElapsedTime() >= MIN_ELAPSED_TIME_) {
+        if (life_points_ == DEFAULT_LIFE_POINTS ||
+            last_hit_.getElapsedTime() >= MIN_ELAPSED_TIME_) {
           life_points_ -= 1;
           last_hit_.restart();
         }

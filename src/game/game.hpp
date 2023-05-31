@@ -22,7 +22,7 @@ class Game final {
   Character character_;
   Epidemic epidemic_;
 
-  const float default_view_height_;
+  const float game_view_height;
 
   bool win_{false};
 
