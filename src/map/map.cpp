@@ -50,7 +50,13 @@ Map::Map(tmx::Map const& map) {
 
 void Map::draw(sf::RenderTarget& target, sf::RenderStates) const {
   for (auto const& key : keys_) {
-    if (key.getTaken() == false) {
+    auto const& key_rect = key.getGlobalBounds();
+    auto const& view = target.getView();
+
+    sf::FloatRect const view_rect{view.getCenter() - view.getSize() / 2.f,
+                                  view.getSize()};
+
+    if (key.getTaken() == false && key_rect.intersects(view_rect)) {
       target.draw(key);
     }
   }
