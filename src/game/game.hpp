@@ -25,7 +25,10 @@ class Game final {
 
   sf::Music music_;
 
-  const float game_view_height;
+  sf::Text info_life_{"Life points", font_, 32};
+  sf::Text info_keys_{"Keys", font_, 32};
+
+  const float game_view_height{200.f};
 
   bool win_{false};
 

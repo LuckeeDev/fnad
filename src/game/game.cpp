@@ -1,17 +1,22 @@
 #include "game.hpp"
 
+#include <string>
+
 namespace fnad {
 Game::Game(tmx::Map const& tiled_map,
            std::vector<sf::Texture> const& key_textures)
     : window_{sf::VideoMode::getDesktopMode(), "Five nights at DIFA"},
-      view_{},
       map_{tiled_map, key_textures},
       background_{tiled_map},
-      character_{map_, {0.f, 0.f}},
-      game_view_height{200.f} {
+      character_{map_, {0.f, 0.f}} {
   window_.setFramerateLimit(60);
 
   font_.loadFromFile("assets/fonts/PressStart2P-Regular.ttf");
+
+  info_life_.setFillColor(sf::Color::White);
+  info_life_.setScale({0.25f, 0.25f});
+  info_keys_.setFillColor(sf::Color::White);
+  info_keys_.setScale({0.25f, 0.25f});
 }
 
 void Game::printStory() {
@@ -136,6 +141,20 @@ void Game::run() {
     if (character_.shouldBeDrawn()) {
       window_.draw(character_);
     }
+
+    auto const text_position = window_.mapPixelToCoords({0, 0});
+
+    info_life_.setPosition(text_position.x, text_position.y);
+    info_life_.setString("Life points: " +
+                         std::to_string(character_.getLifePoints()));
+
+    window_.draw(info_life_);
+
+    info_keys_.setPosition(text_position.x, text_position.y + 12.f);
+    info_keys_.setString("Keys collected: " +
+                         std::to_string(map_.countTakenKeys()));
+
+    window_.draw(info_keys_);
 
     window_.display();
   }
