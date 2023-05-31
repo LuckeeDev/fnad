@@ -9,12 +9,13 @@
 
 namespace fnad {
 int const DEFAULT_LIFE_POINTS{3};
+sf::Time const DEFAULT_MIN_ELAPSED_TIME{sf::seconds(3.f)};
 
 class Enemy;
 
 class Character final : public Entity {
  private:
-  const sf::Time min_elapsed_time{sf::seconds(3.f)};
+  sf::Time const min_elapsed_time_ = DEFAULT_MIN_ELAPSED_TIME;
   int life_points_;
   sf::Vector2f movement_;
   sf::Clock last_hit_;
