@@ -38,7 +38,7 @@ class Character final : public Entity {
 
   int getLifePoints() const;
 
-  bool isVisible() const;
+  bool shouldBeDrawn() const;
 };
 }  // namespace fnad
 

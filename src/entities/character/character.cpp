@@ -93,6 +93,7 @@ void Character::animate() {
 
   auto const dt = animation_clock_.getElapsedTime().asMilliseconds();
 
+  // calculate the right position in texture file
   auto const texture_position =
       96 * static_cast<int>(animation_direction_) + 16 * ((dt / 100) % 6);
 
@@ -103,7 +104,7 @@ void Character::animate() {
   }
 }
 
-bool Character::isVisible() const {
+bool Character::shouldBeDrawn() const {
   auto last_hit_elapsed_time = last_hit_.getElapsedTime();
   if (life_points_ == DEFAULT_LIFE_POINTS) {
     return true;
