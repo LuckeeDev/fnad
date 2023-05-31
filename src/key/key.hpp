@@ -8,16 +8,20 @@ class Character;
 
 class Key : public sf::RectangleShape {
  private:
+  static sf::Texture texture_;
   bool taken_{false};
 
  public:
+  static void loadTexture();
+
   /**
    * Construct a Key object.
    *
    * @param position an SFML vector representing the position
    * @param size an SFML vector representing the size
+   * @param key_index the index of key's texture
    */
-  Key(sf::Vector2f const&, sf::Vector2f const&);
+  Key(sf::Vector2f const&, sf::Vector2f const&, int);
 
   /**
    * Used to check if the Character intersects with the Key,

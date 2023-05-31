@@ -42,7 +42,7 @@ class Game final {
   int level_;
 
  public:
-  Game(tmx::Map const&, std::vector<sf::Texture> const&);
+  Game(tmx::Map const&);
 
   /**
    * Print the background story of the game. Wait for the player to press a key

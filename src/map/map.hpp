@@ -35,16 +35,7 @@ class Map : public sf::Drawable {
 
  public:
   /**
-   * Create a map with textured keys.
-   *
-   * @param map a parsed Tiled map
-   * @param key_textures a vector of `sf::Texture` to be used for the keys
-   */
-  Map(tmx::Map const& map, std::vector<sf::Texture> const& key_textures);
-
-  /**
-   * Create a map without textured keys. This should be used for testing purpose
-   * only.
+   * Create a map with keys.
    *
    * @param map a parsed Tiled map
    */

@@ -3,18 +3,23 @@
 
 #include <SFML/Graphics.hpp>
 #include <tmxlite/Map.hpp>
+#include <tmxlite/TileLayer.hpp>
 #include <tmxlite/Tileset.hpp>
 #include <unordered_map>
 #include <vector>
 
 namespace fnad {
+struct Tile {
+  std::string tileset_name;
+  sf::IntRect rect;
+};
+
 class Background : public sf::Drawable {
  private:
   unsigned int tile_size_{32};
 
-  std::vector<tmx::Tileset> tilesets_;
-  std::unordered_map<std::string, sf::Image> images_;
-  std::unordered_map<int, sf::Texture> tiles_;
+  std::unordered_map<std::string, sf::Texture> textures_;
+  std::unordered_map<int, Tile> tiles_;
 
   sf::RenderTexture background_;
   sf::Sprite background_sprite_;
@@ -24,9 +29,10 @@ class Background : public sf::Drawable {
    *
    * @param layer a parsed Tiled layer
    */
-  void drawLayerToBackground(tmx::TileLayer const &);
+  void drawLayerToBackground(tmx::TileLayer const&,
+                             std::vector<tmx::Tileset> const&);
 
-  void draw(sf::RenderTarget &, sf::RenderStates) const override;
+  void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
  public:
   /**

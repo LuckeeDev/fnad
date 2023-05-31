@@ -12,9 +12,7 @@
 namespace fnad {
 // Constructors
 
-Map::Map(tmx::Map const& map) : Map{map, std::vector<sf::Texture>{}} {}
-
-Map::Map(tmx::Map const& map, std::vector<sf::Texture> const& key_textures) {
+Map::Map(tmx::Map const& map) {
   auto const& layers = map.getLayers();
 
   // Read objects from the first layer and write them to `walls` vector
@@ -33,21 +31,16 @@ Map::Map(tmx::Map const& map, std::vector<sf::Texture> const& key_textures) {
   auto const& key_layer = layers[3]->getLayerAs<tmx::ObjectGroup>();
   auto const& key_layer_objects = key_layer.getObjects();
 
-  auto const should_load_textures = key_textures.size() > 0;
+  int key_index{};
 
   std::transform(
       key_layer_objects.begin(), key_layer_objects.end(),
-      std::back_inserter(keys_),
-      [&key_textures, &should_load_textures, this](tmx::Object const& o) {
+      std::back_inserter(keys_), [&key_index, this](tmx::Object const& o) {
         auto const& AABB = o.getAABB();
+        Key key{
+            {AABB.left, AABB.top}, {AABB.width, AABB.height}, key_index % 3};
 
-        Key key{{AABB.left, AABB.top}, {AABB.width, AABB.height}};
-
-        if (should_load_textures) {
-          auto i = keys_.size() % 3;
-
-          key.setTexture(&key_textures[i]);
-        }
+        key_index++;
 
         return key;
       });

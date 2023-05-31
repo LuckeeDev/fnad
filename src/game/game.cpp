@@ -1,14 +1,14 @@
 #include "game.hpp"
 
+#include "../key/key.hpp"
+
 #include <string>
 
 namespace fnad {
 // Constructors
-
-Game::Game(tmx::Map const& tiled_map,
-           std::vector<sf::Texture> const& key_textures)
+Game::Game(tmx::Map const& tiled_map)
     : window_{sf::VideoMode::getDesktopMode(), "Five nights at DIFA"},
-      map_{tiled_map, key_textures},
+      map_{tiled_map},
       background_{tiled_map},
       character_{map_, {0.f, 0.f}} {
   window_.setFramerateLimit(60);
@@ -18,6 +18,7 @@ Game::Game(tmx::Map const& tiled_map,
   font_.loadFromFile("assets/fonts/PressStart2P-Regular.ttf");
 
   Enemy::loadTexture();
+  Key::loadTexture();
 }
 
 // Public methods
