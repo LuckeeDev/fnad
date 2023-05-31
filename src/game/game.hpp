@@ -13,6 +13,8 @@
 namespace fnad {
 class Game final {
  private:
+  // SFML objects
+
   sf::Clock clock_;
   sf::Font font_;
 
@@ -20,27 +22,43 @@ class Game final {
   sf::View view_;
   sf::Event event_;
 
+  sf::Music music_;
+
+  sf::Text text_{
+      "Press a number to choose the level.\nLevel [1]\nLevel [2]\nLevel "
+      "[3]\nLevel [4]\nLevel [5]",
+      font_, 32};
+
+  // Game objects
+
   Map map_;
   Background const background_;
   Character character_;
   Epidemic epidemic_;
 
-  sf::Music music_;
-
-  sf::Text info_life_{"Life points", font_, 32};
-  sf::Text info_keys_{"Keys collected:", font_, 32};
-
   const float game_view_height{200.f};
 
   bool win_{false};
+  int level_;
 
  public:
   Game(tmx::Map const&, std::vector<sf::Texture> const&);
 
+  /**
+   * Print the background story of the game. Wait for the player to press a key
+   * to start the game.
+   */
   void printStory();
 
+  /**
+   * Run the game logic.
+   */
   void run();
 
+  /**
+   * Show the result of the game. Wait for the player to press a key to close
+   * the window.
+   */
   void end();
 };
 }  // namespace fnad

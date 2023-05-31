@@ -3,6 +3,8 @@
 #include <string>
 
 namespace fnad {
+// Constructors
+
 Game::Game(tmx::Map const& tiled_map,
            std::vector<sf::Texture> const& key_textures)
     : window_{sf::VideoMode::getDesktopMode(), "Five nights at DIFA"},
@@ -15,13 +17,13 @@ Game::Game(tmx::Map const& tiled_map,
 
   font_.loadFromFile("assets/fonts/PressStart2P-Regular.ttf");
 
-  info_life_.setFillColor(sf::Color::White);
-  info_life_.setScale({0.2f, 0.2f});
-  info_keys_.setFillColor(sf::Color::White);
-  info_keys_.setScale({0.2f, 0.2f});
+  text_.setPosition(50.f, 50.f);
+  text_.setLineSpacing(1.5f);
 
   Enemy::loadTexture();
 }
+
+// Public methods
 
 void Game::printStory() {
   window_.setView(view_);
@@ -42,17 +44,39 @@ void Game::printStory() {
       }
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
-      epidemic_.resetSIRState({99, 1, 0}, map_);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
+      level_ = 1;
+      epidemic_.resetSIRState({5, 1, 0}, map_);
+      break;
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
+      level_ = 2;
+      epidemic_.resetSIRState({20, 1, 0}, map_);
+      break;
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) {
+      level_ = 3;
+      epidemic_.resetSIRState({40, 1, 0}, map_);
+      break;
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4)) {
+      level_ = 4;
+      epidemic_.resetSIRState({100, 1, 0}, map_);
+      break;
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5)) {
+      level_ = 5;
+      epidemic_.resetSIRState({200, 1, 0}, map_);
       break;
     }
 
     window_.clear(sf::Color::Black);
 
-    sf::Text text("Press ENTER to play.", font_, 32.f);
-    text.setPosition(50.f, 50.f);
-
-    window_.draw(text);
+    window_.draw(text_);
 
     window_.display();
   }
@@ -68,6 +92,9 @@ void Game::run() {
   view_.setCenter(character_.getPosition());
 
   window_.setView(view_);
+
+  text_.setScale({0.2f, 0.2f});
+  text_.setLineSpacing(1.3f);
 
   clock_.restart();
 
@@ -100,15 +127,18 @@ void Game::run() {
         sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
       character_.addMovement(Direction::left);
     }
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
         sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
       character_.addMovement(Direction::right);
     }
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
         // On Italian keyboards, this corresponds to the W key
         sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
       character_.addMovement(Direction::up);
     }
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
         sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
       character_.addMovement(Direction::down);
@@ -145,17 +175,13 @@ void Game::run() {
 
     auto const text_position = window_.mapPixelToCoords({20, 20});
 
-    info_life_.setPosition(text_position.x, text_position.y);
-    info_life_.setString("Life points: " +
-                         std::to_string(character_.getLifePoints()));
+    text_.setPosition(text_position.x, text_position.y);
+    text_.setString(
+        "Level " + std::to_string(level_) +
+        "\nLife points: " + std::to_string(character_.getLifePoints()) +
+        "\nKeys collected: " + std::to_string(map_.countTakenKeys()));
 
-    window_.draw(info_life_);
-
-    info_keys_.setPosition(text_position.x, text_position.y + 8.f);
-    info_keys_.setString("Keys collected: " +
-                         std::to_string(map_.countTakenKeys()));
-
-    window_.draw(info_keys_);
+    window_.draw(text_);
 
     window_.display();
   }
