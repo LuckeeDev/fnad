@@ -125,7 +125,8 @@ void Game::run() {
 
     character_.checkContacts(enemies);
 
-    if (character_.getLifePoints() <= 0) {
+    if (character_.getLifePoints() <= 0 ||
+        timer_.getElapsedTime() >= time_limit_) {
       win_ = false;
       break;
     }
