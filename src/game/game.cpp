@@ -42,7 +42,9 @@ void Game::printStory() {
 
   while (window_.isOpen()) {
     while (window_.pollEvent(event_)) {
-      if (event_.type == sf::Event::Closed) window_.close();
+      if (event_.type == sf::Event::Closed) {
+        window_.close();
+      }
 
       if (event_.type == sf::Event::Resized) {
         const sf::Vector2f new_window_size{
@@ -123,7 +125,9 @@ void Game::run() {
     }
 
     while (window_.pollEvent(event_)) {
-      if (event_.type == sf::Event::Closed) window_.close();
+      if (event_.type == sf::Event::Closed) {
+        window_.close();
+      }
 
       if (event_.type == sf::Event::Resized) {
         auto const new_aspect_ratio = static_cast<float>(event_.size.width) /
@@ -214,7 +218,9 @@ void Game::end() {
 
   while (window_.isOpen()) {
     while (window_.pollEvent(event_)) {
-      if (event_.type == sf::Event::Closed) window_.close();
+      if (event_.type == sf::Event::Closed) {
+        window_.close();
+      }
 
       if (event_.type == sf::Event::Resized) {
         const sf::Vector2f new_window_size{
