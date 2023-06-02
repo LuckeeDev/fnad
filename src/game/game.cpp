@@ -14,6 +14,10 @@ Game::Game(tmx::Map const& tiled_map)
       character_{map_, {2650.f, 1000.f}} {
   window_.setFramerateLimit(60);
 
+  text_.setFillColor(sf::Color::White);
+  text_.setOutlineThickness(2.f);
+  text_.setOutlineColor(sf::Color::Black);
+
   std::ifstream story_input{"assets/text/story.txt"};
   std::string str;
 
@@ -203,7 +207,12 @@ void Game::run() {
     text_.setString(
         "Level " + std::to_string(level_) +
         "\nLife points: " + std::to_string(character_.getLifePoints()) +
-        "\nKeys collected: " + std::to_string(map_.countTakenKeys()));
+        "\nKeys collected: " + std::to_string(map_.countTakenKeys()) +
+        "\nTime left: " +
+        std::to_string(static_cast<int>(time_limit_.asSeconds() -
+                                        timer_.getElapsedTime().asSeconds()) +
+                       1) +
+        "s");
 
     window_.draw(text_);
 
