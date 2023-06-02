@@ -6,6 +6,7 @@
 #include <random>
 #include <stdexcept>
 
+#include "../../map/map.hpp"
 #include "../character/character.hpp"
 
 namespace fnad {

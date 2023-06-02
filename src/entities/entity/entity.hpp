@@ -3,15 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "../../map/map.hpp"
-
 namespace fnad {
 class Map;
-
-enum class Axis {
-  x,
-  y,
-};
 
 enum class Direction { right, up, left, down };
 
