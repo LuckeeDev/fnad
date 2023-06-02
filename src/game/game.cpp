@@ -26,31 +26,35 @@ Game::Game(tmx::Map const& tiled_map)
 
   auto max_line_lenght = text_string.size();
 
-  int lines{1};
+  int lines_count{1};
 
   while (std::getline(story_input, line)) {
-    text_string += "\n" + line;
+    text_string += '\n' + line;
 
     auto line_lenght = line.size();
     if (line_lenght > max_line_lenght) {
       max_line_lenght = line_lenght;
     }
 
-    lines++;
+    lines_count++;
   }
 
-  auto const character_size_x =
-      static_cast<unsigned>((static_cast<float>(window_.getSize().x) - 100u) /
-                            static_cast<float>(max_line_lenght));
+  auto character_size = static_cast<float>(text_.getCharacterSize());
 
-  auto const character_size_y = static_cast<unsigned>(
-      2.f * (static_cast<float>(window_.getSize().y) - 100.f) /
-      (3.f * static_cast<float>(lines) + 1.f));
+  auto text_scale_x = (static_cast<float>(window_.getSize().x) - 100.f) /
+                      (character_size * static_cast<float>(max_line_lenght));
+
+  auto text_scale_y = (2.f / character_size) *
+                      (static_cast<float>(window_.getSize().y) - 150.f) /
+                      (3.f * static_cast<float>(lines_count) - 1.f);
 
   text_.setString(text_string);
-  text_.setCharacterSize(character_size_x < character_size_y
-                             ? character_size_x
-                             : character_size_y);
+
+  if (text_scale_x < text_scale_y) {
+    text_.setScale(text_scale_x, text_scale_x);
+  } else {
+    text_.setScale(text_scale_y, text_scale_y);
+  }
 
   font_.loadFromFile("assets/fonts/PressStart2P-Regular.ttf");
 
