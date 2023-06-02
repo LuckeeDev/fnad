@@ -22,14 +22,12 @@ Game::Game(tmx::Map const& tiled_map)
   std::string text_string;
   std::string line;
 
-  std::getline(story_input, text_string);
-
   auto max_line_lenght = text_string.size();
 
-  int lines_count{1};
+  int lines_count{0};
 
   while (std::getline(story_input, line)) {
-    text_string += '\n' + line;
+    text_string += line + '\n';
 
     auto line_lenght = line.size();
     if (line_lenght > max_line_lenght) {
