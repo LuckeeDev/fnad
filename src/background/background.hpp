@@ -14,7 +14,7 @@ struct Tile {
   sf::IntRect rect;
 };
 
-class Background : public sf::Drawable {
+class Background final : public sf::Drawable {
  private:
   unsigned int tile_size_{32};
 
