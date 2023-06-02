@@ -1,6 +1,8 @@
 #ifndef ENEMY_HPP
 #define ENEMY_HPP
 
+#include <random>
+
 #include "../entity/entity.hpp"
 
 namespace fnad {
