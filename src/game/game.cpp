@@ -209,6 +209,7 @@ void Game::end() {
 
   text_.setPosition(50.f, 50.f);
   text_.setLineSpacing(1.5f);
+  text_.setScale({0.8f, 0.8f});
 
   auto const window_size = static_cast<sf::Vector2f>(window_.getSize());
   view_.setSize(window_size);
@@ -240,19 +241,13 @@ void Game::end() {
 
     window_.clear(sf::Color::Black);
 
-    sf::Text text;
-    text.setFont(font_);
-    text.setCharacterSize(32.f);
-
     if (win_) {
-      text.setString("Hai vinto!\nPremi INVIO per uscire.");
+      text_.setString("Hai vinto!\nPremi INVIO per uscire.");
     } else {
-      text.setString("Hai perso :(\nPremi INVIO per uscire.");
+      text_.setString("Hai perso :(\nPremi INVIO per uscire.");
     }
 
-    text.setPosition(50.f, 50.f);
-
-    window_.draw(text);
+    window_.draw(text_);
 
     window_.display();
   }
