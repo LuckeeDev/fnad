@@ -87,7 +87,7 @@ Background::Background(tmx::Map const& map) {
   auto const& map_height = map_tiles.y * tile_size_;
 
   background_.create(map_width, map_height);
-  background_.clear();
+  background_.clear(sf::Color::Transparent);
 
   for (auto it{layers.begin() + 4}; it < layers.end(); it++) {
     auto const& layer = (*it)->getLayerAs<tmx::TileLayer>();

@@ -46,7 +46,7 @@ Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status,
 }
 
 Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status)
-    : Enemy(map, position, status, 30.f) {}
+    : Enemy(map, position, status, 60.f) {}
 
 // Functions
 void Enemy::loadTexture() {

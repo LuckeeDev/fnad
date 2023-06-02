@@ -1,8 +1,8 @@
 #include "game.hpp"
 
-#include "../key/key.hpp"
-
 #include <string>
+
+#include "../key/key.hpp"
 
 namespace fnad {
 // Constructors
@@ -10,7 +10,7 @@ Game::Game(tmx::Map const& tiled_map)
     : window_{sf::VideoMode::getDesktopMode(), "Five nights at DIFA"},
       map_{tiled_map},
       background_{tiled_map},
-      character_{map_, {0.f, 0.f}} {
+      character_{map_, {2650.f, 1000.f}} {
   window_.setFramerateLimit(60);
 
   music_.openFromFile("assets/music/music.ogg");

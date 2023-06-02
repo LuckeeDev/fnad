@@ -5,7 +5,7 @@
 int main() {
   tmx::Map tiled_map;
 
-  if (tiled_map.load("assets/map/map0.tmx")) {
+  if (tiled_map.load("assets/map/difa_map.tmx")) {
     fnad::Game game{tiled_map};
 
     game.printStory();

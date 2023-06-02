@@ -36,7 +36,7 @@ class Game final {
   Character character_;
   Epidemic epidemic_;
 
-  const float game_view_height{200.f};
+  const float game_view_height{400.f};
 
   bool win_{false};
   int level_;

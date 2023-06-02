@@ -15,7 +15,7 @@ Character::Character(Map const& map, sf::Vector2f const& position, float speed)
 }
 
 Character::Character(Map const& map, sf::Vector2f const& position)
-    : Character(map, position, 60.f) {}
+    : Character(map, position, 200.f) {}
 
 // Functions
 bool Character::checkContacts(std::vector<Enemy> const& enemies) {
