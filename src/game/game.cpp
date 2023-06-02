@@ -135,8 +135,9 @@ void Game::run() {
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
-        // On Italian keyboards, this corresponds to the W key
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
+        // On some Italian keyboards, this corresponds to the W key
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Z) ||
+        sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
       character_.addMovement(Direction::up);
     }
 
