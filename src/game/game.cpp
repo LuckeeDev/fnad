@@ -14,13 +14,44 @@ Game::Game(tmx::Map const& tiled_map)
       character_{map_, {2650.f, 1000.f}} {
   window_.setFramerateLimit(60);
 
+  text_.setFillColor(sf::Color::White);
+  text_.setOutlineThickness(2.f);
+  text_.setOutlineColor(sf::Color::Black);
+
   std::ifstream story_input{"assets/text/story.txt"};
-  std::string str;
+  std::string text_string;
+  std::string line;
 
-  while (std::getline(story_input, str)) {
-    auto const current = text_.getString();
+  auto max_line_lenght = text_string.size();
 
-    text_.setString(current + '\n' + str);
+  int lines_count{0};
+
+  while (std::getline(story_input, line)) {
+    text_string += line + '\n';
+
+    auto line_lenght = line.size();
+    if (line_lenght > max_line_lenght) {
+      max_line_lenght = line_lenght;
+    }
+
+    lines_count++;
+  }
+
+  auto character_size = static_cast<float>(text_.getCharacterSize());
+
+  auto text_scale_x = (static_cast<float>(window_.getSize().x) - 100.f) /
+                      (character_size * static_cast<float>(max_line_lenght));
+
+  auto text_scale_y = (2.f / character_size) *
+                      (static_cast<float>(window_.getSize().y) - 150.f) /
+                      (3.f * static_cast<float>(lines_count) - 1.f);
+
+  text_.setString(text_string);
+
+  if (text_scale_x < text_scale_y) {
+    text_.setScale(text_scale_x, text_scale_x);
+  } else {
+    text_.setScale(text_scale_y, text_scale_y);
   }
 
   font_.loadFromFile("assets/fonts/PressStart2P-Regular.ttf");
@@ -34,7 +65,6 @@ Game::Game(tmx::Map const& tiled_map)
 void Game::printStory() {
   text_.setPosition(50.f, 50.f);
   text_.setLineSpacing(1.5f);
-  text_.setScale({0.8f, 0.8f});
 
   window_.setView(view_);
 
@@ -59,30 +89,40 @@ void Game::printStory() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
       level_ = 1;
       epidemic_.resetSIRState({5, 1, 0}, map_);
+      time_limit_ = sf::seconds(600.f);
+      timer_.restart();
       break;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
       level_ = 2;
       epidemic_.resetSIRState({20, 1, 0}, map_);
+      time_limit_ = sf::seconds(540.f);
+      timer_.restart();
       break;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) {
       level_ = 3;
       epidemic_.resetSIRState({40, 1, 0}, map_);
+      time_limit_ = sf::seconds(480.f);
+      timer_.restart();
       break;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4)) {
       level_ = 4;
       epidemic_.resetSIRState({100, 1, 0}, map_);
+      time_limit_ = sf::seconds(420.f);
+      timer_.restart();
       break;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5)) {
       level_ = 5;
       epidemic_.resetSIRState({200, 1, 0}, map_);
+      time_limit_ = sf::seconds(360.f);
+      timer_.restart();
       break;
     }
 
@@ -115,7 +155,8 @@ void Game::run() {
 
     character_.checkContacts(enemies);
 
-    if (character_.getLifePoints() <= 0) {
+    if (character_.getLifePoints() <= 0 ||
+        timer_.getElapsedTime() >= time_limit_) {
       win_ = false;
       break;
     }
@@ -190,9 +231,13 @@ void Game::run() {
 
     text_.setPosition(text_position.x, text_position.y);
     text_.setString(
-        "Level " + std::to_string(level_) +
-        "\nLife points: " + std::to_string(character_.getLifePoints()) +
-        "\nKeys collected: " + std::to_string(map_.countTakenKeys()));
+        "Livello " + std::to_string(level_) +
+        "\nPunti vita: " + std::to_string(character_.getLifePoints()) +
+        "\nChiavi raccolte: " + std::to_string(map_.countTakenKeys()) +
+        "\nTempo rimasto: " +
+        std::to_string(static_cast<int>(
+            std::ceil((time_limit_ - timer_.getElapsedTime()).asSeconds()))) +
+        "s");
 
     window_.draw(text_);
 
