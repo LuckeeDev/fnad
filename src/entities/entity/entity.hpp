@@ -3,32 +3,45 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "../../map/map.hpp"
-
 namespace fnad {
 class Map;
 
-enum class Axis {
-  x,
-  y,
+enum class Direction { right, up, left, down };
+
+struct Collision {
+  bool x;
+  bool y;
 };
 
 class Entity : public sf::RectangleShape {
- private:
-  void handleWallCollision(Axis const&, float const&);
-
  protected:
-  const Map* map_ptr_;
-  // Defined in pixels/second
+  Map const& map_;
+
+  // Defined in units/second
   float speed_;
 
-  Entity(Map const&, sf::Vector2f, float);
+  Entity(Map const&, sf::Vector2f const&, float);
 
-  void safeMove(sf::Vector2f const&);
+  /**
+   * Move the entity and account for the presence of walls.
+   *
+   * @param ds a vector representing the displacement
+   * @return a Collision object indicating if any collision happened on the x or
+   * y axis
+   */
+  Collision safeMove(sf::Vector2f const&);
 
  public:
+  /**
+   * Set the speed of the entity.
+   *
+   * @param speed the new speed
+   */
   void setSpeed(float);
 
+  /**
+   * @return the current speed
+   */
   float getSpeed() const;
 };
 }  // namespace fnad

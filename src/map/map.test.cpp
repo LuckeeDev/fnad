@@ -8,7 +8,7 @@ TEST_CASE("Testing the map class") {
 
   tiled_map.load("assets/map/map0.tmx");
 
-  fnad::Map map = fnad::Map::create(tiled_map);
+  fnad::Map map{tiled_map};
 
   fnad::Character character(map, {0.f, 0.f});
 

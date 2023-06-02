@@ -6,25 +6,37 @@
 namespace fnad {
 // Constructors
 Character::Character(Map const& map, sf::Vector2f const& position, float speed)
-    : Entity(map, position, speed), life_points_{3}, movement_{0.f, 0.f} {
-  setFillColor(sf::Color::Blue);
+    : Entity(map, position, speed),
+      life_points_{DEFAULT_LIFE_POINTS},
+      movement_{0.f, 0.f},
+      animation_direction_{Direction::down} {
+  static_texture_.loadFromFile("assets/skins/character/character_static.png");
+  dynamic_texture_.loadFromFile("assets/skins/character/character_dynamic.png");
 }
 
 Character::Character(Map const& map, sf::Vector2f const& position)
-    : Character(map, position, 60.f) {}
+    : Character(map, position, 200.f) {}
 
 // Functions
-bool Character::checkContact(const Enemy& enemy) {
-  if (enemy.getStatus() != Status::infectious) {
-    return false;
-  }
+bool Character::checkContacts(std::vector<Enemy> const& enemies) {
+  bool is_contact{false};
 
-  auto const& enemy_rect = enemy.getGlobalBounds();
+  for (auto const& enemy : enemies) {
+    if (enemy.getStatus() == Status::infectious) {
+      auto const& enemy_rect = enemy.getGlobalBounds();
 
-  auto is_contact = getGlobalBounds().intersects(enemy_rect);
+      auto const intersect = getGlobalBounds().intersects(enemy_rect);
 
-  if (is_contact) {
-    life_points_ -= 1;
+      if (intersect) {
+        is_contact = true;
+
+        if (life_points_ == DEFAULT_LIFE_POINTS ||
+            last_hit_.getElapsedTime() >= MIN_ELAPSED_TIME_) {
+          life_points_ -= 1;
+          last_hit_.restart();
+        }
+      }
+    }
   }
 
   return is_contact;
@@ -60,6 +72,46 @@ void Character::applyMovement(sf::Time const& dt) {
     auto const ds = movement_ / norm * speed_ * seconds;
 
     safeMove(ds);
+  }
+}
+
+void Character::animate() {
+  if (movement_ != sf::Vector2f{0.f, 0.f}) {
+    setTexture(&dynamic_texture_);
+  } else {
+    setTexture(&static_texture_);
+  }
+
+  if (movement_.x > 0.f) {
+    animation_direction_ = Direction::right;
+  } else if (movement_.x < 0.f) {
+    animation_direction_ = Direction::left;
+  } else if (movement_.y > 0.f) {
+    animation_direction_ = Direction::down;
+  } else if (movement_.y < 0.f) {
+    animation_direction_ = Direction::up;
+  }
+
+  auto const dt = animation_clock_.getElapsedTime().asMilliseconds();
+
+  // calculate the right position in texture file
+  auto const texture_position =
+      96 * static_cast<int>(animation_direction_) + 16 * ((dt / 100) % 6);
+
+  setTextureRect({texture_position, 8, 16, 24});
+
+  if (dt >= 600) {
+    animation_clock_.restart();
+  }
+}
+
+bool Character::shouldBeDrawn() const {
+  auto last_hit_elapsed_time = last_hit_.getElapsedTime();
+  if (life_points_ == DEFAULT_LIFE_POINTS) {
+    return true;
+  } else {
+    return last_hit_elapsed_time >= MIN_ELAPSED_TIME_ ||
+           last_hit_elapsed_time.asMilliseconds() % 200 < 100;
   }
 }
 }  // namespace fnad

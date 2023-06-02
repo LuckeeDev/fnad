@@ -9,22 +9,24 @@ TEST_CASE("Testing the Key class") {
 
   tiled_map.load("assets/map/map0.tmx");
 
-  auto map = fnad::Map::create(tiled_map);
+  fnad::Map map{tiled_map};
 
-  fnad::Key key{{0.f, 0.f}, {32.f, 32.f}};
-  fnad::Character character{map, {10.f, 10.f}};
+  fnad::Key key{{0.f, 0.f}, {32.f, 32.f}, 0};
+  fnad::Character character{map, {100.f, 100.f}};
 
-  SUBCASE("Key is taken") {
-    key.checkTaken(character);
+  key.checkTaken(character);
 
-    CHECK(key.getTaken() == true);
-  }
+  CHECK(key.getTaken() == false);
 
-  SUBCASE("Key is not taken") {
-    character.move({100.f, 100.f});
+  character.setPosition(10, 10);
+  key.checkTaken(character);
 
-    key.checkTaken(character);
+  CHECK(key.getTaken() == true);
 
-    CHECK(key.getTaken() == false);
-  }
+  character.setPosition(200, 200);
+
+  // Moving the character and checking if the key is taken should not modify
+  // the taken_ = true state.
+  key.checkTaken(character);
+  CHECK(key.getTaken() == true);
 }

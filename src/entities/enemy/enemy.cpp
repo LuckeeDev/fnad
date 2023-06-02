@@ -6,9 +6,13 @@
 #include <random>
 #include <stdexcept>
 
+#include "../../map/map.hpp"
 #include "../character/character.hpp"
 
 namespace fnad {
+// Static data members
+sf::Texture Enemy::dynamic_texture_;
+
 // Constructors
 Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status,
              float const& speed)
@@ -16,21 +20,16 @@ Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status,
       status_{status},
       eng_((std::random_device())()),
       time_dist_(2.f, 4.f),
-      direction_dist_(static_cast<float>(-M_PI_2), static_cast<float>(M_PI_2)) {
-  switch (status) {
-    case Status::susceptible:
-      setFillColor(sf::Color::Green);
-      break;
-    case Status::infectious:
-      setFillColor(sf::Color::Red);
-      break;
-    case Status::removed:
-      setFillColor(sf::Color::Black);
-      break;
+      direction_dist_(static_cast<float>(-M_PI_2), static_cast<float>(M_PI_2)),
+      animation_direction_{Direction::down} {
+  setTexture(&dynamic_texture_);
+
+  if (status == Status::infectious) {
+    setFillColor(sf::Color::Red);
   }
 
-  std::uniform_real_distribution<float> theta_dist(0.f,
-                                                   static_cast<float>(M_2_PI));
+  std::uniform_real_distribution<float> theta_dist(
+      0.f, static_cast<float>(M_PI * 2.));
 
   float const theta{theta_dist(eng_)};
 
@@ -40,14 +39,18 @@ Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status,
 }
 
 Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status)
-    : Enemy(map, position, status, 30.f) {}
+    : Enemy(map, position, status, 60.f) {}
 
 // Functions
+void Enemy::loadTexture() {
+  dynamic_texture_.loadFromFile("assets/skins/enemy/enemy_dynamic.png");
+}
+
 bool Enemy::sees(const Character& character) const {
   auto const& enemy_position = getPosition();
   auto const& character_position = character.getPosition();
   auto const joining_vector = character.getPosition() - getPosition();
-  auto const& walls = map_ptr_->getWalls();
+  auto const& walls = map_.getWalls();
 
   // Check general case
   if (joining_vector.x != 0.f && joining_vector.y != 0.f) {
@@ -156,22 +159,14 @@ void Enemy::randomMove(sf::Time const& dt) {
 
   auto const ds = direction_ * speed_ * dt.asSeconds();
 
-  safeMove(ds);
+  auto const collision = safeMove(ds);
 
-  auto const& enemy_position = getPosition();
-  auto const min_distance = 0.5f * getSize().x + 0.1f;
+  if (collision.x) {
+    direction_.x *= -1.f;
+  }
 
-  auto const& walls = map_ptr_->getWalls();
-
-  for (auto const& wall : walls) {
-    if (wall.contains(enemy_position + sf::Vector2f{min_distance, 0.f}) ||
-        wall.contains(enemy_position - sf::Vector2f{min_distance, 0.f})) {
-      direction_.x *= -1.f;
-    }
-    if (wall.contains(enemy_position + sf::Vector2f{0.f, min_distance}) ||
-        wall.contains(enemy_position - sf::Vector2f{0.f, min_distance})) {
-      direction_.y *= -1.f;
-    }
+  if (collision.y) {
+    direction_.y *= -1.f;
   }
 }
 
@@ -182,15 +177,17 @@ void Enemy::evolve(const sf::Time& dt, const Character& character) {
     if (sees(character) && status_ == Status::infectious) {
       sf::Vector2f direction{character.getPosition() - getPosition()};
       float const norm2{direction.x * direction.x + direction.y * direction.y};
-      direction /= std::sqrt(norm2);
+      direction_ = direction / std::sqrt(norm2);
 
-      auto const ds = direction * 1.5f * speed_ * dt.asSeconds();
+      auto const ds = direction_ * 1.5f * speed_ * dt.asSeconds();
 
       safeMove(ds);
     } else if (status_ != Status::removed) {
       randomMove(dt);
     }
   }
+
+  animate();
 }
 
 void Enemy::infect() {
@@ -210,6 +207,35 @@ void Enemy::remove() {
   }
 
   status_ = Status::removed;
-  setFillColor(sf::Color::Black);
+  setFillColor(sf::Color::Transparent);
+}
+
+void Enemy::animate() {
+  auto direction_x = direction_.x;
+  auto direction_y = direction_.y;
+
+  if (direction_x > 0.f && direction_y <= direction_x &&
+      direction_y >= -direction_x) {
+    animation_direction_ = Direction::right;
+  } else if (direction_x < 0.f && direction_y <= -direction_x &&
+             direction_y >= direction_x) {
+    animation_direction_ = Direction::left;
+  } else if (direction_y > 0.f && direction_x > -direction_y &&
+             direction_x < direction_y) {
+    animation_direction_ = Direction::down;
+  } else {
+    animation_direction_ = Direction::up;
+  }
+
+  auto dt = animation_clock_.getElapsedTime().asMilliseconds();
+
+  int texture_position{96 * static_cast<int>(animation_direction_) +
+                       16 * ((dt / 100) % 6)};
+
+  setTextureRect({texture_position, 8, 16, 24});
+
+  if (dt >= 600) {
+    animation_clock_.restart();
+  }
 }
 }  // namespace fnad

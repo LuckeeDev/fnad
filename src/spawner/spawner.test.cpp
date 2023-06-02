@@ -5,9 +5,9 @@
 #include "../../test/doctest.h"
 
 TEST_CASE("Testing the Spawner class") {
-  sf::Vector2f position(200.f, 150.f);
-  sf::Vector2f size(100.f, 50.f);
-  fnad::Spawner spawner(position, size);
+  sf::Vector2f position{200.f, 150.f};
+  sf::Vector2f size{100.f, 50.f};
+  fnad::Spawner spawner{position, size};
 
   CHECK(spawner.getArea() == 5000.);
 

@@ -23,7 +23,7 @@ string(APPEND CMAKE_CXX_FLAGS
 string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address,undefined -fno-omit-frame-pointer")
 string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-omit-frame-pointer")
 
-# richiedi il componente graphics della libreria SFML, versione 2.5
+# richiedi SFML, versione 2.5, e tmxlite
 # le dipendenze vengono identificate automaticamente
 find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
 find_package(tmxlite)

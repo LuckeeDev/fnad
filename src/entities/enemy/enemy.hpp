@@ -1,6 +1,8 @@
 #ifndef ENEMY_HPP
 #define ENEMY_HPP
 
+#include <random>
+
 #include "../entity/entity.hpp"
 
 namespace fnad {
@@ -24,31 +26,58 @@ class Enemy final : public Entity {
 
   std::uniform_real_distribution<float> direction_dist_;
 
+  Direction animation_direction_;
+  sf::Clock animation_clock_;
+  static sf::Texture dynamic_texture_;
+
   /**
-   * A function that randomly moves the enemy.
+   * Randomly move the enemy.
+   *
+   * @param dt sf::Time object representing how long the enemy should move for
    */
   void randomMove(sf::Time const&);
 
  public:
+  /**
+   * Create a new enemy.
+   *
+   * @param map the map used to check for wall collisions
+   * @param position the starting position
+   * @param status the initial status
+   * @param speed the speed of the enemy
+   */
   Enemy(Map const&, sf::Vector2f const&, Status const&, float const&);
+
+  /**
+   * Create a new enemy.
+   *
+   * @param map the map used to check for wall collisions
+   * @param position the starting position
+   * @param status the initial status
+   */
   Enemy(Map const&, sf::Vector2f const&, Status const&);
 
   /**
-   * @returns the status of the enemy.
+   * Load the static texture shared among all enemies.
+   */
+  static void loadTexture();
+
+  /**
+   * @returns the status of the enemy
    */
   Status getStatus() const;
 
   /**
-   * @param character A reference to the character that the enemy could see.
-   * @returns true if the enemy sees the character, false otherwise.
+   * @param character A reference to the character that the enemy could see
+   * @returns true if the enemy sees the character, false otherwise
    */
   bool sees(const Character& character) const;
 
   /**
    * @param dt Delta time object indicating how much time has passed since the
-   * last render.
+   * last render
    * @param character A reference to the character, used by an infectious
-   * enemy.
+   * enemy
    */
   void evolve(const sf::Time& dt, const Character& character);
 
@@ -65,6 +94,11 @@ class Enemy final : public Entity {
    * "infectious".
    */
   void remove();
+
+  /**
+   * Set the new Texture to animate the movement of the enemy.
+   */
+  void animate();
 };
 }  // namespace fnad
 
