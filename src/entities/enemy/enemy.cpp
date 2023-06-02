@@ -11,16 +11,18 @@
 
 namespace fnad {
 // Static data members
+
 sf::Texture Enemy::dynamic_texture_;
 
 // Constructors
+
 Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status,
-             float const& speed)
-    : Entity(map, position, speed),
+             float speed)
+    : Entity{map, position, speed},
       status_{status},
-      eng_((std::random_device())()),
-      time_dist_(2.f, 4.f),
-      direction_dist_(static_cast<float>(-M_PI_2), static_cast<float>(M_PI_2)),
+      eng_{std::random_device{}()},
+      time_dist_{2.f, 4.f},
+      direction_dist_{static_cast<float>(-M_PI_2), static_cast<float>(M_PI_2)},
       animation_direction_{Direction::down} {
   setTexture(&dynamic_texture_);
 
@@ -39,9 +41,10 @@ Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status,
 }
 
 Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status)
-    : Enemy(map, position, status, 60.f) {}
+    : Enemy{map, position, status, 60.f} {}
 
 // Functions
+
 void Enemy::loadTexture() {
   dynamic_texture_.loadFromFile("assets/skins/enemy/enemy_dynamic.png");
 }

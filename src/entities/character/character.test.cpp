@@ -38,8 +38,8 @@ TEST_CASE("Testing the Character class") {
   }
 
   SUBCASE("Check contact with infectious enemy") {
-    fnad::Enemy infectious(map, character.getPosition(),
-                           fnad::Status::infectious);
+    fnad::Enemy infectious{map, character.getPosition(),
+                           fnad::Status::infectious};
 
     CHECK(character.checkContacts({infectious}) == true);
     CHECK(character.getLifePoints() == 2);
@@ -56,8 +56,8 @@ TEST_CASE("Testing the Character class") {
   }
 
   SUBCASE("Check contact with non infectious enemy") {
-    fnad::Enemy susceptible(map, sf::Vector2f{170.f, 100.f},
-                            fnad::Status::susceptible);
+    fnad::Enemy susceptible{map, sf::Vector2f{170.f, 100.f},
+                            fnad::Status::susceptible};
 
     CHECK(character.checkContacts({susceptible}) == false);
   }

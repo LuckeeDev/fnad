@@ -13,17 +13,12 @@ enum class Status { susceptible, infectious, removed };
 class Enemy final : public Entity {
  private:
   Status status_;
-
   sf::Vector2f direction_;
-
   sf::Clock clock_;
-
   sf::Time time_limit_;
 
   std::default_random_engine eng_;
-
   std::uniform_real_distribution<float> time_dist_;
-
   std::uniform_real_distribution<float> direction_dist_;
 
   Direction animation_direction_;
@@ -46,7 +41,7 @@ class Enemy final : public Entity {
    * @param status the initial status
    * @param speed the speed of the enemy
    */
-  Enemy(Map const&, sf::Vector2f const&, Status const&, float const&);
+  Enemy(Map const&, sf::Vector2f const&, Status const&, float);
 
   /**
    * Create a new enemy.
@@ -71,7 +66,7 @@ class Enemy final : public Entity {
    * @param character A reference to the character that the enemy could see
    * @returns true if the enemy sees the character, false otherwise
    */
-  bool sees(const Character& character) const;
+  bool sees(Character const& character) const;
 
   /**
    * @param dt Delta time object indicating how much time has passed since the
@@ -79,7 +74,7 @@ class Enemy final : public Entity {
    * @param character A reference to the character, used by an infectious
    * enemy
    */
-  void evolve(const sf::Time& dt, const Character& character);
+  void evolve(sf::Time const& dt, Character const& character);
 
   /**
    * A function that turns the status of the enemy on which is called into

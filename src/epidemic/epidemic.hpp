@@ -18,8 +18,6 @@ struct SIRState {
 
   SIRState() = default;
   SIRState(int, int, int);
-  SIRState(double, double, double) = delete;
-  SIRState(float, float, float) = delete;
 };
 
 struct SIRParams {

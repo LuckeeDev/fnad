@@ -5,8 +5,9 @@
 
 namespace fnad {
 // Constructors
+
 Character::Character(Map const& map, sf::Vector2f const& position, float speed)
-    : Entity(map, position, speed),
+    : Entity{map, position, speed},
       life_points_{DEFAULT_LIFE_POINTS},
       movement_{0.f, 0.f},
       animation_direction_{Direction::down} {
@@ -15,9 +16,10 @@ Character::Character(Map const& map, sf::Vector2f const& position, float speed)
 }
 
 Character::Character(Map const& map, sf::Vector2f const& position)
-    : Character(map, position, 200.f) {}
+    : Character{map, position, 200.f} {}
 
 // Functions
+
 bool Character::checkContacts(std::vector<Enemy> const& enemies) {
   bool is_contact{false};
 
@@ -94,7 +96,7 @@ void Character::animate() {
 
   auto const& dt = animation_clock_.getElapsedTime().asMilliseconds();
 
-  // calculate the right position in texture file
+  // Calculate the right position in texture file
   auto const texture_position =
       96 * static_cast<int>(animation_direction_) + 16 * ((dt / 100) % 6);
 
