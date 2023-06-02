@@ -42,6 +42,9 @@ class Background final : public sf::Drawable {
    */
   Background(tmx::Map const&);
 
+  /**
+   * @returns the size of the background
+   */
   sf::Vector2u getSize() const;
 };
 }  // namespace fnad
