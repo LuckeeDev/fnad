@@ -19,13 +19,38 @@ Game::Game(tmx::Map const& tiled_map)
   text_.setOutlineColor(sf::Color::Black);
 
   std::ifstream story_input{"assets/text/story.txt"};
-  std::string str;
+  std::string text_string;
+  std::string line;
 
-  while (std::getline(story_input, str)) {
-    auto const current = text_.getString();
+  std::getline(story_input, text_string);
 
-    text_.setString(current + '\n' + str);
+  auto max_line_lenght = text_string.size();
+
+  int lines{1};
+
+  while (std::getline(story_input, line)) {
+    text_string += "\n" + line;
+
+    auto line_lenght = line.size();
+    if (line_lenght > max_line_lenght) {
+      max_line_lenght = line_lenght;
+    }
+
+    lines++;
   }
+
+  auto const character_size_x =
+      static_cast<unsigned>((static_cast<float>(window_.getSize().x) - 100u) /
+                            static_cast<float>(max_line_lenght));
+
+  auto const character_size_y = static_cast<unsigned>(
+      2.f * (static_cast<float>(window_.getSize().y) - 100.f) /
+      (3.f * static_cast<float>(lines) + 1.f));
+
+  text_.setString(text_string);
+  text_.setCharacterSize(character_size_x < character_size_y
+                             ? character_size_x
+                             : character_size_y);
 
   font_.loadFromFile("assets/fonts/PressStart2P-Regular.ttf");
 
@@ -38,7 +63,6 @@ Game::Game(tmx::Map const& tiled_map)
 void Game::printStory() {
   text_.setPosition(50.f, 50.f);
   text_.setLineSpacing(1.5f);
-  text_.setScale({0.8f, 0.8f});
 
   window_.setView(view_);
 
