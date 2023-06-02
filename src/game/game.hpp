@@ -24,10 +24,7 @@ class Game final {
 
   sf::Music music_;
 
-  sf::Text text_{
-      "Press a number to choose the level.\nLevel [1]\nLevel [2]\nLevel "
-      "[3]\nLevel [4]\nLevel [5]",
-      font_, 32};
+  sf::Text text_{"", font_, 32};
 
   // Game objects
 

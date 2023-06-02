@@ -23,16 +23,8 @@ Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status,
       animation_direction_{Direction::down} {
   setTexture(&dynamic_texture_);
 
-  switch (status) {
-    case Status::susceptible:
-      setFillColor(sf::Color::Green);
-      break;
-    case Status::infectious:
-      setFillColor(sf::Color::Red);
-      break;
-    case Status::removed:
-      setFillColor(sf::Color::Black);
-      break;
+  if (status == Status::infectious) {
+    setFillColor(sf::Color::Red);
   }
 
   std::uniform_real_distribution<float> theta_dist(
@@ -223,7 +215,7 @@ void Enemy::remove() {
   }
 
   status_ = Status::removed;
-  setFillColor(sf::Color::Black);
+  setFillColor(sf::Color::Transparent);
 }
 
 void Enemy::animate() {

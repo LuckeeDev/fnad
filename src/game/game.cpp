@@ -1,5 +1,6 @@
 #include "game.hpp"
 
+#include <fstream>
 #include <string>
 
 #include "../key/key.hpp"
@@ -12,6 +13,15 @@ Game::Game(tmx::Map const& tiled_map)
       background_{tiled_map},
       character_{map_, {2650.f, 1000.f}} {
   window_.setFramerateLimit(60);
+
+  std::ifstream story_input{"assets/text/story.txt"};
+  std::string str;
+
+  while (std::getline(story_input, str)) {
+    auto const current = text_.getString();
+
+    text_.setString(current + '\n' + str);
+  }
 
   music_.openFromFile("assets/music/music.ogg");
 
@@ -26,6 +36,7 @@ Game::Game(tmx::Map const& tiled_map)
 void Game::printStory() {
   text_.setPosition(50.f, 50.f);
   text_.setLineSpacing(1.5f);
+  text_.setScale({0.8f, 0.8f});
 
   window_.setView(view_);
 
@@ -228,9 +239,9 @@ void Game::end() {
     text.setCharacterSize(32.f);
 
     if (win_) {
-      text.setString("You won!\nPress ENTER to close.");
+      text.setString("Hai vinto!\nPremi INVIO per uscire.");
     } else {
-      text.setString("You lost :(\nPress ENTER to close.");
+      text.setString("Hai perso :(\nPremi INVIO per uscire.");
     }
 
     text.setPosition(50.f, 50.f);
