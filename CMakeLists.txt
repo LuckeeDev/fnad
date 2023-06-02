@@ -37,7 +37,7 @@ target_link_libraries(fnad PRIVATE tmxlite)
 if (BUILD_TESTING)
     # aggiungi l'eseguibile all.test
     add_executable(all.test test/all.test.cpp)
-    target_sources(all.test PRIVATE src/entities/enemy/enemy.test.cpp src/entities/character/character.test.cpp src/epidemic/epidemic.test.cpp src/map/map.test.cpp src/spawner/spawner.test.cpp src/key/key.test.cpp)
+    target_sources(all.test PRIVATE src/entities/enemy/enemy.test.cpp src/entities/character/character.test.cpp src/epidemic/epidemic.test.cpp src/map/map.test.cpp src/spawner/spawner.test.cpp src/key/key.test.cpp src/entities/entity/entity.test.cpp)
     target_sources(all.test PRIVATE src/entities/character/character.cpp src/entities/enemy/enemy.cpp src/entities/entity/entity.cpp src/epidemic/epidemic.cpp src/map/map.cpp src/spawner/spawner.cpp src/key/key.cpp)
     target_link_libraries(all.test PRIVATE sfml-graphics)
     target_link_libraries(all.test PRIVATE tmxlite)

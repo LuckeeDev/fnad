@@ -3,11 +3,21 @@
 #include "../../map/map.hpp"
 
 namespace fnad {
+// Collision == operator
+
+bool operator==(Collision const& a, Collision const& b) {
+  return a.x == b.x && a.y == b.y;
+}
+
+// Constructors
+
 Entity::Entity(Map const& map, sf::Vector2f const& position, float speed)
     : sf::RectangleShape({32.f, 48.f}), map_{map}, speed_{speed} {
   setOrigin(0.5f * getSize());
   setPosition(position);
 };
+
+// Public methods
 
 Collision Entity::safeMove(sf::Vector2f const& ds) {
   // Move only on x axis, it's needed to check for the closest intersecting wall
