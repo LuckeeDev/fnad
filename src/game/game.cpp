@@ -237,8 +237,8 @@ void Game::run() {
         "\nPunti vita: " + std::to_string(character_.getLifePoints()) +
         "\nChiavi raccolte: " + std::to_string(map_.countTakenKeys()) +
         "\nTempo rimasto: " +
-        std::to_string(static_cast<int>(std::ceil(
-            time_limit_.asSeconds() - timer_.getElapsedTime().asSeconds()))) +
+        std::to_string(static_cast<int>(
+            std::ceil((time_limit_ - timer_.getElapsedTime()).asSeconds()))) +
         "s");
 
     window_.draw(text_);
