@@ -24,6 +24,9 @@ class Game final {
 
   sf::Text text_{"", font_, 32};
 
+  sf::Clock timer_;
+  sf::Time time_limit_;
+
   // Game objects
 
   Map map_;
