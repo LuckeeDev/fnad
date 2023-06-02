@@ -13,7 +13,7 @@ namespace fnad {
 using Wall = sf::FloatRect;
 using Exit = sf::FloatRect;
 
-class Map : public sf::Drawable {
+class Map final : public sf::Drawable {
  private:
   std::vector<Wall> walls_;
   std::vector<Spawner> spawners_;

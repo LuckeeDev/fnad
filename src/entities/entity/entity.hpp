@@ -13,6 +13,8 @@ struct Collision {
   bool y;
 };
 
+bool operator==(Collision const&, Collision const&);
+
 class Entity : public sf::RectangleShape {
  protected:
   Map const& map_;
@@ -20,6 +22,7 @@ class Entity : public sf::RectangleShape {
   // Defined in units/second
   float speed_;
 
+ public:
   Entity(Map const&, sf::Vector2f const&, float);
 
   /**
@@ -31,7 +34,6 @@ class Entity : public sf::RectangleShape {
    */
   Collision safeMove(sf::Vector2f const&);
 
- public:
   /**
    * Set the speed of the entity.
    *

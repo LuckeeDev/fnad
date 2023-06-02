@@ -6,7 +6,7 @@
 namespace fnad {
 class Character;
 
-class Key : public sf::RectangleShape {
+class Key final : public sf::RectangleShape {
  private:
   static sf::Texture texture_;
   bool taken_{false};

@@ -30,7 +30,7 @@ struct SIRParams {
   SIRParams(double, double);
 };
 
-class Epidemic : public sf::Drawable {
+class Epidemic final : public sf::Drawable {
  private:
   SIRState sir_state_;
   SIRParams sir_params_;

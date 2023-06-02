@@ -59,7 +59,7 @@ void Background::drawLayerToBackground(
         static_cast<float>(column * static_cast<int>(tile_size_)),
         static_cast<float>(row * static_cast<int>(tile_size_)));
 
-    background_.draw(tile_sprite);
+    background_texture_.draw(tile_sprite);
   }
 }
 
@@ -86,16 +86,20 @@ Background::Background(tmx::Map const& map) {
   auto const& map_width = map_tiles.x * tile_size_;
   auto const& map_height = map_tiles.y * tile_size_;
 
-  background_.create(map_width, map_height);
-  background_.clear(sf::Color::Transparent);
+  background_texture_.create(map_width, map_height);
+  background_texture_.clear(sf::Color::Transparent);
 
   for (auto it{layers.begin() + 4}; it < layers.end(); it++) {
     auto const& layer = (*it)->getLayerAs<tmx::TileLayer>();
     drawLayerToBackground(layer, tilesets);
   }
 
-  background_.display();
+  background_texture_.display();
 
-  background_sprite_.setTexture(background_.getTexture());
+  background_sprite_.setTexture(background_texture_.getTexture());
+}
+
+sf::Vector2u Background::getSize() const {
+  return background_texture_.getSize();
 }
 }  // namespace fnad

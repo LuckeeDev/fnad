@@ -5,7 +5,7 @@
 #include <random>
 
 namespace fnad {
-class Spawner : public sf::FloatRect {
+class Spawner final : public sf::FloatRect {
  private:
   std::default_random_engine eng_;
   std::uniform_real_distribution<float> x_dist_;
