@@ -14,8 +14,8 @@ TEST_CASE("Testing the Enemy class") {
   fnad::Map map{tiled_map};
 
   SUBCASE("Calling evolve moves the enemy") {
-    fnad::Enemy enemy(map, sf::Vector2f{0.f, 0.f}, fnad::Status::infectious,
-                      30.f);
+    fnad::Enemy enemy{map, sf::Vector2f{0.f, 0.f}, fnad::Status::infectious,
+                      30.f};
     sf::Time time{sf::seconds(1.f)};
     fnad::Character character{map, sf::Vector2f{15.79865f, 20.153f}};
 
@@ -26,7 +26,7 @@ TEST_CASE("Testing the Enemy class") {
 
       auto position_after = enemy.getPosition();
 
-      float distance = static_cast<float>(
+      auto distance = static_cast<float>(
           std::sqrt(std::pow((position_after.x - position_before.x), 2) +
                     std::pow((position_after.y - position_before.y), 2)));
 
@@ -94,17 +94,16 @@ TEST_CASE("Testing the Enemy class") {
     }
 
     SUBCASE("With susceptible enemy") {
-      // Test that evolve does not move the enemy when it is subsceptible
-      fnad::Enemy susceptible(map, sf::Vector2f{0.f, 0.f},
-                              fnad::Status::susceptible, 30.f);
+      fnad::Enemy susceptible{map, sf::Vector2f{0.f, 0.f},
+                              fnad::Status::susceptible, 30.f};
 
-      auto position_before = susceptible.getPosition();
+      auto const position_before = susceptible.getPosition();
       susceptible.evolve(time, character);
-      auto position_after = susceptible.getPosition();
+      auto const position_after = susceptible.getPosition();
 
       CHECK(position_before != position_after);
 
-      auto displacement =
+      auto const displacement =
           std::sqrt(std::pow(position_after.x - position_before.x, 2.f) +
                     std::pow(position_after.y - position_before.y, 2.f));
 
@@ -112,20 +111,19 @@ TEST_CASE("Testing the Enemy class") {
     }
 
     SUBCASE("With removed enemy") {
-      // Test that evolve does not move the enemy when it is subsceptible
-      fnad::Enemy removed(map, sf::Vector2f{0.f, 0.f}, fnad::Status::removed,
-                          30.f);
+      fnad::Enemy removed{map, sf::Vector2f{0.f, 0.f}, fnad::Status::removed,
+                          30.f};
 
-      auto position_before = removed.getPosition();
+      auto const position_before = removed.getPosition();
       removed.evolve(time, character);
-      auto position_after = removed.getPosition();
+      auto const position_after = removed.getPosition();
 
       CHECK(position_before == position_after);
     }
   }
 
   SUBCASE("Testing infect and remove method") {
-    fnad::Enemy enemy(map, sf::Vector2f{0.f, 0.f}, fnad::Status::susceptible);
+    fnad::Enemy enemy{map, sf::Vector2f{0.f, 0.f}, fnad::Status::susceptible};
 
     enemy.infect();
 
@@ -141,11 +139,11 @@ TEST_CASE("Testing the Enemy class") {
   }
 
   SUBCASE("Testing the sees method") {
-    fnad::Enemy hidden_enemy(map, {154.f, 223.f}, fnad::Status::infectious,
-                             30.f);
-    fnad::Enemy visible_enemy(map, {239.f, 141.f}, fnad::Status::infectious,
-                              30.f);
-    fnad::Character character(map, {314.f, 219.f});
+    fnad::Enemy hidden_enemy{
+        map, {154.f, 223.f}, fnad::Status::infectious, 30.f};
+    fnad::Enemy visible_enemy{
+        map, {239.f, 141.f}, fnad::Status::infectious, 30.f};
+    fnad::Character character{map, {314.f, 219.f}};
 
     CHECK(hidden_enemy.sees(character) == false);
     CHECK(visible_enemy.sees(character) == true);

@@ -178,8 +178,8 @@ Status Enemy::getStatus() const { return status_; }
 void Enemy::evolve(const sf::Time& dt, const Character& character) {
   if (character.getPosition() != getPosition()) {
     if (sees(character) && status_ == Status::infectious) {
-      sf::Vector2f direction{character.getPosition() - getPosition()};
-      float const norm2{direction.x * direction.x + direction.y * direction.y};
+      auto const direction = character.getPosition() - getPosition();
+      auto const norm2 = direction.x * direction.x + direction.y * direction.y;
       direction_ = direction / std::sqrt(norm2);
 
       auto const ds = direction_ * 1.5f * speed_ * dt.asSeconds();
@@ -214,26 +214,23 @@ void Enemy::remove() {
 }
 
 void Enemy::animate() {
-  auto direction_x = direction_.x;
-  auto direction_y = direction_.y;
-
-  if (direction_x > 0.f && direction_y <= direction_x &&
-      direction_y >= -direction_x) {
+  if (direction_.x > 0.f && direction_.y <= direction_.x &&
+      direction_.y >= -direction_.x) {
     animation_direction_ = Direction::right;
-  } else if (direction_x < 0.f && direction_y <= -direction_x &&
-             direction_y >= direction_x) {
+  } else if (direction_.x < 0.f && direction_.y <= -direction_.x &&
+             direction_.y >= direction_.x) {
     animation_direction_ = Direction::left;
-  } else if (direction_y > 0.f && direction_x > -direction_y &&
-             direction_x < direction_y) {
+  } else if (direction_.y > 0.f && direction_.x > -direction_.y &&
+             direction_.x < direction_.y) {
     animation_direction_ = Direction::down;
   } else {
     animation_direction_ = Direction::up;
   }
 
-  auto dt = animation_clock_.getElapsedTime().asMilliseconds();
+  auto const dt = animation_clock_.getElapsedTime().asMilliseconds();
 
-  int texture_position{96 * static_cast<int>(animation_direction_) +
-                       16 * ((dt / 100) % 6)};
+  auto const texture_position =
+      96 * static_cast<int>(animation_direction_) + 16 * ((dt / 100) % 6);
 
   setTextureRect({texture_position, 8, 16, 24});
 
