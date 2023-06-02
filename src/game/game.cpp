@@ -23,8 +23,6 @@ Game::Game(tmx::Map const& tiled_map)
     text_.setString(current + '\n' + str);
   }
 
-  music_.openFromFile("assets/music/music.ogg");
-
   font_.loadFromFile("assets/fonts/PressStart2P-Regular.ttf");
 
   Enemy::loadTexture();
@@ -97,8 +95,6 @@ void Game::printStory() {
 }
 
 void Game::run() {
-  music_.play();
-
   auto const window_size = static_cast<sf::Vector2f>(window_.getSize());
   auto const aspect_ratio = window_size.x / window_size.y;
 
@@ -205,8 +201,6 @@ void Game::run() {
 }
 
 void Game::end() {
-  music_.stop();
-
   text_.setPosition(50.f, 50.f);
   text_.setLineSpacing(1.5f);
 

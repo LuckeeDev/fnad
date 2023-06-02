@@ -22,8 +22,6 @@ class Game final {
   sf::View view_;
   sf::Event event_;
 
-  sf::Music music_;
-
   sf::Text text_{"", font_, 32};
 
   // Game objects
