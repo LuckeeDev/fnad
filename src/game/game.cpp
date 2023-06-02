@@ -233,10 +233,10 @@ void Game::run() {
 
     text_.setPosition(text_position.x, text_position.y);
     text_.setString(
-        "Level " + std::to_string(level_) +
-        "\nLife points: " + std::to_string(character_.getLifePoints()) +
-        "\nKeys collected: " + std::to_string(map_.countTakenKeys()) +
-        "\nTime left: " +
+        "Livello " + std::to_string(level_) +
+        "\nPunti vita: " + std::to_string(character_.getLifePoints()) +
+        "\nChiavi raccolte: " + std::to_string(map_.countTakenKeys()) +
+        "\nTempo rimasto: " +
         std::to_string(static_cast<int>(std::ceil(
             time_limit_.asSeconds() - timer_.getElapsedTime().asSeconds()))) +
         "s");
