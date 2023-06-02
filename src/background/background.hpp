@@ -21,7 +21,7 @@ class Background : public sf::Drawable {
   std::unordered_map<std::string, sf::Texture> textures_;
   std::unordered_map<int, Tile> tiles_;
 
-  sf::RenderTexture background_;
+  sf::RenderTexture background_texture_;
   sf::Sprite background_sprite_;
 
   /**
@@ -40,7 +40,9 @@ class Background : public sf::Drawable {
    *
    * @param map the parsed Tiled map
    */
-  Background(tmx::Map const &);
+  Background(tmx::Map const&);
+
+  sf::Vector2u getSize() const;
 };
 }  // namespace fnad
 
