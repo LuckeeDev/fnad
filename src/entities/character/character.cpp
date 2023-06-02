@@ -64,9 +64,9 @@ void Character::addMovement(Direction const& dir) {
 }
 
 void Character::applyMovement(sf::Time const& dt) {
-  float const norm =
+  auto const norm =
       std::sqrt(std::pow(movement_.x, 2.f) + std::pow(movement_.y, 2.f));
-  auto const seconds = dt.asSeconds();
+  auto const& seconds = dt.asSeconds();
 
   if (norm > 0.f) {
     auto const ds = movement_ / norm * speed_ * seconds;
@@ -92,7 +92,7 @@ void Character::animate() {
     animation_direction_ = Direction::up;
   }
 
-  auto const dt = animation_clock_.getElapsedTime().asMilliseconds();
+  auto const& dt = animation_clock_.getElapsedTime().asMilliseconds();
 
   // calculate the right position in texture file
   auto const texture_position =
@@ -106,7 +106,8 @@ void Character::animate() {
 }
 
 bool Character::shouldBeDrawn() const {
-  auto last_hit_elapsed_time = last_hit_.getElapsedTime();
+  auto const& last_hit_elapsed_time = last_hit_.getElapsedTime();
+
   if (life_points_ == DEFAULT_LIFE_POINTS) {
     return true;
   } else {
