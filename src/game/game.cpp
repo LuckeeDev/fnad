@@ -59,30 +59,40 @@ void Game::printStory() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
       level_ = 1;
       epidemic_.resetSIRState({5, 1, 0}, map_);
+      time_limit_ = sf::seconds(600.f);
+      timer_.restart();
       break;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
       level_ = 2;
       epidemic_.resetSIRState({20, 1, 0}, map_);
+      time_limit_ = sf::seconds(540.f);
+      timer_.restart();
       break;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) {
       level_ = 3;
       epidemic_.resetSIRState({40, 1, 0}, map_);
+      time_limit_ = sf::seconds(480.f);
+      timer_.restart();
       break;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4)) {
       level_ = 4;
       epidemic_.resetSIRState({100, 1, 0}, map_);
+      time_limit_ = sf::seconds(420.f);
+      timer_.restart();
       break;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5)) {
       level_ = 5;
       epidemic_.resetSIRState({200, 1, 0}, map_);
+      time_limit_ = sf::seconds(360.f);
+      timer_.restart();
       break;
     }
 
