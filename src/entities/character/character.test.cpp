@@ -14,7 +14,7 @@ TEST_CASE("Testing the Character class") {
   fnad::Character character{map, sf::Vector2f{0.f, 0.f}, 60.f};
 
   SUBCASE("Move character") {
-    sf::Time time{sf::seconds(1.f)};
+    sf::Time const time{sf::seconds(1.f)};
 
     character.resetMovement();
     character.addMovement(fnad::Direction::up);
