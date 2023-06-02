@@ -1,7 +1,5 @@
 #include "entity.hpp"
 
-#include <iostream>
-
 #include "../../map/map.hpp"
 
 namespace fnad {
@@ -11,87 +9,105 @@ Entity::Entity(Map const& map, sf::Vector2f const& position, float speed)
   setPosition(position);
 };
 
-void Entity::handleWallCollision(Axis const& axis, float const& movement) {
-  auto const& position = getPosition();
-  auto const& size = getSize();
-  auto const& walls = map_.getWalls();
-  auto const& entity_rect{getGlobalBounds()};
+Collision Entity::safeMove(sf::Vector2f const& ds) {
+  // Move only on x axis, it's needed to check for the closest intersecting wall
+  // on the x axis
+  move(ds.x, 0.f);
 
-  auto wall = walls.end();
+  auto const entity_rect_x = getGlobalBounds();
+
+  // Move back on the x axis and move along the y axis. This is needed to check
+  // for the closest intersecting wall on the y axis
+  move(-ds.x, ds.y);
+
+  auto const entity_rect_y = getGlobalBounds();
+
+  // Move again on the x axis to complete the full expected ds movement
+  move(ds.x, 0.f);
+
+  auto const& entity_position = getPosition();
+  auto const& walls = map_.getWalls();
+
+  // Initialize two iterators. They will point to the closest intersecting wall
+  // on each axis
+  auto wall_x = walls.end();
+  auto wall_y = walls.end();
 
   for (auto it{walls.begin()}; it < walls.end(); it++) {
-    auto const intersects = entity_rect.intersects(*it);
+    // Find the closest wall on the x axis
+    auto const intersects_x = entity_rect_x.intersects(*it);
 
-    if (intersects) {
-      if (wall == walls.end()) {
-        wall = it;
+    if (intersects_x) {
+      if (wall_x == walls.end()) {
+        wall_x = it;
         continue;
       }
 
-      auto const is_closer_right = movement > 0.f && it->left < wall->left;
+      auto const is_closer_right = ds.x > 0.f && it->left < wall_x->left;
       auto const is_closer_left =
-          movement < 0.f && (it->left + it->width) > (wall->left + it->width);
+          ds.x < 0.f && (it->left + it->width) > (wall_x->left + it->width);
       auto const is_closer_x = is_closer_right || is_closer_left;
 
-      auto const is_closer_top = movement > 0.f && it->top < wall->top;
+      if (is_closer_x) {
+        wall_x = it;
+        continue;
+      }
+    }
+
+    // Find the closest wall on the y axis
+    auto const intersects_y = entity_rect_y.intersects(*it);
+
+    if (intersects_y) {
+      if (wall_y == walls.end()) {
+        wall_y = it;
+        continue;
+      }
+
+      auto const is_closer_top = ds.y > 0.f && it->top < wall_y->top;
       auto const is_closer_bottom =
-          movement < 0.f && (it->top + it->height) > (wall->top + it->height);
+          ds.y < 0.f && (it->top + it->height) > (wall_y->top + it->height);
       auto const is_closer_y = is_closer_top || is_closer_bottom;
 
-      if (axis == Axis::x && is_closer_x) {
-        wall = it;
-        continue;
-      }
-
-      if (axis == Axis::y && is_closer_y) {
-        wall = it;
+      if (is_closer_y) {
+        wall_y = it;
         continue;
       }
     }
   }
 
-  if (wall != walls.end()) {
-    // Handle horizontal collision
-    if (axis == Axis::x) {
-      float correction{};
+  auto const& entity_size = getSize();
+  sf::Vector2f correction;
 
-      if (movement > 0.f) {
-        correction = wall->left - position.x - size.x / 2.f;
-      } else if (movement < 0.f) {
-        correction = wall->left + wall->width - position.x + size.x / 2.f;
-      }
+  auto const collision_x = wall_x != walls.end();
 
-      move(correction, 0.f);
-    }
-
-    // Handle vertical collision
-    if (axis == Axis::y) {
-      float correction{};
-
-      if (movement > 0.f) {
-        correction = wall->top - position.y - size.y / 2.f;
-      } else if (movement < 0.f) {
-        correction = wall->top + wall->height - position.y + size.y / 2.f;
-      }
-
-      move(0.f, correction);
+  // Calculate x axis correction
+  if (collision_x) {
+    if (ds.x > 0.f) {
+      correction.x = wall_x->left - entity_position.x - entity_size.x / 2.f;
+    } else if (ds.x < 0.f) {
+      correction.x = wall_x->left + wall_x->width - entity_position.x +
+                     entity_size.x / 2.f;
     }
   }
-}
 
-void Entity::safeMove(sf::Vector2f const& ds) {
-  if (ds.x != 0.f) {
-    move(ds.x, 0.f);
+  auto const collision_y = wall_y != walls.end();
 
-    handleWallCollision(Axis::x, ds.x);
+  // Calculate y axis correction
+  if (collision_y) {
+    if (ds.y > 0.f) {
+      correction.y = wall_y->top - entity_position.y - entity_size.y / 2.f;
+    } else if (ds.y < 0.f) {
+      correction.y = wall_y->top + wall_y->height - entity_position.y +
+                     entity_size.y / 2.f;
+    }
   }
 
-  // Handle vertical movement
-  if (ds.y != 0.f) {
-    move(0.f, ds.y);
+  // Apply correction
+  move(correction);
 
-    handleWallCollision(Axis::y, ds.y);
-  }
+  // Return a Collision object indicating if a collision happened and where it
+  // happened
+  return Collision{collision_x, collision_y};
 }
 
 void Entity::setSpeed(float speed) { speed_ = speed; }

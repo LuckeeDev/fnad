@@ -15,10 +15,12 @@ enum class Axis {
 
 enum class Direction { right, up, left, down };
 
-class Entity : public sf::RectangleShape {
- private:
-  void handleWallCollision(Axis const&, float const&);
+struct Collision {
+  bool x;
+  bool y;
+};
 
+class Entity : public sf::RectangleShape {
  protected:
   Map const& map_;
 
@@ -29,8 +31,12 @@ class Entity : public sf::RectangleShape {
 
   /**
    * Move the entity and account for the presence of walls.
+   *
+   * @param ds a vector representing the displacement
+   * @return a Collision object indicating if any collision happened on the x or
+   * y axis
    */
-  void safeMove(sf::Vector2f const&);
+  Collision safeMove(sf::Vector2f const&);
 
  public:
   /**
