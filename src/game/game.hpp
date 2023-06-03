@@ -29,14 +29,19 @@ class Game final {
   // Game objects
 
   Map map_;
-  Background const background_;
+  Background background_;
   Character character_;
   Epidemic epidemic_;
 
   float const GAME_VIEW_HEIGHT_;
 
-  bool win_{false};
+  bool win_;
   int level_;
+
+  /**
+   * Read player input to set level data.
+   */
+  void chooseLevel();
 
  public:
   /**

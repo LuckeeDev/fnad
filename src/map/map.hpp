@@ -66,6 +66,11 @@ class Map final : public sf::Drawable {
   int countTakenKeys() const;
 
   /**
+   * @return how many keys are in the game
+   */
+  int countKeys() const;
+
+  /**
    * Check if the player has won. That means that the player
    * is currently on an Exit and all keys in the Map are marked as "taken".
    *

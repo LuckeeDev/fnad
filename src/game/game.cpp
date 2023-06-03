@@ -14,7 +14,9 @@ Game::Game(tmx::Map const& tiled_map)
       map_{tiled_map},
       background_{tiled_map},
       character_{map_, {2650.f, 1000.f}},
-      GAME_VIEW_HEIGHT_{400.f} {
+      GAME_VIEW_HEIGHT_{400.f},
+      win_{false},
+      level_{0} {
   window_.setFramerateLimit(60);
 
   text_.setFillColor(sf::Color::White);
@@ -64,6 +66,50 @@ Game::Game(tmx::Map const& tiled_map)
   Key::loadTexture();
 }
 
+// Private methods
+
+void Game::chooseLevel() {
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1) ||
+      sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad1)) {
+    level_ = 1;
+    epidemic_.resetSIRState({5, 1, 0}, map_);
+    time_limit_ = sf::seconds(600.f);
+    character_.setLifePoints(3);
+  }
+
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2) ||
+      sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad2)) {
+    level_ = 2;
+    epidemic_.resetSIRState({20, 1, 0}, map_);
+    time_limit_ = sf::seconds(540.f);
+    character_.setLifePoints(3);
+  }
+
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3) ||
+      sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad3)) {
+    level_ = 3;
+    epidemic_.resetSIRState({40, 1, 0}, map_);
+    time_limit_ = sf::seconds(480.f);
+    character_.setLifePoints(4);
+  }
+
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4) ||
+      sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad4)) {
+    level_ = 4;
+    epidemic_.resetSIRState({100, 1, 0}, map_);
+    time_limit_ = sf::seconds(420.f);
+    character_.setLifePoints(4);
+  }
+
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5) ||
+      sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad5)) {
+    level_ = 5;
+    epidemic_.resetSIRState({200, 1, 0}, map_);
+    time_limit_ = sf::seconds(360.f);
+    character_.setLifePoints(5);
+  }
+}
+
 // Public methods
 
 void Game::printStory() {
@@ -90,48 +136,9 @@ void Game::printStory() {
       }
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1) ||
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad1)) {
-      level_ = 1;
-      epidemic_.resetSIRState({5, 1, 0}, map_);
-      time_limit_ = sf::seconds(600.f);
-      character_.setLifePoints(3);
-      break;
-    }
+    chooseLevel();
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2) ||
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad2)) {
-      level_ = 2;
-      epidemic_.resetSIRState({20, 1, 0}, map_);
-      time_limit_ = sf::seconds(540.f);
-      character_.setLifePoints(3);
-      break;
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3) ||
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad3)) {
-      level_ = 3;
-      epidemic_.resetSIRState({40, 1, 0}, map_);
-      time_limit_ = sf::seconds(480.f);
-      character_.setLifePoints(4);
-      break;
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4) ||
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad4)) {
-      level_ = 4;
-      epidemic_.resetSIRState({100, 1, 0}, map_);
-      time_limit_ = sf::seconds(420.f);
-      character_.setLifePoints(4);
-      break;
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5) ||
-        sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad5)) {
-      level_ = 5;
-      epidemic_.resetSIRState({200, 1, 0}, map_);
-      time_limit_ = sf::seconds(360.f);
-      character_.setLifePoints(5);
+    if (level_ != 0) {
       break;
     }
 
@@ -244,8 +251,8 @@ void Game::run() {
     text_.setString(
         "Livello " + std::to_string(level_) +
         "\nPunti vita: " + std::to_string(character_.getLifePoints()) +
-        "\nChiavi raccolte: " + std::to_string(map_.countTakenKeys()) +
-        "\nTempo rimasto: " +
+        "\nChiavi raccolte: " + std::to_string(map_.countTakenKeys()) + "/" +
+        std::to_string(map_.countKeys()) + "\nTempo rimasto: " +
         std::to_string(static_cast<int>(std::ceil(
             (time_limit_ - match_timer_.getElapsedTime()).asSeconds()))) +
         "s");

@@ -107,4 +107,6 @@ int Map::countTakenKeys() const {
       std::count_if(keys_.begin(), keys_.end(),
                     [](Key const& key) { return key.getTaken(); }));
 }
+
+int Map::countKeys() const { return static_cast<int>(keys_.size()); }
 }  // namespace fnad
