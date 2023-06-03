@@ -131,8 +131,6 @@ void Epidemic::evolve(sf::Time const& dt, Character const& character) {
   auto n_to_infect = new_i_integer - i_count;
   auto n_to_remove = new_r_integer - r_count;
 
-  assert(n_to_infect >= 0 && n_to_remove >= 0);
-
   for (auto& enemy : enemies_) {
     auto const enemy_status = enemy.getStatus();
     if (enemy_status == Status::susceptible && n_to_infect > 0) {

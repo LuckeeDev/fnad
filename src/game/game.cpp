@@ -159,7 +159,7 @@ void Game::run() {
 
   window_.setView(view_);
 
-  text_.setScale({0.2f, 0.2f});
+  text_.setScale({0.3f, 0.3f});
   text_.setLineSpacing(1.3f);
 
   game_clock_.restart();
