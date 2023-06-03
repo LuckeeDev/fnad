@@ -12,6 +12,7 @@
 
 namespace fnad {
 // SIR constructors
+
 SIRState::SIRState(int new_s, int new_i, int new_r)
     : s{static_cast<double>(new_s)},
       i{static_cast<double>(new_i)},
@@ -19,22 +20,23 @@ SIRState::SIRState(int new_s, int new_i, int new_r)
   assert(new_s > 0);
   assert(new_i > 0);
   assert(new_r >= 0);
-};
+}
 
 SIRParams::SIRParams(double new_beta, double new_gamma)
     : beta{new_beta}, gamma{new_gamma} {
-  assert(new_beta >= 0. && new_beta < 1.);
+  assert(new_beta >= 0. && new_beta <= 1.);
   assert(new_gamma >= 0. && new_gamma <= 1.);
-};
+}
 
 // Private methods
+
 void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
   auto const& view = target.getView();
   auto const& view_size = view.getSize();
   auto const& view_center = view.getCenter();
   auto const& top_left = view_center - view_size / 2.f;
 
-  sf::FloatRect view_rect{top_left, view_size};
+  sf::FloatRect const view_rect{top_left, view_size};
 
   for (auto const& e : enemies_) {
     if (e.getStatus() != Status::removed &&
@@ -45,9 +47,11 @@ void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
 }
 
 // Epidemic constructors
-Epidemic::Epidemic(){};
+
+Epidemic::Epidemic() = default;
 
 // Public methods
+
 std::vector<Enemy> const& Epidemic::getEnemies() const { return enemies_; }
 
 void Epidemic::setSIRParams(SIRParams const& params) { sir_params_ = params; }
@@ -58,24 +62,27 @@ void Epidemic::resetSIRState(SIRState const& state, Map& map) {
   enemies_.clear();
 
   auto& spawners = map.getSpawners();
-  double total_area = std::accumulate(spawners.begin(), spawners.end(), 0.,
-                                      [](double sum, Spawner const& spawner) {
-                                        return sum + spawner.getArea();
-                                      });
+  double const total_area =
+      std::accumulate(spawners.begin(), spawners.end(), 0.,
+                      [](double sum, Spawner const& spawner) {
+                        return sum + spawner.getArea();
+                      });
 
   enemies_.reserve(static_cast<unsigned int>(sir_state_.s + sir_state_.i));
 
   std::vector<double> weights;
+
   // Fill weights with the ratio between the Spawner area and the total area
+
   std::transform(spawners.begin(), spawners.end(), std::back_inserter(weights),
-                 [total_area](Spawner const& spawner) {
+                 [&total_area](Spawner const& spawner) {
                    return spawner.getArea() / total_area;
                  });
 
   std::random_device rd;
-  std::default_random_engine eng(rd());
-  std::discrete_distribution<unsigned int> spawner_dist(weights.begin(),
-                                                        weights.end());
+  std::default_random_engine eng{rd()};
+  std::discrete_distribution<unsigned int> spawner_dist{weights.begin(),
+                                                        weights.end()};
 
   for (int j{}; j < sir_state_.i; j++) {
     auto& spawner = spawners[spawner_dist(eng)];
@@ -102,9 +109,7 @@ int Epidemic::count(Status const& status) const {
   return static_cast<int>(count);
 }
 
-void Epidemic::evolve(const sf::Time& dt, Character const& character) {
-  assert(sir_state_.i != 0. && sir_state_.s != 0.);
-
+void Epidemic::evolve(sf::Time const& dt, Character const& character) {
   double const seconds = static_cast<double>(dt.asSeconds());
   double const days = seconds * days_per_second_;
 
@@ -124,10 +129,10 @@ void Epidemic::evolve(const sf::Time& dt, Character const& character) {
   int const i_count = count(Status::infectious);
 
   if (new_i_integer > i_count) {
-    auto n_to_infect = new_i_integer - i_count;
+    auto const n_to_infect = new_i_integer - i_count;
 
     for (int i{}; i < n_to_infect; i++) {
-      auto const to_infect = std::find_if(e_begin, e_end, [](Enemy e) {
+      auto const to_infect = std::find_if(e_begin, e_end, [](Enemy const& e) {
         return e.getStatus() == Status::susceptible;
       });
 
@@ -141,10 +146,10 @@ void Epidemic::evolve(const sf::Time& dt, Character const& character) {
   int const r_count = count(Status::removed);
 
   if (new_r_integer > r_count) {
-    auto n_to_remove = new_r_integer - r_count;
+    auto const n_to_remove = new_r_integer - r_count;
 
     for (int i{}; i < n_to_remove; i++) {
-      auto const to_remove = std::find_if(e_begin, e_end, [](Enemy e) {
+      auto const to_remove = std::find_if(e_begin, e_end, [](Enemy const& e) {
         return e.getStatus() == Status::infectious;
       });
 
