@@ -197,7 +197,7 @@ void Enemy::evolve(const sf::Time& dt, const Character& character) {
 void Enemy::infect() {
   if (status_ != Status::susceptible) {
     throw std::logic_error(
-        "infect can not be called on a non-susceptible Enemy");
+        "infect cannot be called on a non-susceptible Enemy");
   }
 
   status_ = Status::infectious;
@@ -206,8 +206,7 @@ void Enemy::infect() {
 
 void Enemy::remove() {
   if (status_ != Status::infectious) {
-    throw std::logic_error(
-        "remove can not be called on a non-infectious Enemy");
+    throw std::logic_error("remove cannot be called on a non-infectious Enemy");
   }
 
   status_ = Status::removed;

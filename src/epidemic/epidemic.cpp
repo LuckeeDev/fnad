@@ -106,60 +106,42 @@ int Epidemic::count(Status const& status) const {
 }
 
 void Epidemic::evolve(sf::Time const& dt, Character const& character) {
-  double const seconds = static_cast<double>(dt.asSeconds());
-  double const days = seconds * DAYS_PER_SECOND_;
+  auto const seconds = static_cast<double>(dt.asSeconds());
+  auto const days = seconds * DAYS_PER_SECOND_;
 
-  double const N = static_cast<double>(enemies_.size());
+  auto const N = static_cast<double>(enemies_.size());
 
-  double const new_s =
+  auto const new_s =
       sir_state_.s * (1. - days * sir_params_.beta * sir_state_.i / N);
-  double const new_i =
+  auto const new_i =
       sir_state_.i *
       (1. + days * (sir_params_.beta * sir_state_.s / N - sir_params_.gamma));
-  double const new_r = sir_state_.r + days * sir_params_.gamma * sir_state_.i;
+  auto const new_r = sir_state_.r + days * sir_params_.gamma * sir_state_.i;
 
-  auto const e_begin = enemies_.begin();
-  auto const e_end = enemies_.end();
+  auto const new_i_integer = static_cast<int>(std::round(new_i));
+  auto const i_count = count(Status::infectious);
 
-  int const new_i_integer = static_cast<int>(std::round(new_i));
-  int const i_count = count(Status::infectious);
-
-  if (new_i_integer > i_count) {
-    auto const n_to_infect = new_i_integer - i_count;
-
-    for (int i{}; i < n_to_infect; i++) {
-      auto const to_infect = std::find_if(e_begin, e_end, [](Enemy const& e) {
-        return e.getStatus() == Status::susceptible;
-      });
-
-      if (to_infect != e_end) {
-        to_infect->infect();
-      }
-    }
-  }
-
-  int const new_r_integer = static_cast<int>(std::round(new_r));
-  int const r_count = count(Status::removed);
-
-  if (new_r_integer > r_count) {
-    auto const n_to_remove = new_r_integer - r_count;
-
-    for (int i{}; i < n_to_remove; i++) {
-      auto const to_remove = std::find_if(e_begin, e_end, [](Enemy const& e) {
-        return e.getStatus() == Status::infectious;
-      });
-
-      if (to_remove != e_end) {
-        to_remove->remove();
-      }
-    }
-  }
+  auto const new_r_integer = static_cast<int>(std::round(new_r));
+  auto const r_count = count(Status::removed);
 
   sir_state_.s = new_s;
   sir_state_.i = new_i;
   sir_state_.r = new_r;
 
+  auto n_to_infect = new_i_integer - i_count;
+  auto n_to_remove = new_r_integer - r_count;
+
   for (auto& enemy : enemies_) {
+    if (enemy.getStatus() == Status::susceptible && n_to_infect > 0) {
+      enemy.infect();
+
+      n_to_infect--;
+    } else if (enemy.getStatus() == Status::infectious && n_to_remove > 0) {
+      enemy.remove();
+
+      n_to_remove--;
+    }
+
     enemy.evolve(dt, character);
   }
 }
