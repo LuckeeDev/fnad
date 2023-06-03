@@ -33,17 +33,18 @@ Map::Map(tmx::Map const& map) {
 
   int key_index{};
 
-  std::transform(
-      key_layer_objects.begin(), key_layer_objects.end(),
-      std::back_inserter(keys_), [&key_index, this](tmx::Object const& o) {
-        auto const& AABB = o.getAABB();
-        Key key{
-            {AABB.left, AABB.top}, {AABB.width, AABB.height}, key_index % 3};
+  std::transform(key_layer_objects.begin(), key_layer_objects.end(),
+                 std::back_inserter(keys_), [&key_index](tmx::Object const& o) {
+                   auto const& AABB = o.getAABB();
 
-        key_index++;
+                   Key const key{{AABB.left, AABB.top},
+                                 {AABB.width, AABB.height},
+                                 key_index % 3};
 
-        return key;
-      });
+                   key_index++;
+
+                   return key;
+                 });
 }
 
 // Private functions
@@ -71,7 +72,7 @@ void Map::parseLayerInto(tmx::ObjectGroup const& layer,
                  std::back_inserter(layer_vector), [](tmx::Object const& o) {
                    auto const& AABB = o.getAABB();
 
-                   return T({AABB.left, AABB.top}, {AABB.width, AABB.height});
+                   return T{{AABB.left, AABB.top}, {AABB.width, AABB.height}};
                  });
 };
 

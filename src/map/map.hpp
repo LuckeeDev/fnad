@@ -1,7 +1,7 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
-#include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics.hpp>
 #include <tmxlite/Map.hpp>
 #include <tmxlite/Object.hpp>
 #include <vector>
