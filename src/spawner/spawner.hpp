@@ -1,7 +1,7 @@
 #ifndef SPAWNER_HPP
 #define SPAWNER_HPP
 
-#include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics.hpp>
 #include <random>
 
 namespace fnad {
@@ -12,7 +12,13 @@ class Spawner final : public sf::FloatRect {
   std::uniform_real_distribution<float> y_dist_;
 
  public:
-  Spawner(sf::Vector2f, sf::Vector2f);
+  /**
+   * Construct a spawner from its position and its size.
+   *
+   * @param position the position of the spawner
+   * @param size the size of the spawner
+   */
+  Spawner(sf::Vector2f const&, sf::Vector2f const&);
 
   /**
    * @return the area of the spawner
@@ -20,7 +26,7 @@ class Spawner final : public sf::FloatRect {
   double getArea() const;
 
   /**
-   * @return a random spawn point inside the spawner.
+   * @return a random spawn point inside the spawner
    */
   sf::Vector2f getSpawnPoint();
 };
