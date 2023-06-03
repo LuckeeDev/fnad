@@ -8,16 +8,18 @@
 #include "../entity/entity.hpp"
 
 namespace fnad {
-int const DEFAULT_LIFE_POINTS{3};
-
 class Enemy;
 
 class Character final : public Entity {
  private:
-  sf::Time const MIN_ELAPSED_TIME_{sf::seconds(3.f)};
+  int initial_life_points_;
   int life_points_;
+
   sf::Vector2f movement_;
+
+  sf::Time const MIN_HIT_TIME_{sf::seconds(3.f)};
   sf::Clock last_hit_;
+
   sf::Clock animation_clock_;
   Direction animation_direction_;
   sf::Texture static_texture_;
@@ -80,6 +82,13 @@ class Character final : public Entity {
    * @return the current life points
    */
   int getLifePoints() const;
+
+  /**
+   * Set the current and initial life points to the passed value.
+   *
+   * @param life_points new life points
+   */
+  void setLifePoints(int);
 
   /**
    * Used to show a flickering image of the character when not enough time has

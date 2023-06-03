@@ -91,6 +91,7 @@ void Game::printStory() {
       epidemic_.resetSIRState({5, 1, 0}, map_);
       time_limit_ = sf::seconds(600.f);
       timer_.restart();
+      character_.setLifePoints(3);
       break;
     }
 
@@ -99,6 +100,7 @@ void Game::printStory() {
       epidemic_.resetSIRState({20, 1, 0}, map_);
       time_limit_ = sf::seconds(540.f);
       timer_.restart();
+      character_.setLifePoints(3);
       break;
     }
 
@@ -107,6 +109,7 @@ void Game::printStory() {
       epidemic_.resetSIRState({40, 1, 0}, map_);
       time_limit_ = sf::seconds(480.f);
       timer_.restart();
+      character_.setLifePoints(4);
       break;
     }
 
@@ -115,6 +118,7 @@ void Game::printStory() {
       epidemic_.resetSIRState({100, 1, 0}, map_);
       time_limit_ = sf::seconds(420.f);
       timer_.restart();
+      character_.setLifePoints(4);
       break;
     }
 
@@ -123,6 +127,7 @@ void Game::printStory() {
       epidemic_.resetSIRState({200, 1, 0}, map_);
       time_limit_ = sf::seconds(360.f);
       timer_.restart();
+      character_.setLifePoints(5);
       break;
     }
 

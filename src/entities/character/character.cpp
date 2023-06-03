@@ -8,7 +8,8 @@ namespace fnad {
 
 Character::Character(Map const& map, sf::Vector2f const& position, float speed)
     : Entity{map, position, speed},
-      life_points_{DEFAULT_LIFE_POINTS},
+      initial_life_points_{3},
+      life_points_{initial_life_points_},
       movement_{0.f, 0.f},
       animation_direction_{Direction::down} {
   static_texture_.loadFromFile("assets/skins/character/character_static.png");
@@ -32,8 +33,8 @@ bool Character::checkContacts(std::vector<Enemy> const& enemies) {
       if (intersect) {
         is_contact = true;
 
-        if (life_points_ == DEFAULT_LIFE_POINTS ||
-            last_hit_.getElapsedTime() >= MIN_ELAPSED_TIME_) {
+        if (life_points_ == initial_life_points_ ||
+            last_hit_.getElapsedTime() >= MIN_HIT_TIME_) {
           life_points_ -= 1;
           last_hit_.restart();
         }
@@ -43,8 +44,6 @@ bool Character::checkContacts(std::vector<Enemy> const& enemies) {
 
   return is_contact;
 }
-
-int Character::getLifePoints() const { return life_points_; }
 
 void Character::resetMovement() { movement_ = sf::Vector2f{0.f, 0.f}; }
 
@@ -107,13 +106,20 @@ void Character::animate() {
   }
 }
 
+int Character::getLifePoints() const { return life_points_; }
+
+void Character::setLifePoints(int life_points) {
+  initial_life_points_ = life_points;
+  life_points_ = life_points;
+}
+
 bool Character::shouldBeDrawn() const {
   auto const& last_hit_elapsed_time = last_hit_.getElapsedTime();
 
-  if (life_points_ == DEFAULT_LIFE_POINTS) {
+  if (life_points_ == initial_life_points_) {
     return true;
   } else {
-    return last_hit_elapsed_time >= MIN_ELAPSED_TIME_ ||
+    return last_hit_elapsed_time >= MIN_HIT_TIME_ ||
            last_hit_elapsed_time.asMilliseconds() % 200 < 100;
   }
 }
