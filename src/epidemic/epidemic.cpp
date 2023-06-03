@@ -46,10 +46,6 @@ void Epidemic::draw(sf::RenderTarget& target, sf::RenderStates) const {
   }
 }
 
-// Epidemic constructors
-
-Epidemic::Epidemic() = default;
-
 // Public methods
 
 std::vector<Enemy> const& Epidemic::getEnemies() const { return enemies_; }
@@ -111,7 +107,7 @@ int Epidemic::count(Status const& status) const {
 
 void Epidemic::evolve(sf::Time const& dt, Character const& character) {
   double const seconds = static_cast<double>(dt.asSeconds());
-  double const days = seconds * days_per_second_;
+  double const days = seconds * DAYS_PER_SECOND_;
 
   double const N = static_cast<double>(enemies_.size());
 

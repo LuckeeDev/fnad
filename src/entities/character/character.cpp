@@ -11,6 +11,7 @@ Character::Character(Map const& map, sf::Vector2f const& position, float speed)
       initial_life_points_{3},
       life_points_{initial_life_points_},
       movement_{0.f, 0.f},
+      MIN_HIT_TIME_{sf::seconds(3.f)},
       animation_direction_{Direction::down} {
   static_texture_.loadFromFile("assets/skins/character/character_static.png");
   dynamic_texture_.loadFromFile("assets/skins/character/character_dynamic.png");

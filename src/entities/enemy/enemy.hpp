@@ -14,8 +14,8 @@ class Enemy final : public Entity {
  private:
   Status status_;
   sf::Vector2f direction_;
-  sf::Clock clock_;
-  sf::Time time_limit_;
+  sf::Clock direction_clock_;
+  sf::Time direction_time_limit_;
 
   std::default_random_engine eng_;
   std::uniform_real_distribution<float> time_dist_;

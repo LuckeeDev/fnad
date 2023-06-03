@@ -37,7 +37,7 @@ Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status,
 
   direction_ = {std::cos(theta), std::sin(theta)};
 
-  time_limit_ = sf::seconds(time_dist_(eng_));
+  direction_time_limit_ = sf::seconds(time_dist_(eng_));
 }
 
 Enemy::Enemy(Map const& map, sf::Vector2f const& position, Status const& status)
@@ -144,8 +144,9 @@ bool Enemy::sees(const Character& character) const {
 }
 
 void Enemy::randomMove(sf::Time const& dt) {
-  if (clock_.getElapsedTime().asSeconds() >= time_limit_.asSeconds()) {
-    clock_.restart();
+  if (direction_clock_.getElapsedTime().asSeconds() >=
+      direction_time_limit_.asSeconds()) {
+    direction_clock_.restart();
 
     float const delta_theta{direction_dist_(eng_)};
 
@@ -157,7 +158,7 @@ void Enemy::randomMove(sf::Time const& dt) {
     direction_.y = direction_x * std::sin(delta_theta) +
                    direction_y * std::cos(delta_theta);
 
-    time_limit_ = sf::seconds(time_dist_(eng_));
+    direction_time_limit_ = sf::seconds(time_dist_(eng_));
   }
 
   auto const ds = direction_ * speed_ * dt.asSeconds();

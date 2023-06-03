@@ -1,7 +1,6 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <tmxlite/Map.hpp>
 
@@ -15,16 +14,16 @@ class Game final {
  private:
   // SFML objects
 
-  sf::Clock clock_;
+  sf::Clock game_clock_;
   sf::Font font_;
 
   sf::RenderWindow window_;
   sf::View view_;
   sf::Event event_;
 
-  sf::Text text_{"", font_, 32};
+  sf::Text text_;
 
-  sf::Clock timer_;
+  sf::Clock match_timer_;
   sf::Time time_limit_;
 
   // Game objects
@@ -34,12 +33,17 @@ class Game final {
   Character character_;
   Epidemic epidemic_;
 
-  const float game_view_height{400.f};
+  float const GAME_VIEW_HEIGHT_;
 
   bool win_{false};
   int level_;
 
  public:
+  /**
+   * Create a new game instance from a Tiled map.
+   *
+   * @param tiled_map the game map
+   */
   Game(tmx::Map const&);
 
   /**

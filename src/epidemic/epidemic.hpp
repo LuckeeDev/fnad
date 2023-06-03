@@ -32,7 +32,7 @@ class Epidemic final : public sf::Drawable {
   std::vector<Enemy> enemies_;
 
   // Rate of how many days (in the model) pass each second (in-game)
-  double const days_per_second_{0.5};
+  double const DAYS_PER_SECOND_{0.5};
 
   virtual void draw(sf::RenderTarget&, sf::RenderStates) const;
 
@@ -42,7 +42,7 @@ class Epidemic final : public sf::Drawable {
    * You can set the initial state and the initial params through
    * `resetSIRState` and `setSIRParams`.
    */
-  Epidemic();
+  Epidemic() = default;
 
   /**
    * @return a reference to the vector containing all enemies in the game

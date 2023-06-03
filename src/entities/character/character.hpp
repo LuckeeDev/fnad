@@ -15,7 +15,7 @@ class Character final : public Entity {
 
   sf::Vector2f movement_;
 
-  sf::Time const MIN_HIT_TIME_{sf::seconds(3.f)};
+  sf::Time const MIN_HIT_TIME_;
   sf::Clock last_hit_;
 
   sf::Clock animation_clock_;
