@@ -1,7 +1,5 @@
 #include "spawner.hpp"
 
-#include <SFML/Graphics.hpp>
-
 #include "../../test/doctest.h"
 
 TEST_CASE("Testing the Spawner class") {
@@ -11,7 +9,7 @@ TEST_CASE("Testing the Spawner class") {
 
   CHECK(spawner.getArea() == 5000.);
 
-  auto coordinates = spawner.getSpawnPoint();
+  auto const coordinates = spawner.getSpawnPoint();
 
   CHECK(coordinates.x >= 200.f);
   CHECK(coordinates.x <= 300.f);

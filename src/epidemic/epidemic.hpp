@@ -1,11 +1,7 @@
 #ifndef EPIDEMIC_HPP
 #define EPIDEMIC_HPP
 
-#include <SFML/Graphics/Drawable.hpp>
-#include <SFML/Graphics/RenderStates.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
-#include <SFML/Graphics/View.hpp>
-#include <SFML/System/Time.hpp>
+#include <SFML/Graphics.hpp>
 #include <vector>
 
 #include "../entities/enemy/enemy.hpp"
@@ -18,8 +14,6 @@ struct SIRState {
 
   SIRState() = default;
   SIRState(int, int, int);
-  SIRState(double, double, double) = delete;
-  SIRState(float, float, float) = delete;
 };
 
 struct SIRParams {
@@ -38,20 +32,17 @@ class Epidemic final : public sf::Drawable {
   std::vector<Enemy> enemies_;
 
   // Rate of how many days (in the model) pass each second (in-game)
-  double const days_per_second_{0.5};
+  double const DAYS_PER_SECOND_{0.5};
 
   virtual void draw(sf::RenderTarget&, sf::RenderStates) const;
 
  public:
   /**
-   * Create an epidemic. By default, it will have a the following SIR state:
-   * - s: 1;
-   * - i: 1;
-   * - r: 0.
+   * Create an epidemic with default SIRState and SIRParams values.
    * You can set the initial state and the initial params through
    * `resetSIRState` and `setSIRParams`.
    */
-  Epidemic();
+  Epidemic() = default;
 
   /**
    * @return a reference to the vector containing all enemies in the game

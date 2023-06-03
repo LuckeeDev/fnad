@@ -10,7 +10,7 @@ TEST_CASE("Testing the map class") {
 
   fnad::Map map{tiled_map};
 
-  fnad::Character character(map, {0.f, 0.f});
+  fnad::Character character{map, {0.f, 0.f}};
 
   CHECK(map.getWalls().size() == 6);
   CHECK(map.getSpawners().size() == 3);

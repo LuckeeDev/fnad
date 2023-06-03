@@ -19,7 +19,7 @@ class Entity : public sf::RectangleShape {
  protected:
   Map const& map_;
 
-  // Defined in units/second
+  // Defined in units per second.
   float speed_;
 
  public:

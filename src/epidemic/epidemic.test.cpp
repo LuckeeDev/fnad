@@ -35,12 +35,12 @@ TEST_CASE("Testing Epidemic") {
   SUBCASE("Testing the evolve method") {
     epidemic.resetSIRState({99, 1, 0}, map);
 
-    const fnad::Character character(map, {0.f, 0.f});
+    fnad::Character const character{map, {0.f, 0.f}};
 
     // Test count method
-    const int s_0{epidemic.count(fnad::Status::susceptible)},
-        i_0{epidemic.count(fnad::Status::infectious)},
-        r_0{epidemic.count(fnad::Status::removed)};
+    auto const s_0 = epidemic.count(fnad::Status::susceptible);
+    auto const i_0 = epidemic.count(fnad::Status::infectious);
+    auto const r_0 = epidemic.count(fnad::Status::removed);
 
     CHECK(s_0 == 99);
     CHECK(i_0 == 1);
@@ -57,7 +57,7 @@ TEST_CASE("Testing Epidemic") {
     CHECK(sir.i == doctest::Approx(1.3215));
     CHECK(sir.r == doctest::Approx(0.025));
 
-    CHECK(sir.s + sir.i + sir.r == doctest::Approx(100));
+    CHECK(sir.s + sir.i + sir.r == doctest::Approx(100.));
 
     // Check what happens after evolving for a full day
     time = sf::seconds(2.f);
@@ -70,16 +70,16 @@ TEST_CASE("Testing Epidemic") {
     CHECK(sir.i == doctest::Approx(2.168));
     CHECK(sir.r == doctest::Approx(0.091075));
 
-    CHECK(sir.s + sir.i + sir.r == doctest::Approx(100));
+    CHECK(sir.s + sir.i + sir.r == doctest::Approx(100.));
 
     // Evolve for 500 days and check what happens
     for (int i{}; i < 1000; i++) {
       epidemic.evolve(time, character);
     }
 
-    const int s_1{epidemic.count(fnad::Status::susceptible)},
-        i_1{epidemic.count(fnad::Status::infectious)},
-        r_1{epidemic.count(fnad::Status::removed)};
+    auto const s_1 = epidemic.count(fnad::Status::susceptible);
+    auto const i_1 = epidemic.count(fnad::Status::infectious);
+    auto const r_1 = epidemic.count(fnad::Status::removed);
 
     sir = epidemic.getSIRState();
 

@@ -5,19 +5,23 @@
 
 namespace fnad {
 // Constructors
+
 Character::Character(Map const& map, sf::Vector2f const& position, float speed)
-    : Entity(map, position, speed),
-      life_points_{DEFAULT_LIFE_POINTS},
+    : Entity{map, position, speed},
+      initial_life_points_{3},
+      life_points_{initial_life_points_},
       movement_{0.f, 0.f},
+      MIN_HIT_TIME_{sf::seconds(3.f)},
       animation_direction_{Direction::down} {
   static_texture_.loadFromFile("assets/skins/character/character_static.png");
   dynamic_texture_.loadFromFile("assets/skins/character/character_dynamic.png");
 }
 
 Character::Character(Map const& map, sf::Vector2f const& position)
-    : Character(map, position, 200.f) {}
+    : Character{map, position, 200.f} {}
 
 // Functions
+
 bool Character::checkContacts(std::vector<Enemy> const& enemies) {
   bool is_contact{false};
 
@@ -30,8 +34,8 @@ bool Character::checkContacts(std::vector<Enemy> const& enemies) {
       if (intersect) {
         is_contact = true;
 
-        if (life_points_ == DEFAULT_LIFE_POINTS ||
-            last_hit_.getElapsedTime() >= MIN_ELAPSED_TIME_) {
+        if (life_points_ == initial_life_points_ ||
+            last_hit_.getElapsedTime() >= MIN_HIT_TIME_) {
           life_points_ -= 1;
           last_hit_.restart();
         }
@@ -41,8 +45,6 @@ bool Character::checkContacts(std::vector<Enemy> const& enemies) {
 
   return is_contact;
 }
-
-int Character::getLifePoints() const { return life_points_; }
 
 void Character::resetMovement() { movement_ = sf::Vector2f{0.f, 0.f}; }
 
@@ -64,9 +66,9 @@ void Character::addMovement(Direction const& dir) {
 }
 
 void Character::applyMovement(sf::Time const& dt) {
-  float const norm =
+  auto const norm =
       std::sqrt(std::pow(movement_.x, 2.f) + std::pow(movement_.y, 2.f));
-  auto const seconds = dt.asSeconds();
+  auto const& seconds = dt.asSeconds();
 
   if (norm > 0.f) {
     auto const ds = movement_ / norm * speed_ * seconds;
@@ -92,9 +94,9 @@ void Character::animate() {
     animation_direction_ = Direction::up;
   }
 
-  auto const dt = animation_clock_.getElapsedTime().asMilliseconds();
+  auto const& dt = animation_clock_.getElapsedTime().asMilliseconds();
 
-  // calculate the right position in texture file
+  // Calculate the right position in texture file
   auto const texture_position =
       96 * static_cast<int>(animation_direction_) + 16 * ((dt / 100) % 6);
 
@@ -105,12 +107,20 @@ void Character::animate() {
   }
 }
 
+int Character::getLifePoints() const { return life_points_; }
+
+void Character::setLifePoints(int life_points) {
+  initial_life_points_ = life_points;
+  life_points_ = life_points;
+}
+
 bool Character::shouldBeDrawn() const {
-  auto last_hit_elapsed_time = last_hit_.getElapsedTime();
-  if (life_points_ == DEFAULT_LIFE_POINTS) {
+  auto const& last_hit_elapsed_time = last_hit_.getElapsedTime();
+
+  if (life_points_ == initial_life_points_) {
     return true;
   } else {
-    return last_hit_elapsed_time >= MIN_ELAPSED_TIME_ ||
+    return last_hit_elapsed_time >= MIN_HIT_TIME_ ||
            last_hit_elapsed_time.asMilliseconds() % 200 < 100;
   }
 }

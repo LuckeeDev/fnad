@@ -1,7 +1,7 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
-#include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics.hpp>
 #include <tmxlite/Map.hpp>
 #include <tmxlite/Object.hpp>
 #include <vector>
@@ -64,6 +64,11 @@ class Map final : public sf::Drawable {
    * @return the number of keys marked as "taken"
    */
   int countTakenKeys() const;
+
+  /**
+   * @return how many keys are in the game
+   */
+  int countKeys() const;
 
   /**
    * Check if the player has won. That means that the player

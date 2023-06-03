@@ -16,7 +16,7 @@ struct Tile {
 
 class Background final : public sf::Drawable {
  private:
-  unsigned int tile_size_{32};
+  unsigned int tile_size_;
 
   std::unordered_map<std::string, sf::Texture> textures_;
   std::unordered_map<int, Tile> tiles_;
@@ -42,6 +42,9 @@ class Background final : public sf::Drawable {
    */
   Background(tmx::Map const&);
 
+  /**
+   * @returns the size of the background
+   */
   sf::Vector2u getSize() const;
 };
 }  // namespace fnad

@@ -9,9 +9,12 @@ class Character;
 class Key final : public sf::RectangleShape {
  private:
   static sf::Texture texture_;
-  bool taken_{false};
+  bool taken_;
 
  public:
+  /**
+   * Load the static texture shared among all keys.
+   */
   static void loadTexture();
 
   /**
@@ -26,6 +29,7 @@ class Key final : public sf::RectangleShape {
   /**
    * Used to check if the Character intersects with the Key,
    * allowing it to mark the Key as "taken".
+   *
    * @param character the Character used to check the intersection
    */
   void checkTaken(Character const&);

@@ -3,16 +3,22 @@
 #include "../entities/character/character.hpp"
 
 namespace fnad {
+// Static members
+
 sf::Texture Key::texture_;
 
+// Constructors
+
 Key::Key(sf::Vector2f const& position, sf::Vector2f const& size, int key_index)
-    : sf::RectangleShape(size) {
+    : sf::RectangleShape{size}, taken_{false} {
   setPosition(position);
   sf::IntRect key_rect{32 * key_index, 0, 32, 32};
 
   setTexture(&texture_);
   setTextureRect(key_rect);
 }
+
+// Public methods
 
 void Key::loadTexture() { texture_.loadFromFile("assets/map/items/keys.png"); }
 
