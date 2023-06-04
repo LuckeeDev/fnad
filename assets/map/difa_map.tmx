@@ -165,18 +165,6 @@
   <object id="218" x="4352" y="2400" width="128" height="32"/>
   <object id="221" x="4512" y="2400" width="96" height="32"/>
   <object id="222" x="4352" y="2432" width="32" height="96"/>
-  <object id="225" x="1952" y="1440" width="32" height="32"/>
-  <object id="226" x="2016" y="1440" width="32" height="32"/>
-  <object id="227" x="2080" y="1440" width="32" height="32"/>
-  <object id="228" x="2144" y="1440" width="32" height="32"/>
-  <object id="229" x="1952" y="1248" width="32" height="32"/>
-  <object id="230" x="2016" y="1248" width="32" height="32"/>
-  <object id="231" x="2080" y="1248" width="32" height="32"/>
-  <object id="232" x="2144" y="1248" width="32" height="32"/>
-  <object id="234" x="1952" y="1600" width="96" height="64"/>
-  <object id="236" x="2144" y="1600" width="64" height="64"/>
-  <object id="237" x="2304" y="1600" width="64" height="64"/>
-  <object id="238" x="2112" y="1792" width="64" height="64"/>
   <object id="242" x="1952" y="1376" width="288" height="32"/>
   <object id="243" x="2240" y="1312" width="32" height="160"/>
   <object id="315" x="928" y="2368" width="32" height="480"/>
