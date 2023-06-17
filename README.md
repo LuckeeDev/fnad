@@ -1,27 +1,29 @@
-# Istruzioni
+# Five nights at DIFA
+Five nights at DIFA is a 2D game developed for the "Programming for Physics" exam at the University of Bologna.
 
-Per impostare CMake in debug mode (consigliata per lo sviluppo):
+## Setup guide
+We suggest to develop in `Debug` mode, which can be set up with the following command:
 
 ```bash
-$ cmake -B build/debug -S . -DCMAKE_BUILD_TYPE=Debug
+$ cmake -B build -S . -DCMAKE_BUILD_TYPE=Debug
 ```
 
-Per impostare CMake in release mode (N.B: in caso si imposti CMake in release mode, i comandi per la compilazione e l'esecuzione del codice vanno modificati di conseguenza):
+You can also set CMake in `Release` mode, which increases performance at runtime:
 
 ```bash
-$ cmake -B build/release -S . -DCMAKE_BUILD_TYPE=Release
+$ cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
 ```
 
-Compilare ed eseguire il programma con CMake:
+Compile and execute the program with CMake:
 
 ```bash
-$ cmake --build build/debug --target=fnad
-$ build/debug/fnad
+$ cmake --build build --target=fnad
+$ build/fnad
 ```
 
-Compilare ed eseguire i test con CMake:
+Compile and execute tests with CMake:
 
 ```bash
-$ cmake --build build/debug --target=all.test
-$ build/debug/all.test
+$ cmake --build build --target=all.test
+$ build/all.test
 ```
