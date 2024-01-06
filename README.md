@@ -45,4 +45,4 @@ $ build/all.test
 ```
 
 ## Additional information
-Additional information is available, in italian, in the description of the program written for the exam. It can be found at the [following link](https://luckeedev.github.io/LuTeX/fnad.pdf).
+Additional information is available, in Italian, in the description of the program written for the exam. It can be found at the [following link](https://luckeedev.github.io/LuTeX/fnad.pdf).
